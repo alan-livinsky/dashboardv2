@@ -12,7 +12,7 @@ class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or random_SECRET_KEY
 
     # Tryton config
-    TRYTON_DATABASE = os.environ.get('health42', 'health42')
+    TRYTON_DATABASE = os.environ.get('health', 'health')
     TRYTON_CONFIG = os.path.join(basedir, 'trytond.conf')  # Ruta completa
     TRYTON_USER = 1
 

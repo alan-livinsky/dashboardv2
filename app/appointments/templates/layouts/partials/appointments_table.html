@@ -1,0 +1,57 @@
+<table id="tabla_espera">
+    <thead>
+        <tr>
+            <th>Paciente</th>
+            <th>Profesional</th>
+            <th>Consultorio</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    {% for appointment in appointments %}
+         {% if appointment.state == 'confirmed' and
+                            not appointment.calling and
+                            not appointment.attending %}
+        <tbody>
+            <tr class="{% if loop.index0 is even %}fila-par{% else %}fila-impar{% endif %} not_calling">
+               <td>{{ appointment.patient.rec_name }}</td>
+                <td>{{ appointment.healthprof.rec_name }}</td>
+                <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
+                <td>En espera</td>
+            </tr>
+        </tbody>
+        {% endif %}
+    {% endfor %}
+</table>
+
+<table id="tabla_atencion">
+    <thead>
+        <tr>
+            <th>Paciente</th>
+            <th>Profesional</th> 
+            <th>Consultorio</th>  
+            <th>Estado</th>  
+        </tr>
+    </thead>
+    {% for appointment in appointments %}
+    <tbody>
+        {% if appointment.calling %}
+        <audio id="myAudio" autoplay>
+            <source src="../static/multimedia/timbre.ogg" type="audio/ogg">
+        </audio>
+        <tr class='calling'>
+            <td>{{ appointment.patient.rec_name }}</td>
+            <td>{{ appointment.healthprof.rec_name }}</td>
+            <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
+            <td>Llamando</td>
+        </tr>
+        {% elif appointment.attending %}
+        <tr class='in_atention'>
+            <td>{{ appointment.patient.rec_name }}</td>
+            <td>{{ appointment.healthprof.rec_name }}</td>
+            <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
+            <td>En atención</td>}
+        </tr>
+        {% endif %}
+    </tbody>
+    {% endfor %}
+</table>

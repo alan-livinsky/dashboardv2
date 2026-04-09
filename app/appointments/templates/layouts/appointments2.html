@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+    {% block head %}
+
+<!--         <meta http-equiv="content-type" content="application/json; charset=UTF-8"/> -->
+        <title>Turnos del día</title>
+        <link rel="icon" href="/static/images/favicon.ico">
+        <meta http-equiv="Expires" content="0">
+        <meta http-equiv="Last-Modified" content="0">
+        <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+        <meta http-equiv="Pragma" content="no-store">
+        <link rel="stylesheet" href="static/css/main.css">
+    {% endblock %}
+
+    {% block body %}
+
+    	<section class="container-table100">
+            <h2>LISTA DE ATENCIÓN - {{ organization }}<br>Hoy {{ today }} otorgamos {{ total }} turnos </h2>
+        	<div class="izquierda">
+            	<h4></h4>
+                <table id="tabla_turnos">
+
+                    <tr>
+                        <th>Paciente</th>
+                        <th>Profesional</th> 
+                        <th>Especialidad</th>  
+                        <th>Estado</th>  
+                    </tr>
+                        {% for appointment in turnos_webhook %}
+                            {% if appointment.get('state') == 'calling'%}
+                            <audio id="myAudio" autoplay>
+                                <source src="../static/multimedia/timbre.ogg" type="audio/ogg">
+                            </audio>
+                            <tr class='calling'>
+                            <td> {{ appointment.get('patient') }}</td>
+                            <td> {{ appointment.get('professional') }}</td>
+                            <td> {{ appointment.get('specialty') }}</td>
+                            <td> {{ 'Llamando' }}</td>
+                            {% elif appointment.get('state') == 'in_atention'%}
+                            <tr class='in_atention'>
+                            <td> {{ appointment.get('patient') }}</td>
+                            <td> {{ appointment.get('professional') }}</td>
+                            <td> {{ appointment.get('specialty') }}</td>
+                            <td> {{ 'En atención' }}</td>
+                            {% endif %}
+                            </tr>
+                    	{% endfor %}
+                </table>
+            </div>
+        <div class="images">
+            <img src="" id="myimage" style="margin-bottom:150px">
+        </div>
+        <footer class="footer"> 
+            <p>Desarrollado por el GESPyTA de la FI-UNER para uso en GNUHealth - v0.3 (2022) - copyleft</p>
+            <a href="http://ingenieria.uner.edu.ar/grupos/salud_publica/" target="_blank" class="a">¿Quienes somos?</a>
+            <a href="https://gitlab.com/gnuhealth_fiuner" target="_blank" class="a">Nuestro Repositorio</a>
+            <a href="mailto=saludpublica@ingenieria.uner.edu.ar" target="_blank" class="a">Contacto</a>
+        </footer>
+
+    {% endblock %}
+
+    {% block javascripts %}
+        <script type="text/javascript">
+            function cargarimagen(){
+            // creamos un numero al azar entre 1 y 10 (o cual sea la cantidad de imágenes)
+            var x = (Math.floor(Math.random()*17));
+            console.log(x);
+            var xhttp = new XMLHttpRequest();
+            function cargarimagen(){
+
+
+            }
+            function actualizar(){
+            location.reload(true);
+            }
+            setTimeout("cargarimagen()", 200);
+            setTimeout("actualizar()",10000);
+        </script>
+    {%endblock%}

@@ -17,9 +17,9 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            background: #0b1e2d;
+            background: #f0f7ff;
             font-family: 'Segoe UI', system-ui, sans-serif;
-            color: #e8edf2;
+            color: #1e293b;
         }
 
         .page-wrapper {
@@ -34,8 +34,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 10px 20px;
-            background: rgba(255,255,255,.04);
-            border-bottom: 1px solid rgba(255,255,255,.08);
+            background: #1e40af;
             flex-shrink: 0;
             gap: 12px;
         }
@@ -45,13 +44,13 @@
             font-weight: 600;
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            color: #7ec8e3;
+            color: #bfdbfe;
             margin: 0;
         }
 
         .main-header__sub {
             font-size: .72rem;
-            color: rgba(255,255,255,.35);
+            color: rgba(255,255,255,.55);
             letter-spacing: 1px;
             margin-top: 2px;
         }
@@ -59,7 +58,7 @@
         .main-header__clock {
             font-size: 1.6rem;
             font-weight: 200;
-            color: rgba(255,255,255,.6);
+            color: #ffffff;
             letter-spacing: 2px;
             font-variant-numeric: tabular-nums;
         }
@@ -74,12 +73,13 @@
         }
 
         .card-select {
-            background: rgba(255,255,255,.04);
-            border: 1px solid rgba(255,255,255,.1);
+            background: #ffffff;
+            border: 1px solid #bfdbfe;
             border-radius: 12px;
             padding: 32px 36px;
             width: 100%;
             max-width: 780px;
+            box-shadow: 0 4px 16px rgba(30,64,175,.08);
         }
 
         .card-select__legend {
@@ -87,9 +87,9 @@
             font-weight: 700;
             letter-spacing: 3px;
             text-transform: uppercase;
-            color: rgba(255,255,255,.35);
+            color: #1e40af;
             margin-bottom: 24px;
-            border-bottom: 1px solid rgba(255,255,255,.07);
+            border-bottom: 2px solid #bfdbfe;
             padding-bottom: 12px;
         }
 
@@ -112,18 +112,18 @@
             gap: 10px;
             padding: 10px 14px;
             border-radius: 8px;
-            background: rgba(255,255,255,.03);
-            border: 1px solid rgba(255,255,255,.08);
+            background: #f0f7ff;
+            border: 1px solid #bfdbfe;
             cursor: pointer;
             transition: background .15s, border-color .15s;
             font-size: .92rem;
-            color: #c8d8e8;
+            color: #1e293b;
             user-select: none;
         }
 
         .room-label:hover {
-            background: rgba(126,200,227,.1);
-            border-color: rgba(126,200,227,.3);
+            background: #dbeafe;
+            border-color: #3b82f6;
         }
 
         .room-label input[type="checkbox"] {
@@ -132,8 +132,8 @@
             width: 16px;
             height: 16px;
             border-radius: 4px;
-            border: 2px solid rgba(255,255,255,.25);
-            background: transparent;
+            border: 2px solid #93c5fd;
+            background: #ffffff;
             flex-shrink: 0;
             cursor: pointer;
             transition: background .15s, border-color .15s;
@@ -141,8 +141,8 @@
         }
 
         .room-label input[type="checkbox"]:checked {
-            background: #7ec8e3;
-            border-color: #7ec8e3;
+            background: #1d4ed8;
+            border-color: #1d4ed8;
         }
 
         .room-label input[type="checkbox"]:checked::after {
@@ -152,7 +152,7 @@
             left: 4px;
             width: 5px;
             height: 9px;
-            border: 2px solid #0b1e2d;
+            border: 2px solid #ffffff;
             border-top: none;
             border-left: none;
             transform: rotate(45deg);
@@ -162,8 +162,8 @@
         .btn-submit {
             display: inline-block;
             padding: 11px 32px;
-            background: #7ec8e3;
-            color: #0b1e2d;
+            background: #1d4ed8;
+            color: #ffffff;
             font-weight: 700;
             font-size: .9rem;
             letter-spacing: 1.5px;
@@ -175,21 +175,16 @@
         }
 
         .btn-submit:hover {
-            background: #bae6fd;
+            background: #1e40af;
             transform: translateY(-1px);
         }
 
         /* ── Footer ── */
         .footer {
             flex-shrink: 0;
-            border-top: 1px solid rgba(255,255,255,.08);
-            background: rgba(0,0,0,.2);
+            border-top: 2px solid #bfdbfe;
+            background: #ffffff;
         }
-
-        .footer-container { border-top: none; background: transparent; }
-        .footer-copyright  { color: rgba(255,255,255,.3) !important; }
-        .footer-link       { color: #7ec8e3 !important; }
-        .footer-link:hover { color: #bae6fd !important; }
     </style>
 {% endblock %}
 
@@ -219,7 +214,7 @@
                         </div>
                         {% endfor %}
                     {% else %}
-                        <p style="color: rgba(255,255,255,.35); font-size:.88rem;">No hay consultorios con turnos para hoy.</p>
+                        <p style="color: #64748b; font-size:.88rem;">No hay consultorios con turnos para hoy.</p>
                     {% endif %}
                 </div>
                 <button type="submit" class="btn-submit">Ver turnos</button>

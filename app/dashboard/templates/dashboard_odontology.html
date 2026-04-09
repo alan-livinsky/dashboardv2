@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Odontología</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300" rel="stylesheet" />
+    <link rel="stylesheet" href="static/css/style_2.css">
+    <script src="/static/js/dashboard_odontology.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.min.js"></script>
+    <title>Panel de Odontología</title>
+</head>
+
+<body>
+    <main>
+    
+        <div class="loading-message">Procesando los Datos.....</div>
+
+
+        <h1>CAPS Humberto D'Angelo - ODONTOLOGIA</h1>
+        <p>Visualización de estadísticas globales</p>
+        
+        <hr>
+        <div class="filter">
+        <label for="fecha1">Desde (>=):</label>
+        <input type="date" id="fecha1" name="fecha1">
+        <label for="fecha2">Hasta (<=):</label>
+        <input type="date" id="fecha2" name="fecha2">
+        <label> Profesional: </label>
+        <select id="ProfessionalSelect">
+            <option value=""> Lista completa </option>
+        </select>
+        <button onclick="Update()" type="submit">Aplicar filtro</button>
+        </div>
+        <hr>
+        <section class="cols-1">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Odontología según Profesionales y Sexo</h3>
+                <div id="canva5">
+                    <canvas id="OdontoByProfessionalBySex"></canvas>
+                </div>
+            </figure>
+        </section>
+        
+        <section class="cols-2">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Odontología según día de la Semana</h3>
+                <div id="canva2">
+                    <canvas id="OdontoByDays"></canvas>
+                </div>
+            </figure>
+
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Odontología según Sexo del Paciente</h3>
+                <div id="canva3">
+                    <canvas id="OdontoBySex"></canvas>
+                </div>
+            </figure>
+        </section>
+        
+        <section class="cols-1">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Odontología según Grupos Etarios</h3>
+                <div id="canva6">
+                    <canvas id="OdontoByAgeGroups"></canvas>
+                </div>
+            </figure>
+        </section>
+        
+        <section class="cols-3">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Odontología Totales</h3>
+                <h1 id="odonto_total"> - </h1>
+            </figure>
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Odontología Totales (ECNT)</h3>
+                <h1 id="odonto_ecnt"> - </h1>
+            </figure>
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Odontología Totales (ECNT) %</h3>
+                <h1 id="odonto_ecnt_%"> - </h1>
+            </figure>
+        </section>
+        
+         <section class="cols-1">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Odontología por Tratamiento</h3>
+                <div id="canva7">
+                    <canvas id="OdontoByTreatment"></canvas>
+                </div>
+            </figure>
+        </section>
+        
+        <section class="cols-3">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. de Primera Vez</h3>
+                <h1 id="odonto_first_time"> - </h1>
+            </figure>
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>Urgencias</h3>
+                <h1 id="odonto_urgency"> - </h1>
+            </figure>
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. por Certificado</h3>
+                <h1 id="odonto_attendance"> - </h1>
+            </figure>
+        </section>
+        
+        <section class="cols-2">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Odontología según Obra Social</h3>
+                <div id="canva4">
+                    <canvas id="OdontoByInsurance"></canvas>
+                </div>
+            </figure>
+
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Odontología según tipo de Alta</h3>
+                <div id="canva8">
+                    <canvas id="OdontoByDischarge"></canvas>
+                </div>
+            </figure>
+        </section>
+
+
+    </main>
+    
+    <footer class="footer"> 
+        {% include '/layouts/partials/footer.html' %}
+    </footer>
+
+   
+<script >
+
+ var data_1 = JSON.parse('{{ data | tojson}}');
+            
+ProfessionalSelect(data_1);
+OdontoByDays(data_1, 'OdontoByDays');
+OdontoBySex(data_1, 'OdontoBySex');
+OdontoByAgeGroups(data_1, 'OdontoByAgeGroups');
+OdontoByProfessionalBySex(data_1, 'OdontoByProfessionalBySex');
+OdontoByInsurance(data_1, 'OdontoByInsurance');
+OdontoByTreatment(data_1, 'OdontoByTreatment');
+OdontoByDischarge(data_1, 'OdontoByDischarge');
+OdontoTotal(data_1);
+OdontoECNT(data_1);
+PercentOdontoECNT(data_1);
+OdontoFirstTime(data_1);
+OdontoUrgency(data_1);
+OdontoAttendance(data_1);
+
+
+
+</script>
+
+</body>
+
+</html>
+
+

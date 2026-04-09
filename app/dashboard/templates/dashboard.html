@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Información</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/dashboard.css">
+    <script type="text/javascript">
+        function actualizar(){ location.reload(true); }
+        setInterval("actualizar()", 300000);
+    </script>
+    <style>
+        /* ── Reset / base ── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #0b1e2d;
+            background-image: radial-gradient(ellipse at 20% 10%, #0d2e45 0%, #0b1e2d 60%);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: #e8edf2;
+            min-height: 100vh;
+        }
+
+        /* ── Header ── */
+        .dash-header {
+            padding: 32px 48px 20px;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .dash-header__title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #7ec8e3;
+        }
+
+        .dash-header__org {
+            font-size: 1.45rem;
+            font-weight: 300;
+            color: #ffffff;
+            margin-top: 4px;
+        }
+
+        .dash-header__badge {
+            background: rgba(126,200,227,.12);
+            border: 1px solid rgba(126,200,227,.3);
+            color: #7ec8e3;
+            font-size: .72rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        /* ── Grid ── */
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 36px 48px;
+        }
+
+        /* ── Card ── */
+        .dash-card {
+            position: relative;
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 16px;
+            padding: 28px 20px 24px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            transition: transform .22s ease, box-shadow .22s ease, background .22s ease;
+            overflow: hidden;
+        }
+
+        .dash-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            border-radius: 16px 16px 0 0;
+            background: var(--card-accent, #7ec8e3);
+            opacity: .85;
+        }
+
+        .dash-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 40px rgba(0,0,0,.35);
+            background: rgba(255,255,255,.07);
+        }
+
+        /* Accent colors per card */
+        .accent-teal   { --card-accent: #2dd4bf; }
+        .accent-blue   { --card-accent: #60a5fa; }
+        .accent-violet { --card-accent: #a78bfa; }
+        .accent-green  { --card-accent: #34d399; }
+        .accent-pink   { --card-accent: #f472b6; }
+        .accent-orange { --card-accent: #fb923c; }
+        .accent-indigo { --card-accent: #818cf8; }
+        .accent-amber  { --card-accent: #fbbf24; }
+
+        .dash-card__icon {
+            width: 68px;
+            height: 68px;
+            object-fit: contain;
+            filter: brightness(0) invert(1) opacity(.75);
+        }
+
+        .dash-card__label {
+            font-size: .68rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.5);
+            line-height: 1.4;
+        }
+
+        .dash-card__value {
+            font-size: 3rem;
+            font-weight: 200;
+            color: #ffffff;
+            line-height: 1;
+        }
+
+        .dash-card__btn {
+            display: inline-block;
+            margin-top: 4px;
+            padding: 7px 20px;
+            font-size: .7rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--card-accent, #7ec8e3);
+            border: 1px solid var(--card-accent, #7ec8e3);
+            border-radius: 20px;
+            text-decoration: none;
+            background: transparent;
+            transition: background .18s ease, color .18s ease;
+        }
+
+        .dash-card__btn:hover {
+            background: var(--card-accent, #7ec8e3);
+            color: #0b1e2d;
+            text-decoration: none;
+        }
+
+        /* ── Section divider ── */
+        .dash-divider {
+            margin: 0 48px;
+            border: none;
+            border-top: 1px solid rgba(255,255,255,.06);
+        }
+
+        /* ── Footer ── */
+        .dash-footer {
+            margin-top: 12px;
+            padding: 18px 48px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            gap: 8px;
+            border-top: 1px solid rgba(255,255,255,.06);
+            font-size: .72rem;
+            color: rgba(255,255,255,.35);
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── Header ── -->
+    <header class="dash-header">
+        <div>
+            <div class="dash-header__title">Panel de Información</div>
+            <div class="dash-header__org">{{organization}} &mdash; Indicadores del día</div>
+        </div>
+        <div class="dash-header__badge">Actualización automática &bull; 5 min</div>
+    </header>
+
+    <!-- ── Row 1 ── -->
+    <div class="dash-grid">
+
+        <div class="dash-card accent-teal">
+            <div class="dash-card__label">Turnos atendidos</div>
+            <img class="dash-card__icon" src="../static/images/appointment.svg" alt="Turnos">
+            <div class="dash-card__value">{{appointments_count}}</div>
+            <a href="dashboard_appointments" class="dash-card__btn">Ver panel</a>
+        </div>
+
+        <div class="dash-card accent-blue">
+            <div class="dash-card__label">At. profesionales</div>
+            <img class="dash-card__icon" src="../static/images/ambulatorio.svg" alt="Ambulatorio">
+            <div class="dash-card__value">{{evaluations_count}}</div>
+            <a href="dashboard_ambulatory" class="dash-card__btn">Ver panel</a>
+        </div>
+
+        <div class="dash-card accent-violet">
+            <div class="dash-card__label">At. enfermería</div>
+            <img class="dash-card__icon" src="../static/images/nursing.svg" alt="Enfermería">
+            <div class="dash-card__value">{{nursing_ambulatory_care_count}}</div>
+            <a href="dashboard_nursing" class="dash-card__btn">Ver panel</a>
+        </div>
+
+        <div class="dash-card accent-green">
+            <div class="dash-card__label">Recetas atendidas</div>
+            <img class="dash-card__icon" src="../static/images/medicament.svg" alt="Farmacia">
+            <div class="dash-card__value">{{prescriptions_count}}</div>
+            <a href="dashboard_pharmacy" class="dash-card__btn">Ver panel</a>
+        </div>
+
+    </div>
+
+    <hr class="dash-divider">
+
+    <!-- ── Row 2 ── -->
+    <div class="dash-grid">
+
+        <div class="dash-card accent-pink">
+            <div class="dash-card__label">Controles embarazo</div>
+            <img class="dash-card__icon" src="../static/images/pregnancy.svg" alt="Ginecología">
+            <div class="dash-card__value">{{prenatal_evaluations_count}}</div>
+            <a href="dashboard_ginecology" class="dash-card__btn">Ver panel</a>
+        </div>
+
+        <div class="dash-card accent-orange">
+            <div class="dash-card__label">At. odontológicas</div>
+            <img class="dash-card__icon" src="../static/images/odontology.svg" alt="Odontología">
+            <div class="dash-card__value">{{odontology_treatments_count}}</div>
+            <a href="dashboard_odontology" class="dash-card__btn">Ver panel</a>
+        </div>
+
+        <div class="dash-card accent-indigo">
+            <div class="dash-card__label">Pacientes nuevos</div>
+            <img class="dash-card__icon" src="../static/images/people.svg" alt="Población">
+            <div class="dash-card__value">+{{new_population}}</div>
+            <a href="dashboard_population" class="dash-card__btn">Ver panel</a>
+        </div>
+
+        <div class="dash-card accent-amber">
+            <div class="dash-card__label">ECNT</div>
+            <img class="dash-card__icon" src="../static/images/chronic.svg" alt="Crónicos">
+            <div class="dash-card__value">&mdash;</div>
+            <a href="dashboard_chronicles" class="dash-card__btn">Ver panel</a>
+        </div>
+
+    </div>
+
+    <footer class="dash-footer">
+        {% include '/layouts/partials/footer.html' %}
+    </footer>
+
+</body>
+</html>

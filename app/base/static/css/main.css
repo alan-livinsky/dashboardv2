@@ -1,0 +1,301 @@
+@font-face {
+  font-family: 'Asus';
+  src: url("LTAsus-Light.ttf");
+}
+
+
+@font-face {
+  font-family: 'Asus-bold';
+  src: url("LTAsus-Bold.ttf");
+}
+
+
+body, html {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 18px;
+    font-family: 'Asus';
+    color: #000;
+    line-height: 1.2;
+    font-weight: unset;
+    background: -webkit-linear-gradient(45deg, #68CBD5, #C79C83);
+    background: -o-linear-gradient(45deg, #68CBD5, #C79C83);
+    background: -moz-linear-gradient(45deg, #68CBD5, #C79C83);
+    background: linear-gradient(45deg, #68CBD5, #68CBD5);
+}
+
+.content {
+    margin: 0 auto;
+    font-family: 'Asus';
+}
+
+h1, h2, h4 {
+    text-align: center;
+    font-family: 'Asus-bold';
+}
+.contenedor {
+            display: flex;
+            width: 100%;
+    }
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.tabla {
+    width: 50%;
+    padding: 10px;
+}
+
+td, th {
+    border-spacing: 1;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 auto;
+    font-family: 'Asus-bold';
+    text-align: center;
+    padding: 5px;
+    height: 10px;
+}
+
+tr{
+    background-color: #D07C4B;
+}
+
+.dashboard_table{
+    width: 49%;
+    height: 30vh;
+    border-spacing: 20;
+    background: linear-gradient(-45deg, #b54f78, #f6a4a5);
+    
+}
+
+.dashboard_th{
+    font-size: 40px;
+    background-color: #57837b;
+    border-color: #000;
+    font-family: 'Asus';
+}
+
+.dashboard_td{
+    font-size: 120px;
+    background: linear-gradient(-45deg, #b54f78, #f6a4a5);
+    border-spacing: 10;
+    font-family: 'Asus';
+}
+
+
+hr{
+    color: #fff;
+    background-color: #fff;
+    height: 1.5px;
+    font-family: 'Asus';
+}
+
+.form {
+    margin-top: 5px;
+}
+
+#content {
+    width: 90%;
+}
+
+.calling {
+    background-color: #FFFFFF;
+    background-image: url(../images/calling.gif);
+    font-size:125%;
+    font-family: 'Asus';
+}
+
+
+.in_atention {
+    background-color: #FFFFFF;
+    font-size:125%;
+    font-family: 'Asus';
+}
+
+.izquierda{
+    width: 90%;
+}
+
+.derecha{
+    width: 100%;
+    height: 20vh;
+    align-content: 'center';
+}
+
+#pantalla-dividida{
+    display: flex;
+}
+
+.container-table100 {
+
+  width: 100%;
+  min-height: 100vh;
+  background: #c850c0;
+  background: -webkit-linear-gradient(45deg, #68CBD5, #C79C83);
+  background: -o-linear-gradient(45deg, #68CBD5, #C79C83);
+  background: -moz-linear-gradient(45deg, #68CBD5, #C79C83);
+  background: linear-gradient(45deg, #68CBD5, #C79C83);
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  
+}
+
+.footer {
+    height: 8%;
+    display: flex;
+    flex-wrap: wrap;
+    width: 90%;
+    position:baseline;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 10vh;
+    bottom:0;
+    flex-direction: row;
+    color: black;
+    margin: 0px; 
+    text-align: center;
+    background-color: rgba('255,255,255,.0');
+    font-size: 15px;
+    font-family: "Asus";
+    font-style: bold;
+    line-height: 1em;
+}
+
+.a {
+    text-decoration: none;
+    color: black;
+}
+
+.scrollable-tabla {
+    max-height: 70vh;
+    overflow-y: auto;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+}
+
+/* Hace que la tabla ocupe todo el ancho */
+#tabla_espera {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+/* Fija los encabezados */
+#tabla_espera thead th {
+    position: sticky;
+    top: 0;
+    background-color: #57837b; /* mismo color que antes */
+    color: white;
+    z-index: 10;
+}
+
+.fila-par {
+  background-color: lightblue;
+}
+
+.fila-impar {
+  background-color: lightgreen;
+}
+
+
+@media (min-width: 2000px) {
+html {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 30px;
+    font-family: 'Asus';
+    color: #000;
+    line-height: 1.2;
+    font-weight: unset;
+    background: -webkit-linear-gradient(45deg, #68CBD5, #C79C83);
+    background: -o-linear-gradient(45deg, #68CBD5, #C79C83);
+    background: -moz-linear-gradient(45deg, #68CBD5, #C79C83);
+    background: linear-gradient(45deg, #68CBD5, #C79C83);
+}
+th {
+    height: 30px;
+}
+
+td {
+    text-align: center;
+    padding: 5px;
+}
+
+hr{
+    color: #fff;
+    background-color: #fff;
+    height: 3px;
+    font-family: 'Asus';
+}
+
+ }
+ 
+
+.images {
+  display:flex;
+  justify-content: center;
+  padding-top: 50px;
+  margin-bottom:50px;
+  height:175px;
+}
+
+#myimage {
+  width: 100%; 
+  height:100%;
+}
+
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+
+#pantalla-dividida {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 10px;
+}
+
+.tabla-izquierda {
+    width: 25%;
+    padding: 10px;
+    box-sizing: border-box;
+
+}
+
+.tabla-derecha {
+    width: 75%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.scrollable-tabla {
+    max-height: 70vh;
+    overflow-y: auto;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+}
+
+/* Asegura que el carrusel no se superponga ni sobresalga */
+.carousel-container {
+    margin-top: 20px;
+    max-height: 500px;
+    overflow: hidden;
+}
+
+
+
+
+

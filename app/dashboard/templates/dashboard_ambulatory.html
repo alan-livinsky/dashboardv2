@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de At. Ambulatorias</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300" rel="stylesheet" />
+    <link rel="stylesheet" href="static/css/style_2.css">
+    <script src="/static/js/dashboard_ambulatory.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.min.js"></script>
+    <title>Panel de At. Ambulatorias</title>
+</head>
+
+<body>
+    <main>
+    
+        <div class="loading-message">Procesando los Datos.....</div>
+
+
+        <h1>CAPS Humberto D'Angelo - AT. AMBULATORIAS</h1>
+        <p>Visualización de estadísticas globales</p>
+        
+        <hr>
+        <div class="filter">
+        <label for="fecha1">Desde (>=):</label>
+        <input type="date" id="fecha1" name="fecha1">
+        <label for="fecha2">Hasta (<=):</label>
+        <input type="date" id="fecha2" name="fecha2">
+        <label> Especialidad: </label>
+        <select id="SpecialtySelect">
+            <option value=""> Todas </option>
+        </select>
+        <button onclick="Update()" type="submit">Aplicar filtro</button>
+        </div>
+        <hr>
+        <section class="cols-1">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Ambulatorias según Especialidad y Sexo del Paciente</h3>
+                <div id="canva1">
+                    <canvas id="AmbulatoryBySpecialtyBySex"></canvas>
+                </div>
+            </figure>
+        </section>
+        <section class="cols-3">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Ambulatorias según día de la Semana</h3>
+                <div id="canva2">
+                    <canvas id="AmbulatoryByDays"></canvas>
+                </div>
+            </figure>
+
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Ambulatorias según Sexo del Paciente</h3>
+                <div id="canva3">
+                    <canvas id="AmbulatoryBySex"></canvas>
+                </div>
+            </figure>
+            
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Ambulatorias según Obra Social</h3>
+                <div id="canva4">
+                    <canvas id="AmbulatoryByInsurance"></canvas>
+                </div>
+            </figure>
+        </section>
+        
+        <section class="cols-1">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Ambulatorias según Profesionales y Sexo</h3>
+                <div id="canva5">
+                    <canvas id="AmbulatoryByProfessionalBySex"></canvas>
+                </div>
+            </figure>
+        </section>
+        
+        <section class="cols-1">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Ambulatorias según Grupos Etarios</h3>
+                <div id="canva6">
+                    <canvas id="AmbulatoryByAgeGroups"></canvas>
+                </div>
+            </figure>
+        </section>
+        
+        <section class="cols-2">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Ambulatorias Totales</h3>
+                <h1 id="amb_total"> - </h1>
+            </figure>
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>Tiempo Promedio Atención</h3>
+                <h1 id="amb_average"> - </h1>
+            </figure>
+        </section>
+        
+         <section class="cols-2">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Ambulatorias y diagnóstico CIE-10</h3>
+                <div id="canva7">
+                    <canvas id="AmbulatoryByICD10"></canvas>
+                </div>
+            </figure>
+
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Ambulatorias y diagnóstico SNOMED-CT</h3>
+                <div id="canva8">
+                    <canvas id="AmbulatoryBySnomedCT"></canvas>
+                </div>
+            </figure>
+        </section>
+        
+        <section class="cols-2">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Ambulatorias ECNT</h3>
+                <h1 id="amb_ecnt"> - </h1>
+            </figure>
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>At. Ambulatorias ECNT %</h3>
+                <h1 id="amb_ecnt_%"> - </h1>
+            </figure>
+        </section>
+
+
+    </main>
+    
+    <footer class="footer"> 
+        {% include '/layouts/partials/footer.html' %}
+    </footer>
+
+   
+<script >
+
+ var data_1 = JSON.parse('{{ data | tojson}}');
+
+SpecialtySelect(data_1); 
+AmbulatoryBySpecialtyBySex(data_1, 'AmbulatoryBySpecialtyBySex');
+AmbulatoryByDays(data_1, 'AmbulatoryByDays');
+AmbulatoryBySex(data_1, 'AmbulatoryBySex');
+AmbulatoryByAgeGroups(data_1, 'AmbulatoryByAgeGroups');
+AmbulatoryByProfessionalBySex(data_1, 'AmbulatoryByProfessionalBySex');
+AmbulatoryByInsurance(data_1, 'AmbulatoryByInsurance');
+TotalAmbulatory(data_1);
+AmbulatoryECNT(data_1);
+PercentAmbulatoryECNT(data_1);
+AmbulatoryByICD10(data_1, 'AmbulatoryByICD10');
+DurationAverage(data_1);
+AmbulatoryBySnomedCT(data_1, 'AmbulatoryBySnomedCT');
+
+</script>
+
+</body>
+
+</html>
+

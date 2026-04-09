@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Enfermería</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300" rel="stylesheet" />
+    <link rel="stylesheet" href="static/css/style_2.css">
+    <script src="/static/js/dashboard_nursing.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.min.js"></script>
+    <title>Panel de Enfermería</title>
+</head>
+
+<body>
+    <main>
+    
+        <div class="loading-message">Procesando los Datos.....</div>
+
+
+        <h1>CAPS Humberto D'Angelo - ENFERMERIA</h1>
+        <p>Visualización de estadísticas globales</p>
+        
+        <hr>
+        <div class="filter">
+        <label for="fecha1">Desde (>=):</label>
+        <input type="date" id="fecha1" name="fecha1">
+        <label for="fecha2">Hasta (<=):</label>
+        <input type="date" id="fecha2" name="fecha2">
+        <label> Profesional: </label>
+        <select id="ProfessionalSelect">
+            <option value=""> Lista completa </option>
+        </select>
+        <button onclick="Update()" type="submit">Aplicar filtro</button>
+        </div>
+        <hr>
+        <section class="cols-1">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>Atenciones de Enfermería según Grupos Etarios</h3>
+                <div id="canva1">
+                    <canvas id="NursingAmbulatoryByAgeGroups"></canvas>
+                </div>
+            </figure>
+        </section>
+        <section class="cols-3">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>Atenciones de Enfermería según Sexo</h3>
+                <div id="canva2">
+                    <canvas id="NursingAmbulatoryBySex"></canvas>
+                </div>
+            </figure>
+
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>Atenciones de Enfermería según Obra Social</h3>
+                <div id="canva3">
+                    <canvas id="NursingAmbulatoryByInsurance"></canvas>
+                </div>
+            </figure>
+            
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>Atenciones de Enfermería según Días</h3>
+                <div id="canva4">
+                    <canvas id="NursingAmbulatoryByDays"></canvas>
+                </div>
+            </figure>
+        </section>
+        
+        <section class="cols-1">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>Atenciones de Enfermería según Profesionales y Sexo</h3>
+                <div id="canva5">
+                    <canvas id="NursingAmbulatoryByProfessionalBySex"></canvas>
+                </div>
+            </figure>
+        </section>
+        
+        <section class="cols-1">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>Atenciones de Enfermería según Procedimientos y Sexo</h3>
+                <div id="canva6">
+                    <canvas id="NursingAmbulatoryByProceduresBySex"></canvas>
+                </div>
+            </figure>
+        </section>
+        
+        <section class="cols-3">
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>Atenciones Totales</h3>
+                <h1 id="nursing_total"> - </h1>
+            </figure>
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>Atenciones ECNT</h3>
+                <h1 id="nursing_ecnt"> - </h1>
+            </figure>
+            <figure>
+                <p class="selected_period">Últimos 15 días</p>
+                <h3>Vacunas</h3>
+                <h1 id="nursing_vaccine"> - </h1>
+            </figure>
+        </section>
+        
+
+    </main>
+    
+    <footer class="footer"> 
+        {% include '/layouts/partials/footer.html' %}
+    </footer>
+
+   
+<script >
+
+ var data_1 = JSON.parse('{{ data | tojson}}');
+            
+ProfessionalSelect(data_1);
+NursingAmbulatoryByAgeGroups(data_1, 'NursingAmbulatoryByAgeGroups');
+NursingAmbulatoryBySex(data_1, 'NursingAmbulatoryBySex');
+NursingAmbulatoryByInsurance(data_1, 'NursingAmbulatoryByInsurance');
+NursingAmbulatoryByDays(data_1, 'NursingAmbulatoryByDays');
+NursingAmbulatoryByProfessionalBySex(data_1, 'NursingAmbulatoryByProfessionalBySex');
+NursingAmbulatoryByProceduresBySex(data_1, 'NursingAmbulatoryByProceduresBySex');
+NursingTotal(data_1);
+NursingECNT(data_1);
+NursingVaccines(data_1);
+
+</script>
+
+</body>
+
+</html>

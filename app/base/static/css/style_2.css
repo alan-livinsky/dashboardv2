@@ -1,0 +1,152 @@
+body {
+  background: rgb(8, 32, 50);
+  font-family: 'Poppins', monospace;
+  color: white;
+  font-size: .7em;
+  font-weight: 200;
+  letter-spacing: 1px;
+}
+
+html {
+  padding: 20px;
+  font-weight: 300;
+}
+
+main {
+    padding: 60px;
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: 100;
+}
+
+h2, h3 {
+    font-size: 1.2em;
+    margin-bottom: 29px;
+    border-bottom: 1px solid rgba(255,255,255,.2);
+    padding-bottom: 15px;
+    font-weight: 200;
+    /*text-align:center;*/
+}
+
+hr {
+    border-color: white;
+    margin-bottom: 50px;
+}
+
+figure {
+    background-color: rgba(255,255,255,.05);
+    padding: 10px 10px 30px;
+}
+
+figure p {
+    margin-bottom: 7px;
+    font-size: 1.2em;
+}
+
+canvas {
+    width: 100%;
+}
+
+/*#loading {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+*/
+
+.loading-message {
+  display: none;
+}
+
+.loading-message.active {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size:30px;
+    color:black;
+    background-color: rgba(255, 255, 255, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* grid */
+
+[class*='cols'] {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.cols-4 > * {
+    width: 25%;
+    margin: 10px
+}
+
+.cols-3 > * {
+    width: 33.33%;
+    margin: 10px
+}
+
+.cols-2 > * {
+    width:50%;
+    margin: 10px;
+}
+
+.cols-1 > * {
+    width: 100%;
+    height:auto;
+    margin: 10px
+}
+
+
+#chart6 {
+    max-height: 300px;
+}
+
+button{
+  background: rgb(230,230,230);
+  border-color: rgb(33, 152, 125);
+  font-family: 'Poppins', monospace;
+  color: black;
+  font-size: 1.1em;
+  font-weight: 300;
+  letter-spacing: 1px;
+  border-radius:3px;
+}
+
+button:hover {
+  background-color:rgb(33, 152, 125, 0.5);
+  color: white;
+    }
+
+#fecha1, #fecha2, #SpecialtySelect, #ProfessionalSelect, #ProductSelect {
+  background: rgb(200,200,200);
+  border-color: rgb(33, 152, 125);
+  font-family: 'Poppins', monospace;
+  color: black;
+  font-size: 1.1em;
+  font-weight: 300;
+  letter-spacing: 1px;
+  border-radius:3px;  
+}
+    
+
+ 

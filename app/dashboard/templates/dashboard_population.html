@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Población</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300" rel="stylesheet" />
+    <link rel="stylesheet" href="static/css/style_2.css">
+    <script src="/static/js/dashboard_population.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.min.js"></script>
+    <title>Panel de Población</title>
+</head>
+
+<body>
+    <main>
+    
+        <div class="loading-message">Procesando los Datos.....</div>
+
+
+        <h1>CAPS Humberto D'Angelo - POBLACION</h1>
+        <p>Visualización de estadísticas globales</p>
+        
+        <hr>
+        <div class="filter">
+        <label for="fecha1">Desde (>=):</label>
+        <input type="date" id="fecha1" name="fecha1">
+        <label for="fecha2">Hasta (<=):</label>
+        <input type="date" id="fecha2" name="fecha2">
+        <button onclick="Update()" type="submit">Aplicar filtro</button>
+        </div>
+        <hr>
+        <section class="cols-1">
+            <figure>
+                <p class="selected_period">Últimos 30 días</p>
+                <h3>Población que asistió al CAPS</h3>
+                <div id="canva1">
+                    <canvas id="PopulationWithAttentionsByAgeGroupsBySex"></canvas>
+                </div>
+            </figure>
+        </section>
+        <section class="cols-2">
+            <figure>
+                <p class="selected_period">Últimos 30 días</p>
+                <h3>Población atendida según Obra Social</h3>
+                <div id="canva2">
+                    <canvas id="PopulationByInsurance"></canvas>
+                </div>
+            </figure>
+
+            <figure>
+                <p class="selected_period">Últimos 30 días</p>
+                <h3>Población atendida según Sexo</h3>
+                <div id="canva3">
+                    <canvas id="PopulationBySex"></canvas>
+                </div>
+            </figure>
+        </section>
+        
+        <section class="cols-3">
+            <figure>
+                <p class="selected_period">Últimos 30 días</p>
+                <h3>Población Total</h3>
+                <h1 id="pop_total"> - </h1>
+            </figure>
+            <figure>
+                <p class="selected_period">Últimos 30 días</p>
+                <h3>Población con ECNT</h3>
+                <h1 id="pop_ecnt"> - </h1>
+            </figure>
+            <figure>
+                <p class="selected_period">Últimos 30 días</p>
+                <h3>Promedio de Turnos por Paciente</h3>
+                <h1 id="average"> - </h1>
+            </figure>
+        </section>
+        
+         <section class="cols-1">
+            <figure>
+                <p class="selected_period">Últimos 30 días</p>
+                <h3>Población por cantidad de Turnos solicitados según Sexo</h3>
+                <div id="canva4">
+                    <canvas id="PopulationByQuantityAppointmentsBySex"></canvas>
+                </div>
+            </figure>
+        </section>
+        
+        <section class="cols-4">
+             <figure>
+                <p class="selected_period">Últimos 30 días</p>
+                <h3>Promedio turnos 0-4 años</h3>
+                <h1 id="average_0_4"> - </h1>
+            </figure>
+            <figure>
+                <p class="selected_period">Últimos 30 días</p>
+                <h3>Promedio turnos 5-14 años</h3>
+                <h1 id="average_5_14"> - </h1>
+            </figure>
+             <figure>
+                <p class="selected_period">Últimos 30 días</p>
+                <h3>Promedio turnos 15-64 años</h3>
+                <h1 id="average_15_64"> - </h1>
+            </figure>
+            <figure>
+                <p class="selected_period">Últimos 30 días</p>
+                <h3>Promedio turnos + 65 años</h3>
+                <h1 id="average_65_and_more"> - </h1>
+            </figure>
+        </section>
+        
+        <section class="cols-1">
+            <figure>
+                <p class="selected_period">Últimos 30 días</p>
+                <h3>Población por Obras Sociales</h3>
+                <div id="canva5">
+                    <canvas id="PopulationByInsurancesQuantity"></canvas>
+                </div>
+            </figure>
+        </section>
+
+
+    </main>
+    
+    <footer class="footer"> 
+        {% include '/layouts/partials/footer.html' %}
+    </footer>
+
+   
+<script >
+
+ var data_1 = JSON.parse('{{ data | tojson}}');
+            
+PopulationWithAttentionsByAgeGroupsBySex(data_1, 'PopulationWithAttentionsByAgeGroupsBySex');
+PopulationByInsurance(data_1, 'PopulationByInsurance');
+PopulationBySex(data_1, 'PopulationBySex');
+TotalPopulation(data_1);
+PopulationECNT(data_1);
+PopulationByQuantityAppointmentsBySex(data_1, 'PopulationByQuantityAppointmentsBySex');
+PopulationByInsurancesQuantity(data_1,'PopulationByInsurancesQuantity')
+Average(data_1);
+Average0to4(data_1);
+Average5to14(data_1);
+Average15to64(data_1);
+Average65AndMore(data_1);
+
+</script>
+
+</body>
+
+</html>

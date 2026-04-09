@@ -1,0 +1,55 @@
+{% extends 'layouts/base.html'%}
+
+    {%block title%}
+    <title>Indice</title>
+    <link rel="icon" href="/static/images/favicon.ico">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-store">
+    {%endblock%}
+
+    {% block links %}
+    {% endblock %}
+
+    {%block body%}
+    <div class="container p-4">
+        <div class="row">
+            <div class="col">
+                <h2 class="bienvenida">Bienvenido</h2>
+            </div>
+            <div class="col text-end">
+                <h2 class="bienvenida"></h2>
+            </div>
+        </div>
+        <div class="row pt-5 pb-5 justify-content-around">
+            <div class="col-md-4 ">
+                <div class="card text-center justify-content-center" style="width: 18rem;">
+                    <img src="/static/images/appointment.svg"  style="width: 286px; height: 170px;" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <p class="card-text">Ir a turnos </p>
+                        <a href="/select_consulting_rooms" class="btn btn-success" style="margin-top:-6px !important"
+                                class=" impre btn btn-sm btn-default">Turnos / Citas</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 ">
+                <div class="card text-center justify-content-center" style="width: 18rem;">
+                    <img src="/static/images/sala_de_situacion.png" style="width: 286px; height: 170px;" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <p class="card-text">Ir a sala de situación</p>
+                        <a href="/dashboard" class="btn btn-success" style="margin-top:-6px !important" class=" impre btn btn-sm btn-default">Sala de situación</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {%endblock%}
+
+    {% block footer %}
+        {% include '/layouts/partials/footer.html' %}
+    {% endblock %}
+
+    {% block javascripts %}
+
+    {% endblock javascripts %}

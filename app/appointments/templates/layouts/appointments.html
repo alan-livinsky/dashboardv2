@@ -17,16 +17,21 @@
         :root {
             --primary: #1565c0;
             --primary-dark: #0d47a1;
-            --primary-light: #1976d2;
-            --accent: #42a5f5;
-            --bg-body: #f5f9fc;
-            --bg-white: #ffffff;
-            --bg-panel: #e3f2fd;
-            --text-primary: #0d2137;
-            --text-secondary: #546e7a;
-            --border: #bbdefb;
-            --shadow: 0 2px 12px rgba(21, 101, 192, 0.08);
-            --shadow-card: 0 4px 20px rgba(21, 101, 192, 0.1);
+            --primary-light: #42a5f5;
+            --bg-page: #f0f4f8;
+            --bg-card: #ffffff;
+            --bg-hover: #e3f2fd;
+            --text-heading: #0d2137;
+            --text-body: #37474f;
+            --text-muted: #78909c;
+            --border: #cfd8dc;
+            --border-light: #eceff1;
+            --status-waiting: #78909c;
+            --status-waiting-bg: #eceff1;
+            --status-calling: #f57c00;
+            --status-calling-bg: #fff3e0;
+            --status-attending: #2e7d32;
+            --status-attending-bg: #e8f5e9;
         }
 
         body, html {
@@ -34,9 +39,10 @@
             padding: 0;
             height: 100%;
             overflow: hidden;
-            background: var(--bg-body);
+            background: var(--bg-page);
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            color: var(--text-primary);
+            color: var(--text-body);
+            line-height: 1.5;
         }
 
         .container-table100 {
@@ -47,110 +53,219 @@
             flex-direction: column;
         }
 
+        /* ── Main Header ── */
+        .main-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: var(--primary);
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .main-header__left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-header__institution {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .main-header__sub {
+            font-size: .7rem;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        .main-header__clock {
+            font-size: 1.6rem;
+            font-weight: 300;
+            font-variant-numeric: tabular-nums;
+            background: rgba(255,255,255,0.15);
+            padding: 8px 20px;
+            border-radius: 8px;
+        }
+
+        /* ── Split Area ── */
         #pantalla-dividida {
             display: flex;
             flex: 1;
-            gap: 0;
+            gap: 1px;
             margin: 0;
             min-height: 0;
+            background: var(--border);
         }
 
-        .tabla-izquierda {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-            background: var(--bg-white);
-        }
-
+        .tabla-izquierda,
         .tabla-derecha {
-            flex: 1;
             display: flex;
             flex-direction: column;
             min-height: 0;
-            background: linear-gradient(180deg, var(--bg-body) 0%, var(--bg-white) 100%);
+            background: var(--bg-card);
         }
 
+        .tabla-izquierda { flex: 1; }
+        .tabla-derecha { flex: 1; }
+
+        /* ── Section Headers ── */
+        .section-header {
+            padding: 14px 20px;
+            background: var(--bg-card);
+            border-bottom: 2px solid var(--border-light);
+            flex-shrink: 0;
+        }
+
+        .section-header__title {
+            font-size: .8rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header__badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 22px;
+            height: 22px;
+            padding: 0 8px;
+            border-radius: 11px;
+            font-size: .7rem;
+            font-weight: 700;
+        }
+
+        .tabla-izquierda .section-header__badge {
+            background: var(--status-waiting-bg);
+            color: var(--status-waiting);
+        }
+
+        .tabla-derecha .section-header__badge {
+            background: var(--status-calling-bg);
+            color: var(--status-calling);
+        }
+
+        .tabla-derecha .section-header__indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--status-calling);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        .section-header__subtitle {
+            font-size: .65rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Scrollable Tables ── */
         .scrollable-tabla {
             flex: 1;
             overflow-y: auto;
-            margin: 0;
         }
 
         #tabla_espera, #tabla_atencion {
             width: 100%;
-            margin: 0;
             border-collapse: collapse;
-            font-size: 1rem;
         }
 
         #tabla_espera th, #tabla_atencion th {
-            padding: 14px 16px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 10px 16px;
+            text-align: left;
+            font-size: .65rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            background: var(--bg-page);
+            border-bottom: 1px solid var(--border-light);
             position: sticky;
             top: 0;
-            font-size: .7rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #ffffff;
-            border-bottom: 2px solid var(--primary-dark);
-            z-index: 1;
         }
 
         #tabla_espera td, #tabla_atencion td {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border);
-            font-size: .95rem;
-            color: var(--text-primary);
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-light);
+            font-size: .9rem;
             vertical-align: middle;
-            background: var(--bg-white);
         }
 
-        .not_calling td { color: var(--text-secondary); }
+        /* ── Row Styling ── */
+        .fila-par  { background: var(--bg-card); }
+        .fila-impar { background: var(--bg-page); }
 
-        .fila-par  { background: var(--bg-body); }
-        .fila-impar { background: var(--bg-white); }
-
-        .calling {
-            background: linear-gradient(90deg, #fff8e1 0%, #fffde7 100%) !important;
-            border-left: 5px solid #f9a825 !important;
-            animation: pulse-row 1.4s ease-in-out infinite;
-            box-shadow: 0 0 20px rgba(249, 168, 37, 0.15);
+        .not_calling:hover td {
+            background: var(--bg-hover);
         }
 
+        /* Status States */
         .calling td {
-            color: #f57f17 !important;
-            font-size: 1.4rem !important;
-            font-weight: 700 !important;
-            padding: 16px 14px !important;
-            letter-spacing: .5px;
+            background: var(--status-calling-bg) !important;
         }
 
-        .registered {
-            background: linear-gradient(90deg, #e3f2fd 0%, #e1f5fe 100%) !important;
-            border-left: 5px solid var(--primary) !important;
+        .calling .patient-name {
+            color: var(--status-calling);
+            font-weight: 700;
+            font-size: 1.1rem;
         }
 
         .registered td {
-            color: var(--primary-dark) !important;
-            font-size: 1.1rem !important;
-            font-weight: 600 !important;
-            padding: 14px 14px !important;
+            background: var(--status-attending-bg) !important;
         }
 
-        @keyframes pulse-row {
-            0%   { background: linear-gradient(90deg, #fff8e1 0%, #fffde7 100%); }
-            50%  { background: linear-gradient(90deg, #ffecb3 0%, #fff8e1 100%); }
-            100% { background: linear-gradient(90deg, #fff8e1 0%, #fffde7 100%); }
+        .registered .patient-name {
+            color: var(--status-attending);
+            font-weight: 600;
         }
 
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge--waiting {
+            background: var(--status-waiting-bg);
+            color: var(--status-waiting);
+        }
+
+        .status-badge--calling {
+            background: var(--status-calling);
+            color: white;
+        }
+
+        .status-badge--attending {
+            background: var(--status-attending);
+            color: white;
+        }
+
+        /* ── Carousel ── */
         #carousel-container {
-            height: 40%;
-            min-height: 180px;
+            height: 35%;
+            min-height: 150px;
             flex-shrink: 0;
-            border-top: 3px solid var(--primary);
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            border-top: 1px solid var(--border-light);
+            background: var(--bg-page);
         }
 
         .carousel { height: 100%; margin: 0; }
@@ -166,120 +281,39 @@
         .carousel-control-prev,
         .carousel-control-next {
             width: 4%;
-            opacity: 0.7;
+            opacity: 0.4;
         }
 
+        /* ── Footer ── */
         .footer {
             flex-shrink: 0;
-            border-top: 3px solid var(--primary);
-            background: var(--bg-white);
-            width: 100%;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-light);
         }
 
-        .main-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
-            border-bottom: none;
-            flex-shrink: 0;
-            gap: 12px;
-            width: 100%;
-            box-shadow: 0 2px 12px rgba(21, 101, 192, 0.25);
+        /* ── Scrollbar ── */
+        .scrollable-tabla::-webkit-scrollbar { width: 6px; }
+        .scrollable-tabla::-webkit-scrollbar-track { background: transparent; }
+        .scrollable-tabla::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
         }
 
-        .main-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent), #64b5f6, var(--accent));
-        }
-
-        .main-header__institution {
-            font-size: 1.15rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #ffffff;
-            margin: 0;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .main-header__sub {
-            font-size: .7rem;
-            color: rgba(255,255,255,0.8);
-            letter-spacing: 1px;
-            margin-top: 2px;
-        }
-
-        .main-header__clock {
-            font-size: 1.8rem;
-            font-weight: 300;
-            color: #ffffff;
-            letter-spacing: 3px;
-            font-variant-numeric: tabular-nums;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
-            padding: 6px 16px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .panel-header {
-            padding: 12px 20px 10px;
-            background: linear-gradient(135deg, var(--bg-panel) 0%, #e8eaf6 100%);
-            border-bottom: 1px solid var(--border);
-            flex-shrink: 0;
-            height: 5rem;
+        /* ── Patient Card Row ── */
+        .patient-info {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            box-shadow: 0 2px 8px rgba(21, 101, 192, 0.06);
+            gap: 2px;
         }
 
-        .panel-header__title {
-            font-size: .9rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--primary-dark);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .patient-name {
+            font-weight: 600;
+            color: var(--text-heading);
         }
 
-        .panel-header__title::before {
-            content: '';
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--panel-dot, var(--primary));
-            flex-shrink: 0;
-            box-shadow: 0 0 8px var(--panel-dot);
-        }
-
-        .panel-header__subtitle {
-            font-size: .65rem;
-            color: var(--text-secondary);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-top: 4px;
-            padding-left: 20px;
-        }
-
-        .panel-header--espera  { --panel-dot: var(--accent); }
-        .panel-header--atencion { --panel-dot: #f9a825; }
-
-        .scrollable-tabla::-webkit-scrollbar { width: 6px; }
-        .scrollable-tabla::-webkit-scrollbar-track { background: var(--bg-body); }
-        .scrollable-tabla::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 3px;
+        .patient-meta {
+            font-size: .75rem;
+            color: var(--text-muted);
         }
     </style>
 {% endblock %}
@@ -287,19 +321,21 @@
 {% block body %}
 <section class="container-table100">
     <div class="main-header">
-        <div>
+        <div class="main-header__left">
             <div class="main-header__institution">{{ institution }}</div>
-            <div class="main-header__sub">Sistema de llamado de turnos &mdash; Turnos del día</div>
+            <div class="main-header__sub">Sistema de llamado de turnos — Turnos del día</div>
         </div>
         <div class="main-header__clock" id="reloj"></div>
     </div>
 
     <div id="pantalla-dividida">
-        <!-- Tabla de turnos en espera -->
         <div class="tabla-izquierda">
-            <div class="panel-header panel-header--espera">
-                <div class="panel-header__title">Lista de espera</div>
-                <div class="panel-header__subtitle">Pacientes con turno confirmado aguardando ser llamados</div>
+            <div class="section-header">
+                <div class="section-header__title">
+                    <span>Pacientes en espera</span>
+                    <span class="section-header__badge" id="count-espera">0</span>
+                </div>
+                <div class="section-header__subtitle">Confirmados aguardando ser llamados</div>
             </div>
             <div class="scrollable-tabla" id="scrollable-espera">
                 <table id="tabla_espera">
@@ -317,10 +353,14 @@
                             not appointment.calling and
                             not appointment.attending %}
                             <tr class="{% if loop.index0 is even %}fila-par{% else %}fila-impar{% endif %} not_calling">
-                                <td>{{ appointment.patient.rec_name }}</td>
+                                <td>
+                                    <div class="patient-info">
+                                        <span class="patient-name">{{ appointment.patient.rec_name }}</span>
+                                    </div>
+                                </td>
                                 <td>{{ appointment.healthprof.rec_name }}</td>
                                 <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
-                                <td>En espera</td>
+                                <td><span class="status-badge status-badge--waiting">En espera</span></td>
                             </tr>
                         {% endif %}
                     {% endfor %}
@@ -329,11 +369,14 @@
             </div>
         </div>
 
-        <!-- Tabla de turnos en atención/llamados y carrusel -->
         <div class="tabla-derecha">
-            <div class="panel-header panel-header--atencion">
-                <div class="panel-header__title">Llamados y en atención</div>
-                <div class="panel-header__subtitle">Diríjase al consultorio indicado cuando su nombre aparezca resaltado</div>
+            <div class="section-header">
+                <div class="section-header__title">
+                    <span class="section-header__indicator"></span>
+                    <span>Llamados y en atención</span>
+                    <span class="section-header__badge" id="count-atencion">0</span>
+                </div>
+                <div class="section-header__subtitle">Diríjase al consultorio indicado cuando su nombre aparezca</div>
             </div>
             <div class="scrollable-tabla">
                 <table id="tabla_atencion">
@@ -352,17 +395,17 @@
                                 <source src="../static/multimedia/timbre.ogg" type="audio/ogg">
                             </audio>
                             <tr class='calling'>
-                                <td>{{ appointment.patient.rec_name }}</td>
+                                <td><span class="patient-name">{{ appointment.patient.rec_name }}</span></td>
                                 <td>{{ appointment.healthprof.rec_name }}</td>
                                 <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
-                                <td>Llamando</td>
+                                <td><span class="status-badge status-badge--calling">Llamando</span></td>
                             </tr>
                         {% elif appointment.attending %}
                             <tr class='registered'>
-                                <td>{{ appointment.patient.rec_name }}</td>
+                                <td><span class="patient-name">{{ appointment.patient.rec_name }}</span></td>
                                 <td>{{ appointment.healthprof.rec_name }}</td>
                                 <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
-                                <td>En atención</td>
+                                <td><span class="status-badge status-badge--attending">En atención</span></td>
                             </tr>
                         {% endif %}
                     {% endfor %}
@@ -384,7 +427,6 @@
 
 {% block javascripts %}
 <script>
-// Live clock
 (function() {
     function tick() {
         const el = document.getElementById('reloj');
@@ -396,13 +438,18 @@
     setInterval(tick, 1000);
 })();
 
-console.log('comenzando ejecución de scripts')
+function updateCounts() {
+    const esperaCount = document.querySelectorAll('#tabla_espera tbody tr').length;
+    const atencionCount = document.querySelectorAll('#tabla_atencion tbody tr').length;
+    const countEspera = document.getElementById('count-espera');
+    const countAtencion = document.getElementById('count-atencion');
+    if (countEspera) countEspera.textContent = esperaCount;
+    if (countAtencion) countAtencion.textContent = atencionCount;
+}
 
 document.addEventListener('DOMContentLoaded', function () {
+    updateCounts();
 
-    /////////////////////////////////////////////////////////////
-    // 🔹 Inicialización del carrusel
-    /////////////////////////////////////////////////////////////
     var carousel = $('#imageCarousel');
     var currentCarouselHash = carousel.data('hash') || null;
     var timeoutId;
@@ -421,17 +468,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function inicializarCarrusel() {
         carousel.carousel({ interval: false });
-
         $('.carousel-control-prev, .carousel-control-next').off('click').on('click', function () {
             clearTimeout(timeoutId);
             startTimer();
         });
-
         $('#imageCarousel').off('slid.bs.carousel').on('slid.bs.carousel', function () {
             clearTimeout(timeoutId);
             startTimer();
         });
-
         if ($('.carousel-item').length > 1) {
             startTimer();
         }
@@ -441,9 +485,6 @@ document.addEventListener('DOMContentLoaded', function () {
         inicializarCarrusel();
     }
 
-    /////////////////////////////////////////////////////////////
-    // 🔹 Actualización de tablas de turnos
-    /////////////////////////////////////////////////////////////
     function actualizarTabla() {
         const params = new URLSearchParams(window.location.search);
         const baseUrl = "{{ url_for('appointments_blueprint.tabla_turnos') }}";
@@ -466,47 +507,29 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (tablaAtencion && nuevaTablaAtencion) {
                     tablaAtencion.innerHTML = nuevaTablaAtencion.innerHTML;
                 }
+                updateCounts();
             })
             .catch(error => console.error("Error actualizando tabla:", error));
     }
 
-    /////////////////////////////////////////////////////////////
-    // 🔹 SCROLL BIDIRECCIONAL MEJORADO (velocidad original)
-    /////////////////////////////////////////////////////////////
     let scrollDirection = 1;
     let scrollInterval;
 
     function iniciarScrollBidireccional() {
         const scrollDiv = document.getElementById('scrollable-espera');
         if (!scrollDiv) return;
-
-        if (scrollInterval) {
-            clearInterval(scrollInterval);
-        }
+        if (scrollInterval) clearInterval(scrollInterval);
 
         scrollInterval = setInterval(() => {
             if (!scrollDiv) return;
-
             const maxScroll = scrollDiv.scrollHeight - scrollDiv.clientHeight;
-
-            if (maxScroll <= 0) {
-                return;
-            }
-
-            if (scrollDiv.scrollTop >= maxScroll - 1) {
-                scrollDirection = -1;
-            } else if (scrollDiv.scrollTop <= 1) {
-                scrollDirection = 1;
-            }
-
+            if (maxScroll <= 0) return;
+            if (scrollDiv.scrollTop >= maxScroll - 1) scrollDirection = -1;
+            else if (scrollDiv.scrollTop <= 1) scrollDirection = 1;
             scrollDiv.scrollTop += scrollDirection;
-
         }, 100);
     }
 
-    /////////////////////////////////////////////////////////////
-    // 🔹 Actualización del carrusel (solo si cambia el hash)
-    /////////////////////////////////////////////////////////////
     function actualizarCarrusel() {
         const baseUrl = "{{ url_for('appointments_blueprint.carousel_images') }}";
         fetch(baseUrl)
@@ -514,14 +537,10 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(html => {
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = html;
-
                 const nuevoCarrusel = tempDiv.querySelector('#imageCarousel');
                 const nuevoHash = nuevoCarrusel ? nuevoCarrusel.dataset.hash : null;
-
                 if (nuevoHash && nuevoHash !== currentCarouselHash) {
                     currentCarouselHash = nuevoHash;
-                    console.log("Cambio detectado en imágenes, actualizando carrusel...");
-
                     const contenedor = document.querySelector('#carousel-container');
                     if (contenedor && nuevoCarrusel) {
                         contenedor.innerHTML = nuevoCarrusel.outerHTML;
@@ -533,17 +552,12 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error("Error actualizando carrusel:", error));
     }
 
-    /////////////////////////////////////////////////////////////
-    // 🔹 EVITAR SUPERPOSICIÓN
-    /////////////////////////////////////////////////////////////
     function verificarSuperposicion() {
         const carruselContainer = document.querySelector('#carousel-container');
         const footer = document.querySelector('.footer');
-
         if (carruselContainer && footer) {
             const carruselRect = carruselContainer.getBoundingClientRect();
             const footerRect = footer.getBoundingClientRect();
-
             if (carruselRect.bottom > footerRect.top) {
                 const nuevaAltura = carruselContainer.offsetHeight - (carruselRect.bottom - footerRect.top) - 10;
                 if (nuevaAltura > 150) {
@@ -553,9 +567,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    /////////////////////////////////////////////////////////////
-    // 🔹 Intervalos de actualización
-    /////////////////////////////////////////////////////////////
     setInterval(actualizarTabla, 5000);
     setInterval(actualizarCarrusel, 10000);
     setInterval(verificarSuperposicion, 2000);

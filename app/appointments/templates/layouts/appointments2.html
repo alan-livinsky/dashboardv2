@@ -13,15 +13,17 @@
             :root {
                 --primary: #1565c0;
                 --primary-dark: #0d47a1;
-                --primary-light: #1976d2;
-                --accent: #42a5f5;
-                --bg-body: #f5f9fc;
-                --bg-white: #ffffff;
-                --bg-panel: #e3f2fd;
-                --text-primary: #0d2137;
-                --text-secondary: #546e7a;
-                --border: #bbdefb;
-                --shadow: 0 2px 12px rgba(21, 101, 192, 0.08);
+                --bg-page: #f0f4f8;
+                --bg-card: #ffffff;
+                --text-heading: #0d2137;
+                --text-body: #37474f;
+                --text-muted: #78909c;
+                --border: #cfd8dc;
+                --border-light: #eceff1;
+                --status-calling-bg: #fff3e0;
+                --status-calling: #f57c00;
+                --status-attending-bg: #e8f5e9;
+                --status-attending: #2e7d32;
             }
 
             * { box-sizing: border-box; }
@@ -29,14 +31,14 @@
             body {
                 margin: 0;
                 padding: 0;
-                background: linear-gradient(135deg, var(--bg-body) 0%, #e3f2fd 100%);
+                background: var(--bg-page);
                 font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-                color: var(--text-primary);
+                color: var(--text-body);
                 min-height: 100vh;
             }
 
             .container-table100 {
-                padding: 30px 40px;
+                padding: 24px;
                 min-height: 100vh;
                 display: flex;
                 flex-direction: column;
@@ -44,50 +46,47 @@
 
             .page-header {
                 text-align: center;
-                margin-bottom: 30px;
+                margin-bottom: 24px;
                 padding: 20px;
-                background: var(--bg-white);
-                border-radius: 12px;
-                box-shadow: var(--shadow);
-                border: 1px solid var(--border);
+                background: var(--bg-card);
+                border-radius: 10px;
+                border: 1px solid var(--border-light);
             }
 
             .page-header h2 {
-                font-size: 1.4em;
+                font-size: 1.2em;
                 font-weight: 600;
                 color: var(--primary-dark);
-                margin: 0 0 10px;
-                letter-spacing: 1px;
+                margin: 0 0 8px;
             }
 
             .page-header .subtitle {
-                font-size: 1em;
-                color: var(--text-secondary);
-                letter-spacing: 0.5px;
+                font-size: .9em;
+                color: var(--text-muted);
             }
 
             .main-content {
                 display: flex;
-                gap: 30px;
+                gap: 24px;
                 flex: 1;
             }
 
             .izquierda {
                 flex: 2;
-                background: var(--bg-white);
-                border-radius: 12px;
-                box-shadow: var(--shadow);
-                border: 1px solid var(--border);
+                background: var(--bg-card);
+                border-radius: 10px;
+                border: 1px solid var(--border-light);
                 overflow: hidden;
             }
 
             .izquierda h4 {
                 margin: 0;
-                padding: 15px 20px;
-                background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+                padding: 12px 18px;
+                background: var(--primary);
                 color: white;
-                font-size: 1em;
+                font-size: .85em;
                 letter-spacing: 1px;
+                text-transform: uppercase;
             }
 
             #tabla_turnos {
@@ -96,62 +95,50 @@
             }
 
             #tabla_turnos th {
-                padding: 12px 16px;
-                background: var(--bg-panel);
-                font-size: 0.75rem;
-                font-weight: 700;
-                letter-spacing: 2px;
-                text-transform: uppercase;
-                color: var(--primary-dark);
-                border-bottom: 2px solid var(--border);
+                padding: 10px 14px;
                 text-align: left;
+                font-size: .65rem;
+                font-weight: 700;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
+                color: var(--text-muted);
+                background: var(--bg-page);
+                border-bottom: 1px solid var(--border-light);
             }
 
             #tabla_turnos td {
-                padding: 12px 16px;
-                border-bottom: 1px solid var(--border);
-                font-size: 0.95rem;
-                color: var(--text-primary);
+                padding: 12px 14px;
+                border-bottom: 1px solid var(--border-light);
+                font-size: .9rem;
             }
 
             .calling {
-                background: linear-gradient(90deg, #fff8e1 0%, #fffde7 100%) !important;
-                border-left: 5px solid #f9a825 !important;
-                animation: pulse-row 1.4s ease-in-out infinite;
+                background: var(--status-calling-bg) !important;
             }
 
             .calling td {
-                color: #f57f17 !important;
-                font-size: 1.1rem !important;
+                color: var(--status-calling) !important;
                 font-weight: 700 !important;
             }
 
             .in_atention {
-                background: linear-gradient(90deg, #e3f2fd 0%, #e1f5fe 100%) !important;
-                border-left: 5px solid var(--primary) !important;
+                background: var(--status-attending-bg) !important;
             }
 
             .in_atention td {
-                color: var(--primary-dark) !important;
+                color: var(--status-attending) !important;
                 font-weight: 600 !important;
-            }
-
-            @keyframes pulse-row {
-                0%   { background: linear-gradient(90deg, #fff8e1 0%, #fffde7 100%); }
-                50%  { background: linear-gradient(90deg, #ffecb3 0%, #fff8e1 100%); }
-                100% { background: linear-gradient(90deg, #fff8e1 0%, #fffde7 100%); }
             }
 
             .images {
                 flex: 1;
-                background: var(--bg-white);
-                border-radius: 12px;
-                box-shadow: var(--shadow);
-                border: 1px solid var(--border);
+                background: var(--bg-card);
+                border-radius: 10px;
+                border: 1px solid var(--border-light);
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                min-height: 400px;
+                min-height: 300px;
             }
 
             #myimage {
@@ -161,31 +148,28 @@
             }
 
             .footer {
-                margin-top: 30px;
-                padding: 20px;
-                background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-                border-radius: 12px;
+                margin-top: 24px;
+                padding: 16px;
+                background: var(--primary);
+                border-radius: 8px;
                 text-align: center;
                 color: white;
             }
 
             .footer p {
-                margin: 0 0 10px;
-                font-size: 0.85em;
-                letter-spacing: 0.5px;
+                margin: 0 0 8px;
+                font-size: .8em;
             }
 
             .footer .a {
                 color: rgba(255,255,255,0.9);
                 text-decoration: none;
-                margin: 0 15px;
-                font-size: 0.85em;
-                transition: color 0.2s;
+                margin: 0 12px;
+                font-size: .8em;
             }
 
             .footer .a:hover {
                 color: white;
-                text-decoration: underline;
             }
 
             @media (max-width: 900px) {
@@ -203,7 +187,7 @@
 
         <section class="container-table100">
             <div class="page-header">
-                <h2>LISTA DE ATENCIÓN - {{ organization }}</h2>
+                <h2>LISTA DE ATENCIÓN — {{ organization }}</h2>
                 <p class="subtitle">Hoy {{ today }} otorgamos {{ total }} turnos</p>
             </div>
 
@@ -223,16 +207,16 @@
                                 <source src="../static/multimedia/timbre.ogg" type="audio/ogg">
                             </audio>
                             <tr class='calling'>
-                            <td> {{ appointment.get('patient') }}</td>
-                            <td> {{ appointment.get('professional') }}</td>
-                            <td> {{ appointment.get('specialty') }}</td>
-                            <td> {{ 'Llamando' }}</td>
+                            <td>{{ appointment.get('patient') }}</td>
+                            <td>{{ appointment.get('professional') }}</td>
+                            <td>{{ appointment.get('specialty') }}</td>
+                            <td>Llamando</td>
                             {% elif appointment.get('state') == 'in_atention'%}
                             <tr class='in_atention'>
-                            <td> {{ appointment.get('patient') }}</td>
-                            <td> {{ appointment.get('professional') }}</td>
-                            <td> {{ appointment.get('specialty') }}</td>
-                            <td> {{ 'En atención' }}</td>
+                            <td>{{ appointment.get('patient') }}</td>
+                            <td>{{ appointment.get('professional') }}</td>
+                            <td>{{ appointment.get('specialty') }}</td>
+                            <td>En atención</td>
                             {% endif %}
                             </tr>
                         {% endfor %}
@@ -246,7 +230,7 @@
             <footer class="footer"> 
                 <p>Desarrollado por el GESPyTA de la FI-UNER para uso en GNUHealth</p>
                 <a href="http://ingenieria.uner.edu.ar/grupos/salud_publica/" target="_blank" class="a">¿Quienes somos?</a>
-                <a href="https://gitlab.com/gnuhealth_fiuner" target="_blank" class="a">Nuestro Repositorio</a>
+                <a href="https://gitlab.com/gnuhealth_fiuner" target="_blank" class="a">Repositorio</a>
                 <a href="mailto:saludpublica@ingenieria.uner.edu.ar" target="_blank" class="a">Contacto</a>
             </footer>
         </section>
@@ -266,4 +250,4 @@
                 setTimeout("actualizar()",10000);
             }
         </script>
-    {%endblock %}
+    {%endblock}

@@ -13,10 +13,10 @@
                             not appointment.attending %}
         <tbody>
             <tr class="{% if loop.index0 is even %}fila-par{% else %}fila-impar{% endif %} not_calling">
-               <td>{{ appointment.patient.rec_name }}</td>
+               <td><span class="patient-name">{{ appointment.patient.rec_name }}</span></td>
                 <td>{{ appointment.healthprof.rec_name }}</td>
                 <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
-                <td>En espera</td>
+                <td><span class="status-badge status-badge--waiting">En espera</span></td>
             </tr>
         </tbody>
         {% endif %}
@@ -39,17 +39,17 @@
             <source src="../static/multimedia/timbre.ogg" type="audio/ogg">
         </audio>
         <tr class='calling'>
-            <td>{{ appointment.patient.rec_name }}</td>
+            <td><span class="patient-name">{{ appointment.patient.rec_name }}</span></td>
             <td>{{ appointment.healthprof.rec_name }}</td>
             <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
-            <td>Llamando</td>
+            <td><span class="status-badge status-badge--calling">Llamando</span></td>
         </tr>
         {% elif appointment.attending %}
         <tr class='registered'>
-            <td>{{ appointment.patient.rec_name }}</td>
+            <td><span class="patient-name">{{ appointment.patient.rec_name }}</span></td>
             <td>{{ appointment.healthprof.rec_name }}</td>
             <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
-            <td>En atención</td>
+            <td><span class="status-badge status-badge--attending">En atención</span></td>
         </tr>
         {% endif %}
     </tbody>

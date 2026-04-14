@@ -16,25 +16,23 @@
         :root {
             --primary: #1565c0;
             --primary-dark: #0d47a1;
-            --primary-light: #1976d2;
-            --accent: #42a5f5;
-            --bg-body: #f5f9fc;
-            --bg-white: #ffffff;
-            --bg-panel: #e3f2fd;
-            --text-primary: #0d2137;
-            --text-secondary: #546e7a;
-            --border: #bbdefb;
-            --shadow: 0 2px 12px rgba(21, 101, 192, 0.08);
-            --shadow-card: 0 4px 20px rgba(21, 101, 192, 0.12);
+            --bg-page: #f0f4f8;
+            --bg-card: #ffffff;
+            --bg-hover: #e3f2fd;
+            --text-heading: #0d2137;
+            --text-body: #37474f;
+            --text-muted: #78909c;
+            --border: #cfd8dc;
+            --border-light: #eceff1;
         }
 
         body, html {
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            background: linear-gradient(135deg, var(--bg-body) 0%, #e3f2fd 100%);
+            background: var(--bg-page);
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            color: var(--text-primary);
+            color: var(--text-body);
         }
 
         .page-wrapper {
@@ -47,138 +45,117 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+            padding: 16px 24px;
+            background: var(--primary);
+            color: white;
             flex-shrink: 0;
-            gap: 12px;
-            box-shadow: 0 2px 12px rgba(21, 101, 192, 0.25);
-            position: relative;
         }
 
-        .main-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent), #64b5f6, var(--accent));
+        .main-header__left {
+            display: flex;
+            flex-direction: column;
         }
 
         .main-header__institution {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            color: #ffffff;
-            margin: 0;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
         .main-header__sub {
             font-size: .7rem;
-            color: rgba(255,255,255,0.8);
-            letter-spacing: 1px;
+            opacity: 0.8;
             margin-top: 2px;
         }
 
         .main-header__clock {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 300;
-            color: #ffffff;
-            letter-spacing: 3px;
             font-variant-numeric: tabular-nums;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
-            padding: 6px 16px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.15);
+            padding: 8px 20px;
             border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.2);
         }
 
         .content {
             flex: 1;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
-            padding: 40px 20px;
+            padding: 40px 24px;
         }
 
         .card-select {
-            background: var(--bg-white);
+            background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 36px 40px;
+            border-radius: 12px;
+            padding: 28px 32px;
             width: 100%;
-            max-width: 800px;
-            box-shadow: var(--shadow-card);
+            max-width: 700px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
 
-        .card-select__legend {
+        .card-select__header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        .card-select__title {
             font-size: .75rem;
             font-weight: 700;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--primary-dark);
-            margin-bottom: 28px;
-            border-bottom: 3px solid var(--primary);
-            padding-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            color: var(--text-heading);
+            margin: 0 0 6px;
         }
 
-        .card-select__legend::before {
-            content: '';
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            background: var(--accent);
-            border-radius: 3px;
+        .card-select__subtitle {
+            font-size: .8rem;
+            color: var(--text-muted);
+            margin: 0;
         }
 
         .room-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            margin-bottom: 32px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 28px;
         }
 
         .room-item {
-            flex: 1 0 calc(33% - 14px);
-            min-width: 200px;
+            margin: 0;
         }
 
         .room-label {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 14px 18px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, var(--bg-panel) 0%, var(--bg-white) 100%);
-            border: 2px solid var(--border);
+            padding: 14px 16px;
+            border-radius: 8px;
+            background: var(--bg-page);
+            border: 1px solid var(--border-light);
             cursor: pointer;
-            transition: all .2s ease;
-            font-size: .95rem;
-            color: var(--text-primary);
+            transition: all .15s ease;
+            font-size: .9rem;
+            color: var(--text-body);
             user-select: none;
-            font-weight: 500;
         }
 
         .room-label:hover {
-            background: linear-gradient(135deg, #bbdefb 0%, #e3f2fd 100%);
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(21, 101, 192, 0.15);
+            background: var(--bg-hover);
+            border-color: var(--primary);
         }
 
         .room-label input[type="checkbox"] {
             appearance: none;
             -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 5px;
-            border: 2px solid var(--accent);
-            background: var(--bg-white);
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 2px solid var(--border);
+            background: var(--bg-card);
             flex-shrink: 0;
             cursor: pointer;
             transition: all .15s ease;
@@ -186,49 +163,65 @@
         }
 
         .room-label input[type="checkbox"]:checked {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            border-color: var(--primary-dark);
+            background: var(--primary);
+            border-color: var(--primary);
         }
 
         .room-label input[type="checkbox"]:checked::after {
             content: '';
             position: absolute;
             top: 2px;
-            left: 6px;
-            width: 6px;
-            height: 11px;
-            border: 2.5px solid #ffffff;
+            left: 5px;
+            width: 5px;
+            height: 9px;
+            border: 2px solid white;
             border-top: none;
             border-left: none;
             transform: rotate(45deg);
         }
 
+        .room-name {
+            font-weight: 500;
+        }
+
         .btn-submit {
-            display: inline-block;
-            padding: 14px 40px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: #ffffff;
-            font-weight: 700;
-            font-size: .95rem;
-            letter-spacing: 2px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 32px;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            font-size: .85rem;
+            letter-spacing: 1px;
             text-transform: uppercase;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all .2s ease;
-            box-shadow: 0 4px 15px rgba(21, 101, 192, 0.3);
+            transition: all .15s ease;
         }
 
         .btn-submit:hover {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(21, 101, 192, 0.4);
+            background: var(--primary-dark);
+        }
+
+        .btn-submit::before {
+            content: '→';
+            font-size: 1.1rem;
         }
 
         .footer {
             flex-shrink: 0;
-            border-top: 3px solid var(--primary);
-            background: var(--bg-white);
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-light);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-muted);
+            font-size: .9rem;
         }
     </style>
 {% endblock %}
@@ -236,16 +229,19 @@
 {% block body %}
 <div class="page-wrapper">
     <div class="main-header">
-        <div>
+        <div class="main-header__left">
             <div class="main-header__institution">{{ institution }}</div>
-            <div class="main-header__sub">Sistema de llamado de turnos &mdash; {{ today }}</div>
+            <div class="main-header__sub">Sistema de llamado de turnos — {{ today }}</div>
         </div>
         <div class="main-header__clock" id="reloj"></div>
     </div>
 
     <div class="content">
         <div class="card-select">
-            <div class="card-select__legend">Seleccione los consultorios para visualizar sus turnos</div>
+            <div class="card-select__header">
+                <h2 class="card-select__title">Seleccionar Consultorios</h2>
+                <p class="card-select__subtitle">Elija los consultorios que desea visualizar para el día de hoy</p>
+            </div>
 
             <form id="consulting_room-form" onsubmit="return redirectToTurnos()">
                 <div class="room-grid">
@@ -254,12 +250,14 @@
                         <div class="room-item">
                             <label class="room-label">
                                 <input type="checkbox" name="cr" value="{{ cr['id'] }}" checked>
-                                {{ cr['name'] }}
+                                <span class="room-name">{{ cr['name'] }}</span>
                             </label>
                         </div>
                         {% endfor %}
                     {% else %}
-                        <p style="color: #64748b; font-size:.88rem;">No hay consultorios con turnos para hoy.</p>
+                        <div class="empty-state">
+                            No hay consultorios con turnos para hoy.
+                        </div>
                     {% endif %}
                 </div>
                 <button type="submit" class="btn-submit">Ver turnos</button>

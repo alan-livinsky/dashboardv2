@@ -9,6 +9,202 @@
     <link rel="stylesheet" href="static/css/style_2.css">
     <script src="/static/js/dashboard_appointments.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.min.js"></script>
+    <style>
+        :root {
+            --primary: #1565c0;
+            --primary-dark: #0d47a1;
+            --bg-page: #f0f4f8;
+            --bg-card: #ffffff;
+            --bg-hover: #e3f2fd;
+            --text-heading: #0d2137;
+            --text-body: #37474f;
+            --text-muted: #78909c;
+            --border: #cfd8dc;
+            --border-light: #eceff1;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background: var(--bg-page);
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-body);
+            font-size: .85em;
+            font-weight: 400;
+            margin: 0;
+            padding: 0;
+        }
+
+        main {
+            padding: 32px 40px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .page-title h1 {
+            font-size: 1.8em;
+            font-weight: 300;
+            color: var(--primary-dark);
+            letter-spacing: 2px;
+            margin: 0 0 8px;
+            text-transform: uppercase;
+        }
+
+        .page-title p {
+            font-size: .9em;
+            color: var(--text-muted);
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-light);
+            margin: 24px 0;
+        }
+
+        .filter {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 24px;
+            background: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+            margin-bottom: 24px;
+        }
+
+        .filter label {
+            font-size: .8em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .filter input[type="date"],
+        .filter select {
+            padding: 8px 14px;
+            background: var(--bg-page);
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: .85em;
+            border-radius: 6px;
+            color: var(--text-body);
+        }
+
+        .filter input:focus,
+        .filter select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .button {
+            padding: 10px 24px;
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: .8em;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: background .15s;
+        }
+
+        .button:hover {
+            background: var(--primary-dark);
+        }
+
+        section {
+            margin-bottom: 28px;
+        }
+
+        [class*='cols'] {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .cols-4 > * { flex: 1; min-width: calc(25% - 20px); }
+        .cols-3 > * { flex: 1; min-width: calc(33.33% - 20px); }
+        .cols-2 > * { flex: 1; min-width: calc(50% - 20px); }
+        .cols-1 > * { flex: 1; min-width: 100%; }
+
+        figure {
+            background: var(--bg-card);
+            padding: 16px 14px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+            margin: 0;
+        }
+
+        figure p {
+            margin: 0 0 6px;
+            font-size: .7em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        figure h3 {
+            margin: 0 0 12px;
+            font-size: .85em;
+            font-weight: 600;
+            color: var(--text-heading);
+            border: none;
+            padding: 0;
+        }
+
+        figure h1 {
+            font-size: 2em;
+            font-weight: 300;
+            color: var(--primary);
+            margin: 8px 0 0;
+        }
+
+        canvas {
+            width: 100% !important;
+        }
+
+        .footer {
+            background: var(--primary);
+            padding: 20px;
+            color: rgba(255,255,255,0.9);
+            text-align: center;
+            font-size: .8em;
+            margin-top: 32px;
+        }
+
+        .loading-message {
+            display: none;
+        }
+
+        .loading-message.active {
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 18px;
+            color: var(--primary-dark);
+            background: rgba(255,255,255,0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            letter-spacing: 2px;
+        }
+    </style>
 </head>
 
 <body>
@@ -16,11 +212,12 @@
         <div class="loading-message">Procesando los Datos...</div>
 
         <div class="page-title">
-            <h1>CAPS Humberto D'Angelo - Estadísticas de Turnos</h1>
+            <h1>CAPS Humberto D'Angelo — Estadísticas</h1>
             <p>Panel de visualización de datos asistenciales</p>
         </div>
-        
+
         <hr>
+
         <div class="filter">
             <label for="fecha1">Desde:</label>
             <input type="date" id="fecha1" name="fecha1">
@@ -35,133 +232,113 @@
 
         <section class="cols-1">
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Turnos según Especialidad y Sexo del Paciente</h3>
-                <div id="canva1">
-                    <canvas id="AppointmentsBySpecialtyBySex"></canvas>
-                </div>
+                <div id="canva1"><canvas id="AppointmentsBySpecialtyBySex"></canvas></div>
             </figure>
         </section>
 
         <section class="cols-2">
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Turnos según Día de la Semana</h3>
-                <div id="canva2">
-                    <canvas id="AppointmentsByDays"></canvas>
-                </div>
+                <div id="canva2"><canvas id="AppointmentsByDays"></canvas></div>
             </figure>
-
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Turnos según Sexo del Paciente</h3>
-                <div id="canva3">
-                    <canvas id="AppointmentsBySex"></canvas>
-                </div>
+                <div id="canva3"><canvas id="AppointmentsBySex"></canvas></div>
             </figure>
         </section>
-        
+
         <section class="cols-1">
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Turnos según Profesionales y Sexo</h3>
-                <div id="canva4">
-                    <canvas id="AppointmentsByProfessionalBySex"></canvas>
-                </div>
+                <div id="canva4"><canvas id="AppointmentsByProfessionalBySex"></canvas></div>
             </figure>
         </section>
-        
+
         <section class="cols-1">
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Turnos según Grupos Etarios</h3>
-                <div id="canva5">
-                    <canvas id="AppointmentsByAgeGroups"></canvas>
-                </div>
+                <div id="canva5"><canvas id="AppointmentsByAgeGroups"></canvas></div>
             </figure>
         </section>
-        
+
         <section class="cols-4">
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Turnos Totales</h3>
                 <h1 id="app_total">-</h1>
             </figure>
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Turnos ECNT</h3>
                 <h1 id="app_ecnt">-</h1>
             </figure>
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Turnos Ausentes</h3>
                 <h1 id="app_absent">-</h1>
             </figure>
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>% Ausentismo</h3>
                 <h1 id="app_absenteeism">-</h1>
             </figure>
         </section>
-        
+
         <section class="cols-3">
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Turnos según Categoría</h3>
-                <div id="canva6">
-                    <canvas id="AppointmentsByCategory"></canvas>
-                </div>
+                <div id="canva6"><canvas id="AppointmentsByCategory"></canvas></div>
             </figure>
-
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Turnos según Tipo de Visita</h3>
-                <div id="canva7">
-                    <canvas id="AppointmentsByVisitType"></canvas>
-                </div>
+                <div id="canva7"><canvas id="AppointmentsByVisitType"></canvas></div>
             </figure>
-            
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Turnos según Obra Social</h3>
-                <div id="canva8">
-                    <canvas id="AppointmentsByInsurance"></canvas>
-                </div>
+                <div id="canva8"><canvas id="AppointmentsByInsurance"></canvas></div>
             </figure>
         </section>
-        
+
         <section class="cols-4">
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Controles de Menor Sano</h3>
                 <h1 id="well_child">-</h1>
             </figure>
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>% Menor Sano / Total</h3>
                 <h1 id="%_well_child_respect_total">-</h1>
             </figure>
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Turnos Programados</h3>
                 <h1 id="app_programmed">-</h1>
             </figure>
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>% Programados / Total</h3>
                 <h1 id="%_app_programmed">-</h1>
             </figure>
         </section>
-        
+
         <section class="cols-2">
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>% Menor Sano / Pediatría</h3>
                 <h1 id="%_well_child_respect_ped">-</h1>
             </figure>
-
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Captaciones Activas</h3>
                 <h1 id="active_uptake">-</h1>
             </figure>
@@ -169,61 +346,52 @@
 
         <section class="cols-2">
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Turnos Pediátricos</h3>
                 <h1 id="app_pediatrics">-</h1>
             </figure>
-
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Turnos Adultos</h3>
                 <h1 id="app_adults">-</h1>
             </figure>
         </section>
-        
+
         <section class="cols-1">
             <figure>
-                <p class="selected_period">Período seleccionado</p>
+                <p>Período seleccionado</p>
                 <h3>Turnos y Obras Sociales</h3>
-                <div id="canva9">
-                    <canvas id="AppointmentsByInsurancesQuantity"></canvas>
-                </div>
+                <div id="canva9"><canvas id="AppointmentsByInsurancesQuantity"></canvas></div>
             </figure>
         </section>
-
     </main>
-    
-    <footer class="footer"> 
-        CAPS Humberto D'Angelo - Sistema de Gestión de Turnos
-    </footer>
 
-<script>
- var data_1 = JSON.parse('{{ data | tojson}}');
-            
- SpecialtySelect(data_1);
- AppointmentsByDays(data_1, 'AppointmentsByDays');
- AppointmentsBySex(data_1, 'AppointmentsBySex');
- AppointmentsByVisitType(data_1, 'AppointmentsByVisitType');
- AppointmentsByCategory(data_1, 'AppointmentsByCategory');
- AppointmentsByAgeGroups(data_1, 'AppointmentsByAgeGroups');
- AppointmentsBySpecialtyBySex(data_1, 'AppointmentsBySpecialtyBySex');
- AppointmentsByProfessionalBySex(data_1, 'AppointmentsByProfessionalBySex');
- AppointmentsByInsurance(data_1, 'AppointmentsByInsurance');
- AppointmentsByInsurancesQuantity(data_1,'AppointmentsByInsurancesQuantity');
- TotalAppointments(data_1);
- AbsentAppointments(data_1);
- AppointmentsAbsenteeism(data_1);
- AppointmentsECNT(data_1);
- WellChild(data_1);
- PercentWellChildRespectTotal(data_1);
- PercentWellChildRespectPed(data_1);
- ActiveUptake(data_1);
- ProgramedAppointments(data_1);
- PercentProgrammedAppointments(data_1);
- PediatricsAppointments(data_1);
- AdultsAppointments(data_1);
-</script>
+    <footer class="footer">CAPS Humberto D'Angelo — Sistema de Gestión de Turnos</footer>
 
+    <script>
+        var data_1 = JSON.parse('{{ data | tojson}}');
+        SpecialtySelect(data_1);
+        AppointmentsByDays(data_1, 'AppointmentsByDays');
+        AppointmentsBySex(data_1, 'AppointmentsBySex');
+        AppointmentsByVisitType(data_1, 'AppointmentsByVisitType');
+        AppointmentsByCategory(data_1, 'AppointmentsByCategory');
+        AppointmentsByAgeGroups(data_1, 'AppointmentsByAgeGroups');
+        AppointmentsBySpecialtyBySex(data_1, 'AppointmentsBySpecialtyBySex');
+        AppointmentsByProfessionalBySex(data_1, 'AppointmentsByProfessionalBySex');
+        AppointmentsByInsurance(data_1, 'AppointmentsByInsurance');
+        AppointmentsByInsurancesQuantity(data_1,'AppointmentsByInsurancesQuantity');
+        TotalAppointments(data_1);
+        AbsentAppointments(data_1);
+        AppointmentsAbsenteeism(data_1);
+        AppointmentsECNT(data_1);
+        WellChild(data_1);
+        PercentWellChildRespectTotal(data_1);
+        PercentWellChildRespectPed(data_1);
+        ActiveUptake(data_1);
+        ProgramedAppointments(data_1);
+        PercentProgrammedAppointments(data_1);
+        PediatricsAppointments(data_1);
+        AdultsAppointments(data_1);
+    </script>
 </body>
-
 </html>

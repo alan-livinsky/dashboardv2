@@ -137,6 +137,7 @@
             border-radius: 12px;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
             overflow: hidden;
+            height:100%;
         }
 
         /* ── Section headers ── */
@@ -325,22 +326,6 @@
             font-size: 0.95rem;
         }
 
-        /* ── Carousel ── */
-        #carousel-container {
-            height: 35%;
-            min-height: 140px;
-            flex-shrink: 0;
-            border-top: 1px solid var(--border-light);
-            background: var(--bg-page);
-        }
-
-        .carousel        { height: 100%; margin: 0; }
-        .carousel-inner  { height: 100%; }
-        .carousel-item   { height: 100%; }
-        .carousel-inner img { width: 100%; height: 100%; object-fit: contain; }
-        .carousel-control-prev, .carousel-control-next { width: 5%; opacity: 0.3; background: rgba(0,0,0,0.02); }
-        .carousel-control-prev:hover, .carousel-control-next:hover { opacity: 0.5; }
-
         /* ── Stats bar ── */
         .stats-bar {
             display: flex;
@@ -494,15 +479,6 @@
                 </div>
             </div>
             <div class="scrollable-tabla" id="scrollable-espera">
-                <div class="empty-state" id="empty-espera">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="9" cy="7" r="4"></circle>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    <p>Sin pacientes en espera</p>
-                </div>
                 <table id="tabla_espera">
                     <thead>
                         <tr>
@@ -527,6 +503,15 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                <div class="empty-state" id="empty-espera">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <p>Sin pacientes en espera</p>
+                </div>
             </div>
         </div>
 
@@ -552,12 +537,6 @@
                 </div>
             </div>
             <div class="scrollable-tabla">
-                <div class="empty-state" id="empty-atencion">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.81a16 16 0 0 0 6.29 6.29l1.66-1.85a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                    </svg>
-                    <p>Sin llamados activos</p>
-                </div>
                 <table id="tabla_atencion">
                     <thead>
                         <tr>
@@ -590,10 +569,12 @@
                     {% endfor %}
                     </tbody>
                 </table>
-            </div>
-
-            <div id="carousel-container">
-                {% include 'layouts/partials/carousel.html' %}
+                <div class="empty-state" id="empty-atencion">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.81a16 16 0 0 0 6.29 6.29l1.66-1.85a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    <p>Sin llamados activos</p>
+                </div>
             </div>
         </div>
     </div>
@@ -680,41 +661,6 @@ function updateCounts() {
 document.addEventListener('DOMContentLoaded', function () {
     updateCounts();
 
-    var carousel = $('#imageCarousel');
-    var currentCarouselHash = carousel.data('hash') || null;
-    var timeoutId;
-
-    function goToNextSlide() {
-        clearTimeout(timeoutId);
-        carousel.carousel('next');
-        startTimer();
-    }
-
-    function startTimer() {
-        var activeItem = document.querySelector('.carousel-item.active');
-        var duration = parseInt(activeItem?.dataset.duration) || 5;
-        timeoutId = setTimeout(goToNextSlide, duration * 1000);
-    }
-
-    function inicializarCarrusel() {
-        carousel.carousel({ interval: false });
-        $('.carousel-control-prev, .carousel-control-next').off('click').on('click', function () {
-            clearTimeout(timeoutId);
-            startTimer();
-        });
-        $('#imageCarousel').off('slid.bs.carousel').on('slid.bs.carousel', function () {
-            clearTimeout(timeoutId);
-            startTimer();
-        });
-        if ($('.carousel-item').length > 1) {
-            startTimer();
-        }
-    }
-
-    if (carousel.length) {
-        inicializarCarrusel();
-    }
-
     function actualizarTabla() {
         const params = new URLSearchParams(window.location.search);
         const baseUrl = "{{ url_for('appointments_blueprint.tabla_turnos') }}";
@@ -760,54 +706,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 100);
     }
 
-    function actualizarCarrusel() {
-        const baseUrl = "{{ url_for('appointments_blueprint.carousel_images') }}";
-        fetch(baseUrl)
-            .then(response => response.text())
-            .then(html => {
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = html;
-                const nuevoCarrusel = tempDiv.querySelector('#imageCarousel');
-                const nuevoHash = nuevoCarrusel ? nuevoCarrusel.dataset.hash : null;
-                if (nuevoHash && nuevoHash !== currentCarouselHash) {
-                    currentCarouselHash = nuevoHash;
-                    const contenedor = document.querySelector('#carousel-container');
-                    if (contenedor && nuevoCarrusel) {
-                        contenedor.innerHTML = nuevoCarrusel.outerHTML;
-                        carousel = $('#imageCarousel');
-                        inicializarCarrusel();
-                    }
-                }
-            })
-            .catch(error => console.error("Error actualizando carrusel:", error));
-    }
-
-    function verificarSuperposicion() {
-        const carruselContainer = document.querySelector('#carousel-container');
-        const footer = document.querySelector('.footer');
-        if (carruselContainer && footer) {
-            const carruselRect = carruselContainer.getBoundingClientRect();
-            const footerRect = footer.getBoundingClientRect();
-            if (carruselRect.bottom > footerRect.top) {
-                const nuevaAltura = carruselContainer.offsetHeight - (carruselRect.bottom - footerRect.top) - 10;
-                if (nuevaAltura > 150) {
-                    carruselContainer.style.height = nuevaAltura + 'px';
-                }
-            }
-        }
-    }
-
     setInterval(actualizarTabla, 5000);
-    setInterval(actualizarCarrusel, 10000);
-    setInterval(verificarSuperposicion, 2000);
 
     actualizarTabla();
     iniciarScrollBidireccional();
-    verificarSuperposicion();
-
-    window.addEventListener('resize', function() {
-        verificarSuperposicion();
-    });
 });
 </script>
 {% endblock %}

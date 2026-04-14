@@ -5,56 +5,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Turnos</title>
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet" />
     <link rel="stylesheet" href="static/css/style_2.css">
     <script src="/static/js/dashboard_appointments.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.min.js"></script>
-    <title>Panel de Turnos</title>
 </head>
 
 <body>
     <main>
-    
-        <div class="loading-message">Procesando los Datos.....</div>
+        <div class="loading-message">Procesando los Datos...</div>
 
-
-        <h1>CAPS Humberto D'Angelo - TURNOS</h1>
-        <p>Visualización de estadísticas globales</p>
+        <div class="page-title">
+            <h1>CAPS Humberto D'Angelo - Estadísticas de Turnos</h1>
+            <p>Panel de visualización de datos asistenciales</p>
+        </div>
         
         <hr>
         <div class="filter">
-        <label for="fecha1">Desde (>=):</label>
-        <input type="date" id="fecha1" name="fecha1">
-        <label for="fecha2">Hasta (<=):</label>
-        <input type="date" id="fecha2" name="fecha2">
-        <label> Especialidad: </label>
-        <select id="SpecialtySelect">
-            <option value=""> Todas </option>
-        </select>
-        
-        <button class="button" onclick="Update()" type="submit">Aplicar filtro</button>
+            <label for="fecha1">Desde:</label>
+            <input type="date" id="fecha1" name="fecha1">
+            <label for="fecha2">Hasta:</label>
+            <input type="date" id="fecha2" name="fecha2">
+            <label>Especialidad:</label>
+            <select id="SpecialtySelect">
+                <option value="">Todas</option>
+            </select>
+            <button class="button" onclick="Update()" type="submit">Aplicar Filtro</button>
         </div>
-        <hr>
+
         <section class="cols-1">
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
+                <p class="selected_period">Período seleccionado</p>
                 <h3>Turnos según Especialidad y Sexo del Paciente</h3>
                 <div id="canva1">
                     <canvas id="AppointmentsBySpecialtyBySex"></canvas>
                 </div>
             </figure>
         </section>
+
         <section class="cols-2">
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
-                <h3>Turnos según día de la Semana</h3>
+                <p class="selected_period">Período seleccionado</p>
+                <h3>Turnos según Día de la Semana</h3>
                 <div id="canva2">
                     <canvas id="AppointmentsByDays"></canvas>
                 </div>
             </figure>
 
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
+                <p class="selected_period">Período seleccionado</p>
                 <h3>Turnos según Sexo del Paciente</h3>
                 <div id="canva3">
                     <canvas id="AppointmentsBySex"></canvas>
@@ -64,7 +63,7 @@
         
         <section class="cols-1">
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
+                <p class="selected_period">Período seleccionado</p>
                 <h3>Turnos según Profesionales y Sexo</h3>
                 <div id="canva4">
                     <canvas id="AppointmentsByProfessionalBySex"></canvas>
@@ -74,7 +73,7 @@
         
         <section class="cols-1">
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
+                <p class="selected_period">Período seleccionado</p>
                 <h3>Turnos según Grupos Etarios</h3>
                 <div id="canva5">
                     <canvas id="AppointmentsByAgeGroups"></canvas>
@@ -84,30 +83,30 @@
         
         <section class="cols-4">
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
+                <p class="selected_period">Período seleccionado</p>
                 <h3>Turnos Totales</h3>
-                <h1 id="app_total"> - </h1>
+                <h1 id="app_total">-</h1>
             </figure>
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
+                <p class="selected_period">Período seleccionado</p>
                 <h3>Turnos ECNT</h3>
-                <h1 id="app_ecnt"> - </h1>
+                <h1 id="app_ecnt">-</h1>
             </figure>
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
+                <p class="selected_period">Período seleccionado</p>
                 <h3>Turnos Ausentes</h3>
-                <h1 id="app_absent"> - </h1>
+                <h1 id="app_absent">-</h1>
             </figure>
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
+                <p class="selected_period">Período seleccionado</p>
                 <h3>% Ausentismo</h3>
-                <h1 id="app_absenteeism"> - </h1>
+                <h1 id="app_absenteeism">-</h1>
             </figure>
         </section>
         
         <section class="cols-3">
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
+                <p class="selected_period">Período seleccionado</p>
                 <h3>Turnos según Categoría</h3>
                 <div id="canva6">
                     <canvas id="AppointmentsByCategory"></canvas>
@@ -115,7 +114,7 @@
             </figure>
 
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
+                <p class="selected_period">Período seleccionado</p>
                 <h3>Turnos según Tipo de Visita</h3>
                 <div id="canva7">
                     <canvas id="AppointmentsByVisitType"></canvas>
@@ -123,8 +122,8 @@
             </figure>
             
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
-                <h3>Turnos según posea Obra Social</h3>
+                <p class="selected_period">Período seleccionado</p>
+                <h3>Turnos según Obra Social</h3>
                 <div id="canva8">
                     <canvas id="AppointmentsByInsurance"></canvas>
                 </div>
@@ -133,58 +132,58 @@
         
         <section class="cols-4">
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
+                <p class="selected_period">Período seleccionado</p>
                 <h3>Controles de Menor Sano</h3>
-                <h1 id="well_child"> - </h1>
+                <h1 id="well_child">-</h1>
             </figure>
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
-                <h3>Controles de Menor Sano (Respecto el Total)</h3>
-                <h1 id="%_well_child_respect_total"> - </h1>
+                <p class="selected_period">Período seleccionado</p>
+                <h3>% Menor Sano / Total</h3>
+                <h1 id="%_well_child_respect_total">-</h1>
             </figure>
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
+                <p class="selected_period">Período seleccionado</p>
                 <h3>Turnos Programados</h3>
-                <h1 id="app_programmed"> - </h1>
+                <h1 id="app_programmed">-</h1>
             </figure>
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
-                <h3>% Programados respecto al Total</h3>
-                <h1 id="%_app_programmed"> - </h1>
+                <p class="selected_period">Período seleccionado</p>
+                <h3>% Programados / Total</h3>
+                <h1 id="%_app_programmed">-</h1>
             </figure>
         </section>
         
-         <section class="cols-2">
+        <section class="cols-2">
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
-                <h3>% Controles de Menor Sano (Respecto Pediatría)</h3>
-                <h1 id="%_well_child_respect_ped"> - </h1>
+                <p class="selected_period">Período seleccionado</p>
+                <h3>% Menor Sano / Pediatría</h3>
+                <h1 id="%_well_child_respect_ped">-</h1>
             </figure>
 
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
+                <p class="selected_period">Período seleccionado</p>
                 <h3>Captaciones Activas</h3>
-                <h1 id="active_uptake"> - </h1>
+                <h1 id="active_uptake">-</h1>
             </figure>
         </section>
-            
-            <section class="cols-2">
+
+        <section class="cols-2">
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
-                <h3>Turnos PEDIATRICOS</h3>
-                <h1 id="app_pediatrics"> - </h1>
+                <p class="selected_period">Período seleccionado</p>
+                <h3>Turnos Pediátricos</h3>
+                <h1 id="app_pediatrics">-</h1>
             </figure>
 
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
-                <h3>Turnos ADULTOS</h3>
-                <h1 id="app_adults"> - </h1>
+                <p class="selected_period">Período seleccionado</p>
+                <h3>Turnos Adultos</h3>
+                <h1 id="app_adults">-</h1>
             </figure>
         </section>
         
         <section class="cols-1">
             <figure>
-                <p class="selected_period">Últimos 15 días</p>
+                <p class="selected_period">Período seleccionado</p>
                 <h3>Turnos y Obras Sociales</h3>
                 <div id="canva9">
                     <canvas id="AppointmentsByInsurancesQuantity"></canvas>
@@ -192,41 +191,37 @@
             </figure>
         </section>
 
-
     </main>
     
     <footer class="footer"> 
-        {% include '/layouts/partials/footer.html' %}
+        CAPS Humberto D'Angelo - Sistema de Gestión de Turnos
     </footer>
 
-   
-<script >
-
+<script>
  var data_1 = JSON.parse('{{ data | tojson}}');
             
-SpecialtySelect(data_1);
-AppointmentsByDays(data_1, 'AppointmentsByDays');
-AppointmentsBySex(data_1, 'AppointmentsBySex');
-AppointmentsByVisitType(data_1, 'AppointmentsByVisitType');
-AppointmentsByCategory(data_1, 'AppointmentsByCategory');
-AppointmentsByAgeGroups(data_1, 'AppointmentsByAgeGroups');
-AppointmentsBySpecialtyBySex(data_1, 'AppointmentsBySpecialtyBySex');
-AppointmentsByProfessionalBySex(data_1, 'AppointmentsByProfessionalBySex');
-AppointmentsByInsurance(data_1, 'AppointmentsByInsurance');
-AppointmentsByInsurancesQuantity(data_1,'AppointmentsByInsurancesQuantity');
-TotalAppointments(data_1);
-AbsentAppointments(data_1);
-AppointmentsAbsenteeism(data_1);
-AppointmentsECNT(data_1);
-WellChild(data_1);
-PercentWellChildRespectTotal(data_1);
-PercentWellChildRespectPed(data_1);
-ActiveUptake(data_1);
-ProgramedAppointments(data_1);
-PercentProgrammedAppointments(data_1);
-PediatricsAppointments(data_1);
-AdultsAppointments(data_1);
-
+ SpecialtySelect(data_1);
+ AppointmentsByDays(data_1, 'AppointmentsByDays');
+ AppointmentsBySex(data_1, 'AppointmentsBySex');
+ AppointmentsByVisitType(data_1, 'AppointmentsByVisitType');
+ AppointmentsByCategory(data_1, 'AppointmentsByCategory');
+ AppointmentsByAgeGroups(data_1, 'AppointmentsByAgeGroups');
+ AppointmentsBySpecialtyBySex(data_1, 'AppointmentsBySpecialtyBySex');
+ AppointmentsByProfessionalBySex(data_1, 'AppointmentsByProfessionalBySex');
+ AppointmentsByInsurance(data_1, 'AppointmentsByInsurance');
+ AppointmentsByInsurancesQuantity(data_1,'AppointmentsByInsurancesQuantity');
+ TotalAppointments(data_1);
+ AbsentAppointments(data_1);
+ AppointmentsAbsenteeism(data_1);
+ AppointmentsECNT(data_1);
+ WellChild(data_1);
+ PercentWellChildRespectTotal(data_1);
+ PercentWellChildRespectPed(data_1);
+ ActiveUptake(data_1);
+ ProgramedAppointments(data_1);
+ PercentProgrammedAppointments(data_1);
+ PediatricsAppointments(data_1);
+ AdultsAppointments(data_1);
 </script>
 
 </body>

@@ -45,11 +45,11 @@
             <td>Llamando</td>
         </tr>
         {% elif appointment.attending %}
-        <tr class='in_atention'>
+        <tr class='registered'>
             <td>{{ appointment.patient.rec_name }}</td>
             <td>{{ appointment.healthprof.rec_name }}</td>
             <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
-            <td>En atención</td>}
+            <td>En atención</td>
         </tr>
         {% endif %}
     </tbody>

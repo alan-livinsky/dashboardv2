@@ -2,7 +2,6 @@
 
     {% block head %}
 
-<!--         <meta http-equiv="content-type" content="application/json; charset=UTF-8"/> -->
         <title>Turnos del día</title>
         <link rel="icon" href="/static/images/favicon.ico">
         <meta http-equiv="Expires" content="0">
@@ -10,22 +9,214 @@
         <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
         <meta http-equiv="Pragma" content="no-store">
         <link rel="stylesheet" href="static/css/main.css">
+        <style>
+            :root {
+                --primary: #1565c0;
+                --primary-dark: #0d47a1;
+                --primary-light: #1976d2;
+                --accent: #42a5f5;
+                --bg-body: #f5f9fc;
+                --bg-white: #ffffff;
+                --bg-panel: #e3f2fd;
+                --text-primary: #0d2137;
+                --text-secondary: #546e7a;
+                --border: #bbdefb;
+                --shadow: 0 2px 12px rgba(21, 101, 192, 0.08);
+            }
+
+            * { box-sizing: border-box; }
+
+            body {
+                margin: 0;
+                padding: 0;
+                background: linear-gradient(135deg, var(--bg-body) 0%, #e3f2fd 100%);
+                font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+                color: var(--text-primary);
+                min-height: 100vh;
+            }
+
+            .container-table100 {
+                padding: 30px 40px;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .page-header {
+                text-align: center;
+                margin-bottom: 30px;
+                padding: 20px;
+                background: var(--bg-white);
+                border-radius: 12px;
+                box-shadow: var(--shadow);
+                border: 1px solid var(--border);
+            }
+
+            .page-header h2 {
+                font-size: 1.4em;
+                font-weight: 600;
+                color: var(--primary-dark);
+                margin: 0 0 10px;
+                letter-spacing: 1px;
+            }
+
+            .page-header .subtitle {
+                font-size: 1em;
+                color: var(--text-secondary);
+                letter-spacing: 0.5px;
+            }
+
+            .main-content {
+                display: flex;
+                gap: 30px;
+                flex: 1;
+            }
+
+            .izquierda {
+                flex: 2;
+                background: var(--bg-white);
+                border-radius: 12px;
+                box-shadow: var(--shadow);
+                border: 1px solid var(--border);
+                overflow: hidden;
+            }
+
+            .izquierda h4 {
+                margin: 0;
+                padding: 15px 20px;
+                background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+                color: white;
+                font-size: 1em;
+                letter-spacing: 1px;
+            }
+
+            #tabla_turnos {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            #tabla_turnos th {
+                padding: 12px 16px;
+                background: var(--bg-panel);
+                font-size: 0.75rem;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: var(--primary-dark);
+                border-bottom: 2px solid var(--border);
+                text-align: left;
+            }
+
+            #tabla_turnos td {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border);
+                font-size: 0.95rem;
+                color: var(--text-primary);
+            }
+
+            .calling {
+                background: linear-gradient(90deg, #fff8e1 0%, #fffde7 100%) !important;
+                border-left: 5px solid #f9a825 !important;
+                animation: pulse-row 1.4s ease-in-out infinite;
+            }
+
+            .calling td {
+                color: #f57f17 !important;
+                font-size: 1.1rem !important;
+                font-weight: 700 !important;
+            }
+
+            .in_atention {
+                background: linear-gradient(90deg, #e3f2fd 0%, #e1f5fe 100%) !important;
+                border-left: 5px solid var(--primary) !important;
+            }
+
+            .in_atention td {
+                color: var(--primary-dark) !important;
+                font-weight: 600 !important;
+            }
+
+            @keyframes pulse-row {
+                0%   { background: linear-gradient(90deg, #fff8e1 0%, #fffde7 100%); }
+                50%  { background: linear-gradient(90deg, #ffecb3 0%, #fff8e1 100%); }
+                100% { background: linear-gradient(90deg, #fff8e1 0%, #fffde7 100%); }
+            }
+
+            .images {
+                flex: 1;
+                background: var(--bg-white);
+                border-radius: 12px;
+                box-shadow: var(--shadow);
+                border: 1px solid var(--border);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 400px;
+            }
+
+            #myimage {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+
+            .footer {
+                margin-top: 30px;
+                padding: 20px;
+                background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+                border-radius: 12px;
+                text-align: center;
+                color: white;
+            }
+
+            .footer p {
+                margin: 0 0 10px;
+                font-size: 0.85em;
+                letter-spacing: 0.5px;
+            }
+
+            .footer .a {
+                color: rgba(255,255,255,0.9);
+                text-decoration: none;
+                margin: 0 15px;
+                font-size: 0.85em;
+                transition: color 0.2s;
+            }
+
+            .footer .a:hover {
+                color: white;
+                text-decoration: underline;
+            }
+
+            @media (max-width: 900px) {
+                .main-content {
+                    flex-direction: column;
+                }
+                .images {
+                    min-height: 200px;
+                }
+            }
+        </style>
     {% endblock %}
 
     {% block body %}
 
-    	<section class="container-table100">
-            <h2>LISTA DE ATENCIÓN - {{ organization }}<br>Hoy {{ today }} otorgamos {{ total }} turnos </h2>
-        	<div class="izquierda">
-            	<h4></h4>
-                <table id="tabla_turnos">
+        <section class="container-table100">
+            <div class="page-header">
+                <h2>LISTA DE ATENCIÓN - {{ organization }}</h2>
+                <p class="subtitle">Hoy {{ today }} otorgamos {{ total }} turnos</p>
+            </div>
 
-                    <tr>
-                        <th>Paciente</th>
-                        <th>Profesional</th> 
-                        <th>Especialidad</th>  
-                        <th>Estado</th>  
-                    </tr>
+            <div class="main-content">
+                <div class="izquierda">
+                    <h4>Pacientes en atención</h4>
+                    <table id="tabla_turnos">
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Profesional</th> 
+                            <th>Especialidad</th>  
+                            <th>Estado</th>  
+                        </tr>
                         {% for appointment in turnos_webhook %}
                             {% if appointment.get('state') == 'calling'%}
                             <audio id="myAudio" autoplay>
@@ -44,36 +235,35 @@
                             <td> {{ 'En atención' }}</td>
                             {% endif %}
                             </tr>
-                    	{% endfor %}
-                </table>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div class="images">
+                    <img src="" id="myimage" alt="Imagen informativa">
+                </div>
             </div>
-        <div class="images">
-            <img src="" id="myimage" style="margin-bottom:150px">
-        </div>
-        <footer class="footer"> 
-            <p>Desarrollado por el GESPyTA de la FI-UNER para uso en GNUHealth - v0.3 (2022) - copyleft</p>
-            <a href="http://ingenieria.uner.edu.ar/grupos/salud_publica/" target="_blank" class="a">¿Quienes somos?</a>
-            <a href="https://gitlab.com/gnuhealth_fiuner" target="_blank" class="a">Nuestro Repositorio</a>
-            <a href="mailto=saludpublica@ingenieria.uner.edu.ar" target="_blank" class="a">Contacto</a>
-        </footer>
+
+            <footer class="footer"> 
+                <p>Desarrollado por el GESPyTA de la FI-UNER para uso en GNUHealth</p>
+                <a href="http://ingenieria.uner.edu.ar/grupos/salud_publica/" target="_blank" class="a">¿Quienes somos?</a>
+                <a href="https://gitlab.com/gnuhealth_fiuner" target="_blank" class="a">Nuestro Repositorio</a>
+                <a href="mailto:saludpublica@ingenieria.uner.edu.ar" target="_blank" class="a">Contacto</a>
+            </footer>
+        </section>
 
     {% endblock %}
 
     {% block javascripts %}
         <script type="text/javascript">
             function cargarimagen(){
-            // creamos un numero al azar entre 1 y 10 (o cual sea la cantidad de imágenes)
-            var x = (Math.floor(Math.random()*17));
-            console.log(x);
-            var xhttp = new XMLHttpRequest();
-            function cargarimagen(){
-
-
+                var x = (Math.floor(Math.random()*17));
+                console.log(x);
+                var xhttp = new XMLHttpRequest();
+                function actualizar(){
+                    location.reload(true);
+                }
+                setTimeout("cargarimagen()", 200);
+                setTimeout("actualizar()",10000);
             }
-            function actualizar(){
-            location.reload(true);
-            }
-            setTimeout("cargarimagen()", 200);
-            setTimeout("actualizar()",10000);
         </script>
-    {%endblock%}
+    {%endblock %}

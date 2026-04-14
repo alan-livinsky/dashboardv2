@@ -15,23 +15,23 @@
         *, *::before, *::after { box-sizing: border-box; }
 
         :root {
-            --primary: #1565c0;
-            --primary-dark: #0d47a1;
-            --primary-light: #42a5f5;
-            --bg-page: #f0f4f8;
+            --primary: #0092cc;
+            --primary-dark: #0070b0;
+            --primary-light: #1ba3d9;
+            --bg-page: #f5f7fa;
             --bg-card: #ffffff;
             --bg-hover: #e3f2fd;
-            --text-heading: #0d2137;
-            --text-body: #37474f;
-            --text-muted: #78909c;
-            --border: #cfd8dc;
-            --border-light: #eceff1;
-            --status-waiting: #78909c;
-            --status-waiting-bg: #eceff1;
-            --status-calling: #f57c00;
+            --text-heading: #1a1f36;
+            --text-body: #52576f;
+            --text-muted: #7b8699;
+            --border: #d4d8df;
+            --border-light: #e8eaee;
+            --status-waiting: #7b8699;
+            --status-waiting-bg: #f0f1f4;
+            --status-calling: #ff9800;
             --status-calling-bg: #fff3e0;
-            --status-attending: #2e7d32;
-            --status-attending-bg: #e8f5e9;
+            --status-attending: #2196f3;
+            --status-attending-bg: #e3f2fd;
         }
 
         body, html {
@@ -40,7 +40,7 @@
             height: 100%;
             overflow: hidden;
             background: var(--bg-page);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
             color: var(--text-body);
             line-height: 1.5;
         }
@@ -58,10 +58,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 24px;
-            background: var(--primary);
+            padding: 18px 28px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         .main-header__left {
@@ -70,35 +71,37 @@
         }
 
         .main-header__institution {
-            font-size: 1.1rem;
-            font-weight: 600;
-            letter-spacing: 1px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
         }
 
         .main-header__sub {
-            font-size: .7rem;
-            opacity: 0.8;
-            margin-top: 2px;
+            font-size: 0.75rem;
+            opacity: 0.85;
+            margin-top: 3px;
+            font-weight: 500;
         }
 
         .main-header__clock {
-            font-size: 1.6rem;
-            font-weight: 300;
+            font-size: 1.75rem;
+            font-weight: 400;
             font-variant-numeric: tabular-nums;
-            background: rgba(255,255,255,0.15);
-            padding: 8px 20px;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 10px 24px;
+            border-radius: 6px;
+            letter-spacing: 1px;
         }
 
         /* ── Split Area ── */
         #pantalla-dividida {
             display: flex;
             flex: 1;
-            gap: 1px;
+            gap: 0;
             margin: 0;
             min-height: 0;
-            background: var(--border);
+            background: var(--border-light);
         }
 
         .tabla-izquierda,
@@ -114,63 +117,69 @@
 
         /* ── Section Headers ── */
         .section-header {
-            padding: 14px 20px;
+            padding: 16px 24px;
             background: var(--bg-card);
             border-bottom: 2px solid var(--border-light);
             flex-shrink: 0;
         }
 
         .section-header__title {
-            font-size: .8rem;
+            font-size: 0.75rem;
             font-weight: 700;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.2px;
             text-transform: uppercase;
             color: var(--text-heading);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            margin: 0;
         }
 
         .section-header__badge {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-width: 22px;
-            height: 22px;
-            padding: 0 8px;
-            border-radius: 11px;
-            font-size: .7rem;
+            min-width: 28px;
+            height: 28px;
+            padding: 0 10px;
+            border-radius: 14px;
+            font-size: 0.8rem;
             font-weight: 700;
+            background: var(--primary);
+            color: white;
         }
 
         .tabla-izquierda .section-header__badge {
             background: var(--status-waiting-bg);
             color: var(--status-waiting);
+            font-weight: 600;
         }
 
         .tabla-derecha .section-header__badge {
             background: var(--status-calling-bg);
             color: var(--status-calling);
+            font-weight: 600;
         }
 
         .tabla-derecha .section-header__indicator {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: var(--status-calling);
-            animation: pulse 1.5s ease-in-out infinite;
+            animation: pulse 2s ease-in-out infinite;
         }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
         }
 
         .section-header__subtitle {
-            font-size: .65rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
-            margin-top: 4px;
-            letter-spacing: 0.5px;
+            margin: 6px 0 0 22px;
+            letter-spacing: 0.3px;
+            font-weight: 500;
         }
 
         /* ── Scrollable Tables ── */
@@ -185,63 +194,66 @@
         }
 
         #tabla_espera th, #tabla_atencion th {
-            padding: 10px 16px;
+            padding: 12px 24px;
             text-align: left;
-            font-size: .65rem;
+            font-size: 0.7rem;
             font-weight: 700;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             text-transform: uppercase;
             color: var(--text-muted);
             background: var(--bg-page);
             border-bottom: 1px solid var(--border-light);
             position: sticky;
             top: 0;
+            font-weight: 600;
         }
 
         #tabla_espera td, #tabla_atencion td {
-            padding: 14px 16px;
+            padding: 16px 24px;
             border-bottom: 1px solid var(--border-light);
-            font-size: .9rem;
+            font-size: 0.95rem;
             vertical-align: middle;
         }
 
         /* ── Row Styling ── */
         .fila-par  { background: var(--bg-card); }
-        .fila-impar { background: var(--bg-page); }
+        .fila-impar { background: #fafbfc; }
 
         .not_calling:hover td {
-            background: var(--bg-hover);
+            background: #f9fafb !important;
         }
 
         /* Status States */
         .calling td {
-            background: var(--status-calling-bg) !important;
+            background: #fff9f0 !important;
         }
 
         .calling .patient-name {
             color: var(--status-calling);
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         .registered td {
-            background: var(--status-attending-bg) !important;
+            background: #f0f7ff !important;
         }
 
         .registered .patient-name {
             color: var(--status-attending);
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 1rem;
         }
 
         .status-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: .7rem;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.75rem;
             font-weight: 700;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
         }
 
         .status-badge--waiting {
@@ -262,9 +274,9 @@
         /* ── Carousel ── */
         #carousel-container {
             height: 35%;
-            min-height: 150px;
+            min-height: 140px;
             flex-shrink: 0;
-            border-top: 1px solid var(--border-light);
+            border-top: 2px solid var(--border-light);
             background: var(--bg-page);
         }
 
@@ -280,39 +292,49 @@
 
         .carousel-control-prev,
         .carousel-control-next {
-            width: 4%;
-            opacity: 0.4;
+            width: 5%;
+            opacity: 0.3;
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .carousel-control-prev:hover,
+        .carousel-control-next:hover {
+            opacity: 0.5;
         }
 
         /* ── Footer ── */
         .footer {
             flex-shrink: 0;
             background: var(--bg-card);
-            border-top: 1px solid var(--border-light);
+            border-top: 2px solid var(--border-light);
         }
 
         /* ── Scrollbar ── */
         .scrollable-tabla::-webkit-scrollbar { width: 6px; }
         .scrollable-tabla::-webkit-scrollbar-track { background: transparent; }
         .scrollable-tabla::-webkit-scrollbar-thumb {
-            background: var(--border);
+            background: #c5cad5;
             border-radius: 3px;
+        }
+        .scrollable-tabla::-webkit-scrollbar-thumb:hover {
+            background: #a8adb8;
         }
 
         /* ── Patient Card Row ── */
         .patient-info {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 3px;
         }
 
         .patient-name {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-heading);
+            font-size: 0.95rem;
         }
 
         .patient-meta {
-            font-size: .75rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
         }
     </style>

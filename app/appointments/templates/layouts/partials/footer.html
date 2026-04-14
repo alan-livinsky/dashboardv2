@@ -33,8 +33,8 @@
 <style>
 .footer-container {
     width: 100%;
-    padding: 10px 16px;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    padding: 12px 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
 }
 
 .footer-content {
@@ -46,9 +46,9 @@
 }
 
 .footer-copyright {
-    color: #78909c;
+    color: #7b8699;
     font-size: 11px;
-    line-height: 1.3;
+    line-height: 1.4;
     white-space: nowrap;
     flex-shrink: 0;
     letter-spacing: 0.3px;
@@ -65,41 +65,86 @@
 .link-with-qr {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
 }
 
 .qr-container {
-    width: 46px;
-    height: 46px;
+    width: 44px;
+    height: 44px;
     background: #ffffff;
     padding: 2px;
     border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     flex-shrink: 0;
-    border: 1px solid #cfd8dc;
+    border: 1px solid #d4d8df;
+    transition: all 0.15s ease;
+}
+
+.qr-container:hover {
+    border-color: #0092cc;
+    box-shadow: 0 2px 6px rgba(0, 146, 204, 0.15);
 }
 
 .qr-placeholder {
-    color: #90a4ae;
+    color: #a8adb8;
     font-size: 9px;
+    font-weight: 600;
 }
 
 .footer-link {
-    color: #1565c0;
+    color: #0092cc;
     text-decoration: none;
     font-weight: 600;
     font-size: 11px;
     white-space: nowrap;
-    transition: color 0.15s;
+    transition: color 0.15s ease;
 }
 
 .footer-link:hover {
-    color: #0d47a1;
+    color: #0070b0;
 }
+
+@media (max-width: 1024px) {
+    .footer-content {
+        gap: 15px;
+    }
+    .footer-links-with-qr {
+        gap: 16px;
+    }
+    .footer-copyright {
+        font-size: 10px;
+    }
+    .footer-link {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        padding: 10px 16px;
+    }
+    .footer-content {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+    .footer-copyright {
+        font-size: 9px;
+        text-align: center;
+        width: 100%;
+    }
+    .footer-links-with-qr {
+        gap: 12px;
+    }
+    .footer-link {
+        font-size: 10px;
+    }
+}
+</style>
 
 @media (max-width: 1024px) {
     .footer-content {
@@ -163,7 +208,7 @@ function generateQRCode(elementId, text) {
 
         for (let row = 0; row < moduleCount; row++) {
             for (let col = 0; col < moduleCount; col++) {
-                ctx.fillStyle = qr.isDark(row, col) ? '#0d2137' : '#ffffff';
+                ctx.fillStyle = qr.isDark(row, col) ? '#1a1f36' : '#ffffff';
                 ctx.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
             }
         }

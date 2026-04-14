@@ -16,7 +16,7 @@
                <td><span class="patient-name">{{ appointment.patient.rec_name }}</span></td>
                 <td>{{ appointment.healthprof.rec_name }}</td>
                 <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
-                <td><span class="status-badge status-badge--waiting">En espera</span></td>
+                <td><span class="status-badge status-badge--waiting">Esperando</span></td>
             </tr>
         </tbody>
         {% endif %}
@@ -27,9 +27,9 @@
     <thead>
         <tr>
             <th>Paciente</th>
-            <th>Profesional</th> 
-            <th>Consultorio</th>  
-            <th>Estado</th>  
+            <th>Profesional</th>
+            <th>Consultorio</th>
+            <th>Estado</th>
         </tr>
     </thead>
     {% for appointment in appointments %}
@@ -41,14 +41,14 @@
         <tr class='calling'>
             <td><span class="patient-name">{{ appointment.patient.rec_name }}</span></td>
             <td>{{ appointment.healthprof.rec_name }}</td>
-            <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
+            <td><span class="room-badge">{{ appointment.consulting_room and appointment.consulting_room.name }}</span></td>
             <td><span class="status-badge status-badge--calling">Llamando</span></td>
         </tr>
         {% elif appointment.attending %}
         <tr class='registered'>
             <td><span class="patient-name">{{ appointment.patient.rec_name }}</span></td>
             <td>{{ appointment.healthprof.rec_name }}</td>
-            <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
+            <td><span class="room-badge">{{ appointment.consulting_room and appointment.consulting_room.name }}</span></td>
             <td><span class="status-badge status-badge--attending">En atención</span></td>
         </tr>
         {% endif %}

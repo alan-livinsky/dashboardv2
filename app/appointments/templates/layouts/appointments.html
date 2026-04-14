@@ -15,30 +15,25 @@
         *, *::before, *::after { box-sizing: border-box; }
 
         :root {
-            --primary: #0092cc;
-            --primary-dark: #0070b0;
-            --primary-light: #1ba3d9;
-            --bg-page: #f5f7fa;
-            --bg-card: #ffffff;
-            --bg-hover: #e3f2fd;
-            --text-heading: #1a1f36;
-            --text-body: #52576f;
-            --text-muted: #7b8699;
-            --border: #d4d8df;
-            --border-light: #e8eaee;
-            --status-waiting: #7b8699;
-            --status-waiting-bg: #f0f1f4;
-            --status-calling: #ff9800;
-            --status-calling-bg: #fff3e0;
-            --status-attending: #2196f3;
-            --status-attending-bg: #e3f2fd;
+            --primary:        #1a6eb5;
+            --primary-dark:   #145a9e;
+            --primary-light:  #2b7fcb;
+            --bg-page:        #f0f4f8;
+            --bg-card:        #ffffff;
+            --text-heading:   #1a1f36;
+            --text-body:      #52576f;
+            --text-muted:     #8896a5;
+            --border-light:   #e8ecf2;
+            --status-waiting-dot: #f59e0b;
+            --status-calling:     #f59e0b;
+            --status-calling-bg:  #fff8ec;
+            --status-attending:   #1a6eb5;
+            --status-attending-bg: #e8f0fb;
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
+            margin: 0; padding: 0;
+            height: 100%; overflow: hidden;
             background: var(--bg-page);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
             color: var(--text-body);
@@ -46,92 +41,157 @@
         }
 
         .container-table100 {
-            padding: 0;
-            margin: 0;
+            padding: 0; margin: 0;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
         }
 
-        /* ── Main Header ── */
+        /* ── Header ── */
         .main-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 18px 28px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 14px 24px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-dark) 100%);
             color: white;
             flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 12px rgba(26, 110, 181, 0.3);
         }
 
-        .main-header__left {
+        .main-header__brand {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 14px;
         }
 
-        .main-header__institution {
-            font-size: 1.15rem;
+        .main-header__icon-wrap {
+            width: 44px; height: 44px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .main-header__text { display: flex; flex-direction: column; }
+
+        .main-header__title {
+            font-size: 1.1rem;
             font-weight: 700;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
         .main-header__sub {
-            font-size: 0.75rem;
-            opacity: 0.85;
-            margin-top: 3px;
+            font-size: 0.72rem;
+            opacity: 0.8;
+            margin-top: 2px;
             font-weight: 500;
         }
 
-        .main-header__clock {
-            font-size: 1.75rem;
-            font-weight: 400;
-            font-variant-numeric: tabular-nums;
+        .main-header__clock-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 3px;
             background: rgba(255, 255, 255, 0.12);
-            padding: 10px 24px;
-            border-radius: 6px;
-            letter-spacing: 1px;
+            padding: 10px 20px;
+            border-radius: 8px;
         }
 
-        /* ── Split Area ── */
+        .main-header__clock-row {
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .main-header__clock {
+            font-size: 1.7rem;
+            font-weight: 500;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+
+        .main-header__date {
+            font-size: 0.72rem;
+            opacity: 0.85;
+            font-weight: 500;
+            text-align: right;
+            text-transform: capitalize;
+        }
+
+        /* ── Main split area ── */
         #pantalla-dividida {
             display: flex;
             flex: 1;
-            gap: 0;
-            margin: 0;
+            gap: 14px;
+            padding: 14px;
             min-height: 0;
-            background: var(--border-light);
+            background: var(--bg-page);
         }
 
         .tabla-izquierda,
         .tabla-derecha {
             display: flex;
             flex-direction: column;
+            flex: 1;
             min-height: 0;
             background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
         }
 
-        .tabla-izquierda { flex: 1; }
-        .tabla-derecha { flex: 1; }
-
-        /* ── Section Headers ── */
+        /* ── Section headers ── */
         .section-header {
-            padding: 16px 24px;
+            padding: 14px 20px;
             background: var(--bg-card);
-            border-bottom: 2px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
             flex-shrink: 0;
         }
 
-        .section-header__title {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            color: var(--text-heading);
+        .section-header__inner {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .section-header__left {
             display: flex;
             align-items: center;
             gap: 12px;
+        }
+
+        .section-header__icon {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .tabla-izquierda .section-header__icon {
+            background: #fff3e0;
+            color: #f59e0b;
+        }
+
+        .tabla-derecha .section-header__icon {
+            background: var(--status-attending-bg);
+            color: var(--primary);
+        }
+
+        .section-header__info { display: flex; flex-direction: column; gap: 3px; }
+
+        .section-header__title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-header__subtitle {
+            font-size: 0.7rem;
+            color: var(--text-muted);
             margin: 0;
         }
 
@@ -139,126 +199,105 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-width: 28px;
-            height: 28px;
+            min-width: 30px; height: 30px;
             padding: 0 10px;
-            border-radius: 14px;
-            font-size: 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
             font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .tabla-izquierda .section-header__badge {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .tabla-derecha .section-header__badge {
             background: var(--primary);
             color: white;
         }
 
-        .tabla-izquierda .section-header__badge {
-            background: var(--status-waiting-bg);
-            color: var(--status-waiting);
-            font-weight: 600;
-        }
-
-        .tabla-derecha .section-header__badge {
-            background: var(--status-calling-bg);
-            color: var(--status-calling);
-            font-weight: 600;
-        }
-
-        .tabla-derecha .section-header__indicator {
-            width: 8px;
-            height: 8px;
+        /* ── Pulse indicator ── */
+        .section-header__indicator {
+            width: 8px; height: 8px;
             border-radius: 50%;
-            background: var(--status-calling);
+            background: var(--status-attending);
             animation: pulse 2s ease-in-out infinite;
+            flex-shrink: 0;
         }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
+            50%       { opacity: 0.5; transform: scale(1.3); }
         }
 
-        .section-header__subtitle {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin: 6px 0 0 22px;
-            letter-spacing: 0.3px;
-            font-weight: 500;
-        }
-
-        /* ── Scrollable Tables ── */
-        .scrollable-tabla {
-            flex: 1;
-            overflow-y: auto;
-        }
+        /* ── Scrollable tables ── */
+        .scrollable-tabla { flex: 1; overflow-y: auto; }
 
         #tabla_espera, #tabla_atencion {
-            width: 100%;
-            border-collapse: collapse;
+            width: 100%; border-collapse: collapse;
         }
 
         #tabla_espera th, #tabla_atencion th {
-            padding: 12px 24px;
+            padding: 10px 20px;
             text-align: left;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase;
             color: var(--text-muted);
-            background: var(--bg-page);
+            background: #fafbfc;
             border-bottom: 1px solid var(--border-light);
-            position: sticky;
-            top: 0;
-            font-weight: 600;
+            position: sticky; top: 0;
         }
 
         #tabla_espera td, #tabla_atencion td {
-            padding: 16px 24px;
+            padding: 14px 20px;
             border-bottom: 1px solid var(--border-light);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             vertical-align: middle;
         }
 
-        /* ── Row Styling ── */
-        .fila-par  { background: var(--bg-card); }
+        .fila-par   { background: var(--bg-card); }
         .fila-impar { background: #fafbfc; }
+        .not_calling:hover td { background: #f5f8ff !important; }
 
-        .not_calling:hover td {
-            background: #f9fafb !important;
-        }
+        .calling td    { background: var(--status-calling-bg) !important; }
+        .registered td { background: var(--status-attending-bg) !important; }
 
-        /* Status States */
-        .calling td {
-            background: #fff9f0 !important;
-        }
+        .calling .patient-name    { color: var(--status-calling); font-weight: 700; }
+        .registered .patient-name { color: var(--primary); font-weight: 700; }
 
-        .calling .patient-name {
-            color: var(--status-calling);
+        .patient-name {
             font-weight: 700;
-            font-size: 1rem;
+            color: var(--text-heading);
+            font-size: 0.92rem;
         }
 
-        .registered td {
-            background: #f0f7ff !important;
-        }
-
-        .registered .patient-name {
-            color: var(--status-attending);
-            font-weight: 700;
-            font-size: 1rem;
-        }
-
+        /* ── Status badges ── */
         .status-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 12px;
-            border-radius: 16px;
-            font-size: 0.75rem;
-            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.73rem;
+            font-weight: 600;
             letter-spacing: 0.3px;
-            text-transform: uppercase;
         }
 
         .status-badge--waiting {
-            background: var(--status-waiting-bg);
-            color: var(--status-waiting);
+            background: transparent;
+            color: var(--text-body);
+            padding: 5px 4px;
+        }
+
+        .status-badge--waiting::before {
+            content: '';
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--status-waiting-dot);
+            flex-shrink: 0;
         }
 
         .status-badge--calling {
@@ -267,8 +306,23 @@
         }
 
         .status-badge--attending {
-            background: var(--status-attending);
+            background: var(--status-attending-bg);
+            color: var(--primary);
+            border: 1px solid rgba(26, 110, 181, 0.2);
+        }
+
+        /* ── Room number badge (attending panel) ── */
+        .room-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 52px;
+            padding: 6px 12px;
+            background: var(--primary);
             color: white;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.95rem;
         }
 
         /* ── Carousel ── */
@@ -276,88 +330,129 @@
             height: 35%;
             min-height: 140px;
             flex-shrink: 0;
-            border-top: 2px solid var(--border-light);
+            border-top: 1px solid var(--border-light);
             background: var(--bg-page);
         }
 
-        .carousel { height: 100%; margin: 0; }
-        .carousel-inner { height: 100%; }
-        .carousel-item { height: 100%; }
+        .carousel        { height: 100%; margin: 0; }
+        .carousel-inner  { height: 100%; }
+        .carousel-item   { height: 100%; }
+        .carousel-inner img { width: 100%; height: 100%; object-fit: contain; }
+        .carousel-control-prev, .carousel-control-next { width: 5%; opacity: 0.3; background: rgba(0,0,0,0.02); }
+        .carousel-control-prev:hover, .carousel-control-next:hover { opacity: 0.5; }
 
-        .carousel-inner img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+        /* ── Stats bar ── */
+        .stats-bar {
+            display: flex;
+            flex-shrink: 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-light);
         }
 
-        .carousel-control-prev,
-        .carousel-control-next {
-            width: 5%;
-            opacity: 0.3;
-            background: rgba(0, 0, 0, 0.02);
+        .stat-item {
+            flex: 1;
+            padding: 12px 20px;
+            border-right: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
 
-        .carousel-control-prev:hover,
-        .carousel-control-next:hover {
-            opacity: 0.5;
+        .stat-item:last-child { border-right: none; }
+
+        .stat-label {
+            font-size: 0.67rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
         }
+
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            line-height: 1.2;
+        }
+
+        .stat-value--active { color: var(--primary); }
 
         /* ── Footer ── */
         .footer {
             flex-shrink: 0;
             background: var(--bg-card);
-            border-top: 2px solid var(--border-light);
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+        }
+
+        .footer-copy {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 0.3px;
         }
 
         /* ── Scrollbar ── */
-        .scrollable-tabla::-webkit-scrollbar { width: 6px; }
+        .scrollable-tabla::-webkit-scrollbar { width: 5px; }
         .scrollable-tabla::-webkit-scrollbar-track { background: transparent; }
-        .scrollable-tabla::-webkit-scrollbar-thumb {
-            background: #c5cad5;
-            border-radius: 3px;
-        }
-        .scrollable-tabla::-webkit-scrollbar-thumb:hover {
-            background: #a8adb8;
-        }
-
-        /* ── Patient Card Row ── */
-        .patient-info {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .patient-name {
-            font-weight: 700;
-            color: var(--text-heading);
-            font-size: 0.95rem;
-        }
-
-        .patient-meta {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
+        .scrollable-tabla::-webkit-scrollbar-thumb { background: #d0d7e2; border-radius: 3px; }
+        .scrollable-tabla::-webkit-scrollbar-thumb:hover { background: #b0bbc9; }
     </style>
 {% endblock %}
 
 {% block body %}
 <section class="container-table100">
+
+    <!-- Header -->
     <div class="main-header">
-        <div class="main-header__left">
-            <div class="main-header__institution">{{ institution }}</div>
-            <div class="main-header__sub">Sistema de llamado de turnos — Turnos del día</div>
+        <div class="main-header__brand">
+            <div class="main-header__icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+            </div>
+            <div class="main-header__text">
+                <div class="main-header__title">Sistema de Turnos</div>
+                <div class="main-header__sub">{{ institution }} — Turnos del día</div>
+            </div>
         </div>
-        <div class="main-header__clock" id="reloj"></div>
+        <div class="main-header__clock-wrap">
+            <div class="main-header__clock-row">
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <div class="main-header__clock" id="reloj"></div>
+            </div>
+            <div class="main-header__date" id="fecha"></div>
+        </div>
     </div>
 
+    <!-- Main panels -->
     <div id="pantalla-dividida">
+
+        <!-- Left: En espera -->
         <div class="tabla-izquierda">
             <div class="section-header">
-                <div class="section-header__title">
-                    <span>Pacientes en espera</span>
+                <div class="section-header__inner">
+                    <div class="section-header__left">
+                        <div class="section-header__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <div class="section-header__info">
+                            <div class="section-header__title">Lista de Espera</div>
+                            <div class="section-header__subtitle">Pacientes con turno confirmado aguardando ser llamados</div>
+                        </div>
+                    </div>
                     <span class="section-header__badge" id="count-espera">0</span>
                 </div>
-                <div class="section-header__subtitle">Confirmados aguardando ser llamados</div>
             </div>
             <div class="scrollable-tabla" id="scrollable-espera">
                 <table id="tabla_espera">
@@ -375,14 +470,10 @@
                             not appointment.calling and
                             not appointment.attending %}
                             <tr class="{% if loop.index0 is even %}fila-par{% else %}fila-impar{% endif %} not_calling">
-                                <td>
-                                    <div class="patient-info">
-                                        <span class="patient-name">{{ appointment.patient.rec_name }}</span>
-                                    </div>
-                                </td>
+                                <td><span class="patient-name">{{ appointment.patient.rec_name }}</span></td>
                                 <td>{{ appointment.healthprof.rec_name }}</td>
                                 <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
-                                <td><span class="status-badge status-badge--waiting">En espera</span></td>
+                                <td><span class="status-badge status-badge--waiting">Esperando</span></td>
                             </tr>
                         {% endif %}
                     {% endfor %}
@@ -391,14 +482,26 @@
             </div>
         </div>
 
+        <!-- Right: Llamados y en atención -->
         <div class="tabla-derecha">
             <div class="section-header">
-                <div class="section-header__title">
-                    <span class="section-header__indicator"></span>
-                    <span>Llamados y en atención</span>
+                <div class="section-header__inner">
+                    <div class="section-header__left">
+                        <div class="section-header__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.81a16 16 0 0 0 6.29 6.29l1.66-1.85a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                        </div>
+                        <div class="section-header__info">
+                            <div class="section-header__title">
+                                <span class="section-header__indicator"></span>
+                                Llamados y en Atención
+                            </div>
+                            <div class="section-header__subtitle">Diríjase al consultorio indicado cuando su nombre aparezca</div>
+                        </div>
+                    </div>
                     <span class="section-header__badge" id="count-atencion">0</span>
                 </div>
-                <div class="section-header__subtitle">Diríjase al consultorio indicado cuando su nombre aparezca</div>
             </div>
             <div class="scrollable-tabla">
                 <table id="tabla_atencion">
@@ -419,14 +522,14 @@
                             <tr class='calling'>
                                 <td><span class="patient-name">{{ appointment.patient.rec_name }}</span></td>
                                 <td>{{ appointment.healthprof.rec_name }}</td>
-                                <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
+                                <td><span class="room-badge">{{ appointment.consulting_room and appointment.consulting_room.name }}</span></td>
                                 <td><span class="status-badge status-badge--calling">Llamando</span></td>
                             </tr>
                         {% elif appointment.attending %}
                             <tr class='registered'>
                                 <td><span class="patient-name">{{ appointment.patient.rec_name }}</span></td>
                                 <td>{{ appointment.healthprof.rec_name }}</td>
-                                <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
+                                <td><span class="room-badge">{{ appointment.consulting_room and appointment.consulting_room.name }}</span></td>
                                 <td><span class="status-badge status-badge--attending">En atención</span></td>
                             </tr>
                         {% endif %}
@@ -441,9 +544,31 @@
         </div>
     </div>
 
+    <!-- Stats bar -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-label">Total en espera</div>
+            <div class="stat-value" id="stat-espera">0</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-label">En atención</div>
+            <div class="stat-value stat-value--active" id="stat-atencion">0</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-label">Consultorios activos</div>
+            <div class="stat-value" id="stat-consultorios">0</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-label">Tiempo promedio</div>
+            <div class="stat-value">—</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
     <footer class="footer">
-        {% include 'layouts/partials/footer.html' %}
+        <span class="footer-copy">© {{ institution }} — Sistema de Gestión de Turnos</span>
     </footer>
+
 </section>
 {% endblock %}
 
@@ -456,17 +581,41 @@
         const now = new Date();
         el.textContent = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     }
+
+    function updateDate() {
+        const el = document.getElementById('fecha');
+        if (!el) return;
+        const now = new Date();
+        el.textContent = now.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
     tick();
+    updateDate();
     setInterval(tick, 1000);
+    setInterval(updateDate, 60000);
 })();
 
 function updateCounts() {
-    const esperaCount = document.querySelectorAll('#tabla_espera tbody tr').length;
+    const esperaCount   = document.querySelectorAll('#tabla_espera tbody tr').length;
     const atencionCount = document.querySelectorAll('#tabla_atencion tbody tr').length;
-    const countEspera = document.getElementById('count-espera');
-    const countAtencion = document.getElementById('count-atencion');
-    if (countEspera) countEspera.textContent = esperaCount;
-    if (countAtencion) countAtencion.textContent = atencionCount;
+
+    const rooms = new Set();
+    document.querySelectorAll('#tabla_espera tbody tr td:nth-child(3), #tabla_atencion tbody tr td:nth-child(3)').forEach(td => {
+        const text = (td.textContent || td.innerText).trim();
+        if (text) rooms.add(text);
+    });
+
+    const countEspera      = document.getElementById('count-espera');
+    const countAtencion    = document.getElementById('count-atencion');
+    const statEspera       = document.getElementById('stat-espera');
+    const statAtencion     = document.getElementById('stat-atencion');
+    const statConsultorios = document.getElementById('stat-consultorios');
+
+    if (countEspera)      countEspera.textContent      = esperaCount;
+    if (countAtencion)    countAtencion.textContent    = atencionCount;
+    if (statEspera)       statEspera.textContent       = esperaCount;
+    if (statAtencion)     statAtencion.textContent     = atencionCount;
+    if (statConsultorios) statConsultorios.textContent = rooms.size;
 }
 
 document.addEventListener('DOMContentLoaded', function () {

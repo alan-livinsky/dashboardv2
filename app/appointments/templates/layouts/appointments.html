@@ -266,6 +266,13 @@
         .calling td    { background: var(--status-calling-bg) !important; }
         .registered td { background: var(--status-attending-bg) !important; }
 
+        @keyframes row-pulse {
+            0%, 100% { background-color: var(--status-calling-bg); }
+            50%       { background-color: #ffe0a0; }
+        }
+
+        .calling td { animation: row-pulse 1.2s ease-in-out infinite !important; }
+
         .calling .patient-name    { color: var(--status-calling); font-weight: 700; }
         .registered .patient-name { color: var(--primary); font-weight: 700; }
 

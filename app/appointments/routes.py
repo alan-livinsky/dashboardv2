@@ -136,6 +136,21 @@ def appointments():
                            total=total,
                            images=images)
 
+@blueprint.route('/sala_espera')
+@tryton.transaction()
+def sala_espera():
+    consulting_rooms = request.args.getlist('consulting_rooms')
+    if consulting_rooms:
+        consulting_rooms = [int(cr) for cr in consulting_rooms]
+    else:
+        consulting_rooms = []
+    today, appointments, institution, total = obtener_turnos(consulting_rooms)
+    return render_template('layouts/appointments_sala_espera.html',
+                           today=today,
+                           appointments=appointments,
+                           institution=institution,
+                           total=total)
+
 @blueprint.route('/get_image/<int:image_id>')
 @tryton.transaction()
 def get_image(image_id):

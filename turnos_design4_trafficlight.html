@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turnos - Semáforo</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #f0f4f8;
+            --white: #ffffff;
+            --text-dark: #0f1923;
+            --text-mid: #4a5568;
+            --calling-bg: #ffee00;
+            --calling-border: #e6d600;
+            --calling-text: #1a1500;
+            --attending-bg: #22c55e;
+            --attending-border: #16a34a;
+            --attending-text: #fff;
+            --idle-bg: #e2e8f0;
+            --idle-border: #cbd5e1;
+            --idle-text: #94a3b8;
+            --accent: #2563eb;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ─── HEADER ─── */
+        .header {
+            background: var(--accent);
+            color: #fff;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header__left { display: flex; align-items: center; gap: 16px; }
+
+        .header__icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+        }
+
+        .header__title { font-size: 1.4rem; font-weight: 700; }
+        .header__sub { font-size: 0.85rem; opacity: 0.8; margin-top: 2px; }
+
+        .header__clock {
+            font-size: 2.4rem;
+            font-weight: 300;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 3px;
+        }
+
+        .header__date { font-size: 0.8rem; opacity: 0.75; text-align: right; margin-top: 4px; text-transform: capitalize; }
+
+        /* ─── ALERT STRIP ─── */
+        .alert-strip {
+            display: none;
+            background: var(--calling-bg);
+            color: var(--calling-text);
+            padding: 20px 40px;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 4px solid var(--calling-border);
+        }
+        .alert-strip.visible { display: flex; }
+
+        .alert-strip__icon {
+            font-size: 2rem;
+            animation: shake 0.5s ease-in-out infinite;
+        }
+        @keyframes shake {
+            0%, 100% { transform: rotate(-8deg); }
+            50% { transform: rotate(8deg); }
+        }
+
+        .alert-strip__label {
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        .alert-strip__items { display: flex; flex-wrap: wrap; gap: 12px; flex: 1; }
+
+        .alert-chip {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0,0,0,0.12);
+            border-radius: 8px;
+            padding: 10px 18px;
+        }
+
+        .alert-chip__room { font-size: 1.5rem; font-weight: 900; }
+        .alert-chip__name { font-size: 1.2rem; font-weight: 700; }
+        .alert-chip__doc { font-size: 0.8rem; opacity: 0.7; margin-top: 2px; }
+
+        /* ─── LEGEND ─── */
+        .legend {
+            display: flex;
+            gap: 20px;
+            padding: 12px 40px;
+            background: var(--white);
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: var(--text-mid);
+        }
+        .legend-swatch {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+        }
+        .legend-swatch--calling  { background: var(--calling-bg); border: 2px solid var(--calling-border); }
+        .legend-swatch--attending { background: var(--attending-bg); border: 2px solid var(--attending-border); }
+        .legend-swatch--idle      { background: var(--idle-bg); border: 2px solid var(--idle-border); }
+
+        /* ─── ROOM GRID ─── */
+        .room-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 28px 40px;
+            flex: 1;
+        }
+
+        .room-card {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 3px solid transparent;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* CALLING */
+        .room-card--calling {
+            background: var(--calling-bg);
+            border-color: var(--calling-border);
+            animation: card-pulse 1s ease-in-out infinite;
+            box-shadow: 0 0 0 0 rgba(255,238,0,0.6);
+        }
+        @keyframes card-pulse {
+            0%, 100% { box-shadow: 0 4px 20px rgba(230,214,0,0.4), 0 0 0 0 rgba(230,214,0,0.4); }
+            50%       { box-shadow: 0 4px 40px rgba(230,214,0,0.8), 0 0 0 12px rgba(230,214,0,0); }
+        }
+
+        /* ATTENDING */
+        .room-card--attending {
+            background: var(--attending-bg);
+            border-color: var(--attending-border);
+        }
+
+        /* IDLE */
+        .room-card--idle {
+            background: var(--idle-bg);
+            border-color: var(--idle-border);
+        }
+
+        /* ─── Card top: room number dominates ─── */
+        .card-top {
+            padding: 20px 24px 16px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .card-room-number {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+        .room-card--calling  .card-room-number { color: var(--calling-text); }
+        .room-card--attending .card-room-number { color: rgba(255,255,255,0.9); }
+        .room-card--idle      .card-room-number { color: var(--idle-text); }
+
+        .card-status-badge {
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 5px 10px;
+            border-radius: 6px;
+            margin-top: 4px;
+        }
+        .room-card--calling  .card-status-badge { background: rgba(0,0,0,0.2); color: var(--calling-text); }
+        .room-card--attending .card-status-badge { background: rgba(255,255,255,0.25); color: #fff; }
+        .room-card--idle      .card-status-badge { background: rgba(0,0,0,0.08); color: var(--idle-text); }
+
+        /* ─── Card body: patient info ─── */
+        .card-body {
+            padding: 0 24px 22px;
+            flex: 1;
+        }
+
+        .card-patient {
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 6px;
+        }
+        .room-card--calling  .card-patient { color: var(--calling-text); }
+        .room-card--attending .card-patient { color: #fff; }
+        .room-card--idle      .card-patient { color: var(--idle-text); font-style: italic; font-weight: 400; font-size: 1rem; }
+
+        .card-doctor {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        .room-card--calling  .card-doctor { color: rgba(0,0,0,0.6); }
+        .room-card--attending .card-doctor { color: rgba(255,255,255,0.75); }
+        .room-card--idle      .card-doctor { color: var(--idle-text); }
+
+        .card-time {
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .room-card--calling  .card-time { color: rgba(0,0,0,0.55); }
+        .room-card--attending .card-time { color: rgba(255,255,255,0.6); }
+        .room-card--idle      .card-time { display: none; }
+
+        /* ─── WAITING FOOTER ─── */
+        .waiting-bar {
+            background: var(--white);
+            border-top: 2px solid #e2e8f0;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .waiting-bar__label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-mid);
+            white-space: nowrap;
+        }
+
+        .waiting-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        .waiting-chip {
+            background: var(--bg);
+            border: 1px solid #cbd5e1;
+            border-radius: 20px;
+            padding: 5px 14px;
+            font-size: 0.85rem;
+            color: var(--text-mid);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .waiting-chip__room-tag {
+            background: var(--accent);
+            color: #fff;
+            border-radius: 10px;
+            padding: 1px 7px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .waiting-count {
+            margin-left: auto;
+            font-size: 0.85rem;
+            color: var(--text-mid);
+            white-space: nowrap;
+        }
+        .waiting-count strong { color: var(--text-dark); font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header__left">
+            <div class="header__icon">&#x1F3E5;</div>
+            <div>
+                <div class="header__title">Llamado de Turnos</div>
+                <div class="header__sub">Centro de Salud &mdash; Sala de Espera Principal</div>
+            </div>
+        </div>
+        <div>
+            <div class="header__clock" id="clock">00:00:00</div>
+            <div class="header__date" id="date"></div>
+        </div>
+    </header>
+
+    <!-- Active calling alert -->
+    <div class="alert-strip" id="alertStrip">
+        <div class="alert-strip__icon">&#x1F514;</div>
+        <div>
+            <div class="alert-strip__label">Llamando ahora</div>
+        </div>
+        <div class="alert-strip__items" id="alertItems"></div>
+    </div>
+
+    <div class="legend">
+        <div class="legend-item"><div class="legend-swatch legend-swatch--calling"></div>Llamando</div>
+        <div class="legend-item"><div class="legend-swatch legend-swatch--attending"></div>En atención</div>
+        <div class="legend-item"><div class="legend-swatch legend-swatch--idle"></div>Libre</div>
+    </div>
+
+    <div class="room-grid" id="roomGrid"></div>
+
+    <div class="waiting-bar">
+        <div class="waiting-bar__label">&#x1F465; En espera</div>
+        <div class="waiting-chips" id="waitingChips"></div>
+        <div class="waiting-count">Total: <strong id="waitingTotal">0</strong></div>
+    </div>
+
+    <script>
+        const ROOMS = [
+            { id: 1, name: 'Consultorio 1', num: '1', doctor: 'Dr. García',     status: 'calling',   patient: 'María López',      calledAt: '10:25' },
+            { id: 2, name: 'Consultorio 2', num: '2', doctor: 'Dra. Martínez',  status: 'attending', patient: 'Carlos Rodríguez', calledAt: '10:15' },
+            { id: 3, name: 'Consultorio 3', num: '3', doctor: 'Dr. Pérez',      status: 'idle',      patient: null,               calledAt: null    },
+            { id: 4, name: 'Consultorio 4', num: '4', doctor: 'Dra. Sánchez',   status: 'attending', patient: 'Ana Martínez',     calledAt: '10:10' },
+            { id: 5, name: 'Consultorio 5', num: '5', doctor: 'Dr. López',      status: 'idle',      patient: null,               calledAt: null    },
+            { id: 6, name: 'Consultorio 6', num: '6', doctor: 'Dra. Fernández', status: 'calling',   patient: 'Roberto Jiménez',  calledAt: '10:28' },
+        ];
+
+        const WAITING = [
+            { name: 'Sofía Castro',    room: 'C1' },
+            { name: 'Miguel Torres',   room: 'C2' },
+            { name: 'Laura Díaz',      room: 'C3' },
+            { name: 'Pedro Moreno',    room: 'C4' },
+            { name: 'Elena Ruiz',      room: 'C5' },
+            { name: 'Diego Herrera',   room: 'C6' },
+            { name: 'Carmen Ortiz',    room: 'C1' },
+            { name: 'Javier Navarro',  room: 'C2' },
+        ];
+
+        const sortOrder = { calling: 0, attending: 1, idle: 2 };
+
+        function statusLabel(s) {
+            return s === 'calling' ? '▶ Llamando' : s === 'attending' ? '● En Atención' : '○ Libre';
+        }
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent =
+                now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+            document.getElementById('date').textContent =
+                now.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' });
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('roomGrid');
+            const sorted = [...ROOMS].sort((a, b) => sortOrder[a.status] - sortOrder[b.status]);
+            grid.innerHTML = sorted.map(r => `
+                <div class="room-card room-card--${r.status}">
+                    <div class="card-top">
+                        <div class="card-room-number">${r.num}</div>
+                        <div class="card-status-badge">${statusLabel(r.status)}</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-patient">${r.patient || 'Sin paciente'}</div>
+                        <div class="card-doctor">${r.doctor}</div>
+                        ${r.calledAt ? `<div class="card-time">&#x23F0; Llamado ${r.calledAt}</div>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderAlert() {
+            const calling = ROOMS.filter(r => r.status === 'calling');
+            const strip = document.getElementById('alertStrip');
+            const items = document.getElementById('alertItems');
+            if (calling.length === 0) {
+                strip.classList.remove('visible');
+                return;
+            }
+            strip.classList.add('visible');
+            items.innerHTML = calling.map(r => `
+                <div class="alert-chip">
+                    <div>
+                        <div class="alert-chip__room">${r.name}</div>
+                        <div class="alert-chip__name">${r.patient}</div>
+                        <div class="alert-chip__doc">${r.doctor}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderWaiting() {
+            const chips = document.getElementById('waitingChips');
+            chips.innerHTML = WAITING.map(w => `
+                <div class="waiting-chip">
+                    <span class="waiting-chip__room-tag">${w.room}</span>
+                    ${w.name}
+                </div>
+            `).join('');
+            document.getElementById('waitingTotal').textContent = WAITING.length;
+        }
+
+        function init() {
+            updateClock();
+            renderGrid();
+            renderAlert();
+            renderWaiting();
+            setInterval(updateClock, 1000);
+        }
+
+        init();
+    </script>
+</body>
+</html>

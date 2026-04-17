@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turnos - Spotlight</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #e6edf3;
+            --muted: #7d8590;
+            --calling: #f0e040;
+            --calling-dim: #2d2800;
+            --attending: #3fb950;
+            --attending-dim: #0d2a16;
+            --idle-text: #484f58;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            color: var(--text);
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+        }
+
+        /* ─── HEADER ─── */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand { font-size: 1rem; color: var(--muted); letter-spacing: 0.5px; }
+
+        .clock-block { text-align: right; }
+        .clock-block__time {
+            font-size: 2.2rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            font-variant-numeric: tabular-nums;
+        }
+        .clock-block__date { font-size: 0.8rem; color: var(--muted); margin-top: 2px; text-transform: capitalize; }
+
+        /* ─── MAIN LAYOUT: spotlight left, rooms right ─── */
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 0;
+            min-height: 0;
+        }
+
+        /* ─── SPOTLIGHT ─── */
+        .spotlight {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 48px;
+            border-right: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spotlight::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(240,224,64,0.07) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .spotlight.has-calling::before { opacity: 1; }
+
+        .spotlight__idle {
+            text-align: center;
+            color: var(--muted);
+        }
+        .spotlight__idle-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+        .spotlight__idle-text { font-size: 1.2rem; }
+
+        .spotlight__card {
+            text-align: center;
+            display: none;
+        }
+        .spotlight__card.visible { display: block; }
+
+        .spotlight__eyebrow {
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--calling);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .spotlight__blink-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--calling);
+            border-radius: 50%;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        .spotlight__room {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: var(--muted);
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .spotlight__name {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.05;
+            color: var(--calling);
+            margin-bottom: 24px;
+            text-shadow: 0 0 40px rgba(240,224,64,0.4);
+        }
+
+        .spotlight__subtext {
+            font-size: 1.1rem;
+            color: var(--muted);
+        }
+
+        /* multiple calling: show queue */
+        .spotlight__queue {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 480px;
+        }
+        .spotlight__queue.visible { display: flex; }
+
+        .queue-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 24px;
+            border-radius: 12px;
+            background: var(--calling-dim);
+            border: 2px solid var(--calling);
+        }
+        .queue-item:not(:first-child) {
+            opacity: 0.6;
+            border-color: rgba(240,224,64,0.3);
+        }
+        .queue-item__room {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--calling);
+            white-space: nowrap;
+        }
+        .queue-item__name { font-size: 1.5rem; font-weight: 700; }
+        .queue-item__doctor { font-size: 0.85rem; color: var(--muted); margin-top: 2px; }
+
+        /* ─── ROOMS PANEL ─── */
+        .rooms-panel {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            background: var(--surface);
+        }
+
+        .rooms-panel__heading {
+            padding: 16px 20px 10px;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--muted);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: var(--surface);
+            z-index: 1;
+        }
+
+        .room-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+
+        .room-row--calling { background: var(--calling-dim); }
+        .room-row--attending { background: var(--attending-dim); }
+        .room-row--idle { opacity: 0.45; }
+
+        .room-row__indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .room-row__indicator--calling {
+            background: var(--calling);
+            box-shadow: 0 0 8px var(--calling);
+            animation: blink 1s step-end infinite;
+        }
+        .room-row__indicator--attending {
+            background: var(--attending);
+            box-shadow: 0 0 8px var(--attending);
+        }
+        .room-row__indicator--idle {
+            background: var(--border);
+        }
+
+        .room-row__number {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--muted);
+            min-width: 28px;
+        }
+
+        .room-row__info { flex: 1; min-width: 0; }
+
+        .room-row__patient {
+            font-size: 1rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .room-row__patient--calling { color: var(--calling); }
+        .room-row__patient--attending { color: var(--attending); }
+        .room-row__patient--idle { color: var(--idle-text); font-style: italic; font-weight: 400; }
+
+        .room-row__doctor {
+            font-size: 0.75rem;
+            color: var(--muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 2px;
+        }
+
+        .room-row__time {
+            font-size: 0.75rem;
+            color: var(--muted);
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 14px 40px;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .stat { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--muted); }
+        .stat strong { color: var(--text); font-size: 1rem; }
+        .stat span.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        .dot--c { background: var(--calling); }
+        .dot--a { background: var(--attending); }
+        .dot--w { background: var(--muted); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">Sistema de Turnos &mdash; Sala de Espera</div>
+        <div class="clock-block">
+            <div class="clock-block__time" id="clock">00:00:00</div>
+            <div class="clock-block__date" id="date"></div>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- LEFT: spotlight for active calls -->
+        <section class="spotlight" id="spotlight">
+            <!-- single call -->
+            <div class="spotlight__idle" id="idleState">
+                <div class="spotlight__idle-icon">&#x23F3;</div>
+                <div class="spotlight__idle-text">Sin llamados activos</div>
+            </div>
+
+            <div class="spotlight__card" id="singleCard">
+                <div class="spotlight__eyebrow">
+                    <div class="spotlight__blink-dot"></div>
+                    Llamando ahora
+                    <div class="spotlight__blink-dot"></div>
+                </div>
+                <div class="spotlight__room" id="singleRoom"></div>
+                <div class="spotlight__name" id="singleName"></div>
+                <div class="spotlight__subtext" id="singleDoctor"></div>
+            </div>
+
+            <div class="spotlight__queue" id="multiQueue"></div>
+        </section>
+
+        <!-- RIGHT: all rooms status -->
+        <aside class="rooms-panel" id="roomsPanel">
+            <div class="rooms-panel__heading">Todos los consultorios</div>
+        </aside>
+    </div>
+
+    <footer>
+        <div class="stat"><span class="dot dot--c"></span> Llamando: <strong id="statC">0</strong></div>
+        <div class="stat"><span class="dot dot--a"></span> En atención: <strong id="statA">0</strong></div>
+        <div class="stat"><span class="dot dot--w"></span> En espera: <strong id="statW">8</strong></div>
+    </footer>
+
+    <script>
+        const ROOMS = [
+            { id: 1, name: 'Consultorio 1', short: 'C1', doctor: 'Dr. García',     status: 'calling',   patient: 'María López',      calledAt: '10:25' },
+            { id: 2, name: 'Consultorio 2', short: 'C2', doctor: 'Dra. Martínez',  status: 'attending', patient: 'Carlos Rodríguez', calledAt: '10:15' },
+            { id: 3, name: 'Consultorio 3', short: 'C3', doctor: 'Dr. Pérez',      status: 'idle',      patient: null,               calledAt: null    },
+            { id: 4, name: 'Consultorio 4', short: 'C4', doctor: 'Dra. Sánchez',   status: 'attending', patient: 'Ana Martínez',     calledAt: '10:10' },
+            { id: 5, name: 'Consultorio 5', short: 'C5', doctor: 'Dr. López',      status: 'idle',      patient: null,               calledAt: null    },
+            { id: 6, name: 'Consultorio 6', short: 'C6', doctor: 'Dra. Fernández', status: 'calling',   patient: 'Roberto Jiménez',  calledAt: '10:28' },
+        ];
+
+        const sortOrder = { calling: 0, attending: 1, idle: 2 };
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent =
+                now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+            document.getElementById('date').textContent =
+                now.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' });
+        }
+
+        function renderSpotlight() {
+            const calling = ROOMS.filter(r => r.status === 'calling');
+            const spotlight = document.getElementById('spotlight');
+            const idleState = document.getElementById('idleState');
+            const singleCard = document.getElementById('singleCard');
+            const multiQueue = document.getElementById('multiQueue');
+
+            idleState.style.display = 'none';
+            singleCard.classList.remove('visible');
+            multiQueue.classList.remove('visible');
+            spotlight.classList.remove('has-calling');
+
+            if (calling.length === 0) {
+                idleState.style.display = 'block';
+                return;
+            }
+
+            spotlight.classList.add('has-calling');
+
+            if (calling.length === 1) {
+                const r = calling[0];
+                singleCard.classList.add('visible');
+                document.getElementById('singleRoom').textContent = r.name.toUpperCase();
+                document.getElementById('singleName').textContent = r.patient;
+                document.getElementById('singleDoctor').textContent = r.doctor + ' · Llamado: ' + r.calledAt;
+            } else {
+                multiQueue.classList.add('visible');
+                multiQueue.innerHTML = calling.map(r => `
+                    <div class="queue-item">
+                        <div class="queue-item__room">${r.short}</div>
+                        <div>
+                            <div class="queue-item__name">${r.patient}</div>
+                            <div class="queue-item__doctor">${r.doctor}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function renderRooms() {
+            const panel = document.getElementById('roomsPanel');
+            const heading = panel.querySelector('.rooms-panel__heading');
+            const rows = [...ROOMS].sort((a, b) => sortOrder[a.status] - sortOrder[b.status]).map(r => {
+                const cls = r.status;
+                return `
+                    <div class="room-row room-row--${cls}">
+                        <div class="room-row__indicator room-row__indicator--${cls}"></div>
+                        <div class="room-row__number">${r.short}</div>
+                        <div class="room-row__info">
+                            <div class="room-row__patient room-row__patient--${cls}">
+                                ${r.patient || 'Libre'}
+                            </div>
+                            <div class="room-row__doctor">${r.doctor}</div>
+                        </div>
+                        <div class="room-row__time">${r.calledAt || ''}</div>
+                    </div>
+                `;
+            }).join('');
+            panel.innerHTML = '';
+            panel.appendChild(heading);
+            panel.insertAdjacentHTML('beforeend', rows);
+        }
+
+        function updateStats() {
+            document.getElementById('statC').textContent = ROOMS.filter(r => r.status === 'calling').length;
+            document.getElementById('statA').textContent = ROOMS.filter(r => r.status === 'attending').length;
+        }
+
+        function init() {
+            updateClock();
+            renderSpotlight();
+            renderRooms();
+            updateStats();
+            setInterval(updateClock, 1000);
+        }
+
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turnos - Vista por Consultorios</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --primary: #0ea5e9;
+            --success: #22c55e;
+            --warning: #f97316;
+            --danger: #ef4444;
+            --dark: #020617;
+            --darker: #0a0f1a;
+            --gray: #475569;
+            --light: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--dark);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .header {
+            background: linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
+            padding: 20px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .header__brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .header__logo {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), #0284c7);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header__text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header__title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .header__subtitle {
+            font-size: 0.85rem;
+            opacity: 0.5;
+            margin-top: 2px;
+        }
+
+        .header__time {
+            text-align: right;
+        }
+
+        .header__clock {
+            font-size: 2rem;
+            font-weight: 300;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 1px;
+        }
+
+        .header__date {
+            font-size: 0.85rem;
+            opacity: 0.5;
+            margin-top: 4px;
+            text-transform: capitalize;
+        }
+
+        .rooms-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+            padding: 24px 32px;
+        }
+
+        .room-panel {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .room-panel--active {
+            border-color: var(--warning);
+            box-shadow: 0 0 30px rgba(249, 115, 22, 0.15);
+        }
+
+        .room-panel__header {
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .room-panel__title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .room-panel__icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .room-panel__status {
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status--calling {
+            background: var(--warning);
+            color: black;
+            animation: status-pulse 1s ease-in-out infinite;
+        }
+
+        .status--attending {
+            background: var(--success);
+            color: black;
+        }
+
+        .status--empty {
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.4);
+        }
+
+        @keyframes status-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        .room-panel__body {
+            padding: 20px;
+            min-height: 120px;
+        }
+
+        .room-patient {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .room-patient__name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .room-patient__name--calling {
+            color: var(--warning);
+            animation: name-glow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes name-glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(249, 115, 22, 0.4); }
+            50% { text-shadow: 0 0 40px rgba(249, 115, 22, 0.7); }
+        }
+
+        .room-patient__doctor {
+            font-size: 0.95rem;
+            opacity: 0.6;
+        }
+
+        .room-patient__called {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            opacity: 0.5;
+            margin-top: 8px;
+        }
+
+        .room-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            color: rgba(255,255,255,0.2);
+            gap: 10px;
+        }
+
+        .room-empty__icon {
+            width: 44px;
+            height: 44px;
+            border: 2px dashed rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .room-empty__text {
+            font-size: 0.9rem;
+        }
+
+        .waiting-bar {
+            background: rgba(255,255,255,0.03);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            overflow-x: auto;
+        }
+
+        .waiting-bar__label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            opacity: 0.6;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .waiting-bar__count {
+            background: var(--primary);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .waiting-ticker {
+            display: flex;
+            gap: 12px;
+            flex-wrap: nowrap;
+        }
+
+        .waiting-chip {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .waiting-chip__name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .waiting-chip__room {
+            font-size: 0.75rem;
+            opacity: 0.5;
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .stats-footer {
+            display: flex;
+            justify-content: center;
+            gap: 64px;
+            padding: 16px 32px;
+            background: var(--darker);
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat__value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .stat__value--warning { color: var(--warning); }
+        .stat__value--success { color: var(--success); }
+        .stat__value--primary { color: var(--primary); }
+
+        .stat__label {
+            font-size: 0.75rem;
+            opacity: 0.4;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .calling-flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1000;
+            display: none;
+        }
+
+        .calling-flash.active {
+            display: block;
+            animation: flash 2s ease-in-out infinite;
+        }
+
+        @keyframes flash {
+            0%, 100% { background: transparent; }
+            50% { background: rgba(249, 115, 22, 0.08); }
+        }
+
+        @media (max-width: 768px) {
+            .header { padding: 14px 16px; flex-direction: column; gap: 12px; }
+            .header__time { text-align: center; }
+            .rooms-container { padding: 16px; grid-template-columns: 1fr; }
+            .waiting-bar { padding: 12px 16px; }
+            .stats-footer { gap: 32px; padding: 12px 16px; }
+            .stat__value { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="calling-flash" id="callingFlash"></div>
+
+    <header class="header">
+        <div class="header__brand">
+            <div class="header__logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+            </div>
+            <div class="header__text">
+                <div class="header__title">Sistema de Turnos</div>
+                <div class="header__subtitle">Estado en tiempo real de consultorios</div>
+            </div>
+        </div>
+        <div class="header__time">
+            <div class="header__clock" id="clock">00:00:00</div>
+            <div class="header__date" id="date"></div>
+        </div>
+    </header>
+
+    <main class="rooms-container" id="roomsContainer">
+        <!-- Room panels will be dynamically populated -->
+    </main>
+
+    <div class="waiting-bar">
+        <div class="waiting-bar__label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            Próximos
+            <span class="waiting-bar__count" id="waitingCount">0</span>
+        </div>
+        <div class="waiting-ticker" id="waitingTicker">
+            <!-- Waiting chips will be dynamically populated -->
+        </div>
+    </div>
+
+    <footer class="stats-footer">
+        <div class="stat">
+            <div class="stat__value stat__value--warning" id="statWaiting">0</div>
+            <div class="stat__label">En Espera</div>
+        </div>
+        <div class="stat">
+            <div class="stat__value stat__value--success" id="statAttending">0</div>
+            <div class="stat__label">En Atención</div>
+        </div>
+        <div class="stat">
+            <div class="stat__value stat__value--primary" id="statCalled">0</div>
+            <div class="stat__label">Siendo Llamados</div>
+        </div>
+    </footer>
+
+    <script>
+        const SAMPLE_DATA = {
+            rooms: [
+                { id: 1, name: 'Consultorio 1', doctor: 'Dr. Alejandro García', status: 'calling', patient: 'Patricia López', calledAt: '10:32' },
+                { id: 2, name: 'Consultorio 2', doctor: 'Dra. María Fernández', status: 'attending', patient: 'Roberto Sánchez', calledAt: '10:25' },
+                { id: 3, name: 'Consultorio 3', doctor: 'Dr. Carlos Pérez', status: 'empty', patient: null },
+                { id: 4, name: 'Consultorio 4', doctor: 'Dra. Ana Martínez', status: 'attending', patient: 'Carmen Torres', calledAt: '10:20' },
+                { id: 5, name: 'Consultorio 5', doctor: 'Dr. Juan López', status: 'calling', patient: 'Miguel Díaz', calledAt: '10:35' },
+                { id: 6, name: 'Consultorio 6', doctor: 'Dra. Elena Rodríguez', status: 'empty', patient: null }
+            ],
+            waiting: [
+                { name: 'Sofía Castro', room: 'Consultorio 1' },
+                { name: 'Diego Herrera', room: 'Consultorio 2' },
+                { name: 'Laura Díaz', room: 'Consultorio 3' },
+                { name: 'Pedro Moreno', room: 'Consultorio 4' },
+                { name: 'Elena Ruiz', room: 'Consultorio 5' },
+                { name: 'Carmen Ortiz', room: 'Consultorio 6' },
+                { name: 'Javier Navarro', room: 'Consultorio 1' },
+                { name: 'Isabel Vargas', room: 'Consultorio 2' }
+            ]
+        };
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+            document.getElementById('date').textContent = now.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        }
+
+        function renderRooms() {
+            const container = document.getElementById('roomsContainer');
+            container.innerHTML = SAMPLE_DATA.rooms.map(room => `
+                <div class="room-panel ${room.status !== 'empty' ? 'room-panel--active' : ''}">
+                    <div class="room-panel__header">
+                        <div class="room-panel__title">
+                            <div class="room-panel__icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                            </div>
+                            ${room.name}
+                        </div>
+                        <span class="room-panel__status status--${room.status}">
+                            ${room.status === 'calling' ? 'Llamando' : room.status === 'attending' ? 'En Atención' : 'Libre'}
+                        </span>
+                    </div>
+                    <div class="room-panel__body">
+                        ${room.patient ? `
+                            <div class="room-patient">
+                                <div class="room-patient__name ${room.status === 'calling' ? 'room-patient__name--calling' : ''}">${room.patient}</div>
+                                <div class="room-patient__doctor">${room.doctor}</div>
+                                <div class="room-patient__called">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    ${room.status === 'calling' ? `Llamado a las ${room.calledAt}` : `Desde las ${room.calledAt}`}
+                                </div>
+                            </div>
+                        ` : `
+                            <div class="room-empty">
+                                <div class="room-empty__icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                    </svg>
+                                </div>
+                                <span class="room-empty__text">Consultorio libre</span>
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `).join('');
+            checkCalling();
+        }
+
+        function renderWaiting() {
+            const ticker = document.getElementById('waitingTicker');
+            ticker.innerHTML = SAMPLE_DATA.waiting.map(w => `
+                <div class="waiting-chip">
+                    <span class="waiting-chip__name">${w.name}</span>
+                    <span class="waiting-chip__room">${w.room}</span>
+                </div>
+            `).join('');
+            document.getElementById('waitingCount').textContent = SAMPLE_DATA.waiting.length;
+        }
+
+        function updateStats() {
+            document.getElementById('statWaiting').textContent = SAMPLE_DATA.waiting.length;
+            document.getElementById('statAttending').textContent = SAMPLE_DATA.rooms.filter(r => r.status === 'attending').length;
+            document.getElementById('statCalled').textContent = SAMPLE_DATA.rooms.filter(r => r.status === 'calling').length;
+        }
+
+        function checkCalling() {
+            const hasCalling = SAMPLE_DATA.rooms.some(r => r.status === 'calling');
+            document.getElementById('callingFlash').classList.toggle('active', hasCalling);
+        }
+
+        function init() {
+            updateClock();
+            renderRooms();
+            renderWaiting();
+            updateStats();
+            setInterval(updateClock, 1000);
+            setInterval(renderRooms, 5000);
+            setInterval(renderWaiting, 5000);
+            setInterval(updateStats, 5000);
+        }
+
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turnos - Llamado por Consultorio</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --primary: #0066cc;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .header__brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header__icon {
+            width: 56px;
+            height: 56px;
+            background: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header__title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .header__subtitle {
+            font-size: 0.95rem;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .header__datetime {
+            text-align: right;
+        }
+
+        .header__clock {
+            font-size: 2.5rem;
+            font-weight: 300;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 2px;
+        }
+
+        .header__date {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 4px;
+            text-transform: capitalize;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            padding: 24px 40px;
+        }
+
+        .consulting-room {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .consulting-room:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .consulting-room__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .consulting-room__name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .consulting-room__badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge--calling {
+            background: var(--warning);
+            color: #000;
+            animation: pulse-badge 1s ease-in-out infinite;
+        }
+
+        .badge--attending {
+            background: var(--success);
+            color: #000;
+        }
+
+        .badge--empty {
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.5);
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .consulting-room__content {
+            padding: 20px;
+            min-height: 140px;
+        }
+
+        .patient-card {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .patient-card__name {
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .patient-card__name--highlight {
+            color: var(--warning);
+            text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+            animation: glow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(245, 158, 11, 0.5); }
+            50% { text-shadow: 0 0 40px rgba(245, 158, 11, 0.8), 0 0 60px rgba(245, 158, 11, 0.4); }
+        }
+
+        .patient-card__doctor {
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+
+        .patient-card__time {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            opacity: 0.6;
+            margin-top: 8px;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+            color: rgba(255,255,255,0.3);
+            gap: 12px;
+        }
+
+        .empty-state__icon {
+            width: 48px;
+            height: 48px;
+            border: 2px dashed rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-state__text {
+            font-size: 0.9rem;
+        }
+
+        .waiting-section {
+            padding: 0 40px 40px;
+        }
+
+        .waiting-section__header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .waiting-section__title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        .waiting-section__count {
+            background: rgba(255,255,255,0.1);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .waiting-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .waiting-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 12px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 180px;
+        }
+
+        .waiting-item__name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .waiting-item__room {
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        .calling-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(245, 158, 11, 0.15);
+            pointer-events: none;
+            animation: overlay-flash 2s ease-in-out infinite;
+            z-index: 1000;
+            display: none;
+        }
+
+        .calling-overlay.active {
+            display: block;
+        }
+
+        @keyframes overlay-flash {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            padding: 20px 40px;
+            background: rgba(255,255,255,0.03);
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat__value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--warning);
+        }
+
+        .stat__label {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 768px) {
+            .header { padding: 16px 20px; flex-direction: column; gap: 16px; }
+            .header__datetime { text-align: center; }
+            .main-grid { padding: 16px 20px; gap: 16px; }
+            .waiting-section { padding: 0 20px 20px; }
+            .patient-card__name { font-size: 1.3rem; }
+            .stats-bar { gap: 24px; padding: 16px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="calling-overlay" id="callingOverlay"></div>
+
+    <header class="header">
+        <div class="header__brand">
+            <div class="header__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+            </div>
+            <div>
+                <div class="header__title">Llamado de Turnos</div>
+                <div class="header__subtitle">Centro de Salud - Sala de Espera</div>
+            </div>
+        </div>
+        <div class="header__datetime">
+            <div class="header__clock" id="clock">00:00:00</div>
+            <div class="header__date" id="date"></div>
+        </div>
+    </header>
+
+    <main class="main-grid" id="roomsGrid">
+        <!-- Rooms will be dynamically populated -->
+    </main>
+
+    <section class="waiting-section">
+        <div class="waiting-section__header">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span class="waiting-section__title">Próximos en ser llamados</span>
+            <span class="waiting-section__count" id="waitingCount">0</span>
+        </div>
+        <div class="waiting-list" id="waitingList">
+            <!-- Waiting patients will be dynamically populated -->
+        </div>
+    </section>
+
+    <div class="stats-bar">
+        <div class="stat">
+            <div class="stat__value" id="statWaiting">0</div>
+            <div class="stat__label">En Espera</div>
+        </div>
+        <div class="stat">
+            <div class="stat__value" id="statAttending">0</div>
+            <div class="stat__label">En Atención</div>
+        </div>
+        <div class="stat">
+            <div class="stat__value" id="statRooms">0</div>
+            <div class="stat__label">Consultorios Activos</div>
+        </div>
+    </div>
+
+    <script>
+        const SAMPLE_DATA = {
+            rooms: [
+                { id: 1, name: 'Consultorio 1', doctor: 'Dr. García', status: 'calling', patient: 'María López', calledAt: '10:25' },
+                { id: 2, name: 'Consultorio 2', doctor: 'Dra. Martínez', status: 'attending', patient: 'Carlos Rodríguez', calledAt: '10:15' },
+                { id: 3, name: 'Consultorio 3', doctor: 'Dr. Pérez', status: 'empty', patient: null },
+                { id: 4, name: 'Consultorio 4', doctor: 'Dra. Sánchez', status: 'attending', patient: 'Ana Martínez', calledAt: '10:10' },
+                { id: 5, name: 'Consultorio 5', doctor: 'Dr. López', status: 'empty', patient: null },
+                { id: 6, name: 'Consultorio 6', doctor: 'Dra. Fernández', status: 'calling', patient: 'Roberto Jiménez', calledAt: '10:28' }
+            ],
+            waiting: [
+                { name: 'Sofía Castro', room: 'Consultorio 1' },
+                { name: 'Miguel Torres', room: 'Consultorio 2' },
+                { name: 'Laura Díaz', room: 'Consultorio 3' },
+                { name: 'Pedro Moreno', room: 'Consultorio 4' },
+                { name: 'Elena Ruiz', room: 'Consultorio 5' },
+                { name: 'Diego Herrera', room: 'Consultorio 6' },
+                { name: 'Carmen Ortiz', room: 'Consultorio 1' },
+                { name: 'Javier Navarro', room: 'Consultorio 2' }
+            ]
+        };
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+            document.getElementById('date').textContent = now.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        }
+
+        function renderRooms() {
+            const grid = document.getElementById('roomsGrid');
+            grid.innerHTML = SAMPLE_DATA.rooms.map(room => `
+                <div class="consulting-room">
+                    <div class="consulting-room__header">
+                        <span class="consulting-room__name">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            ${room.name}
+                        </span>
+                        <span class="consulting-room__badge badge--${room.status}">
+                            ${room.status === 'calling' ? 'Llamando' : room.status === 'attending' ? 'En Atención' : 'Libre'}
+                        </span>
+                    </div>
+                    <div class="consulting-room__content">
+                        ${room.patient ? `
+                            <div class="patient-card">
+                                <div class="patient-card__name ${room.status === 'calling' ? 'patient-card__name--highlight' : ''}">${room.patient}</div>
+                                <div class="patient-card__doctor">${room.doctor}</div>
+                                <div class="patient-card__time">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    Llamado a las ${room.calledAt}
+                                </div>
+                            </div>
+                        ` : `
+                            <div class="empty-state">
+                                <div class="empty-state__icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                    </svg>
+                                </div>
+                                <span class="empty-state__text">Sin paciente</span>
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderWaiting() {
+            const list = document.getElementById('waitingList');
+            list.innerHTML = SAMPLE_DATA.waiting.map(w => `
+                <div class="waiting-item">
+                    <span class="waiting-item__name">${w.name}</span>
+                    <span class="waiting-item__room">${w.room}</span>
+                </div>
+            `).join('');
+            document.getElementById('waitingCount').textContent = SAMPLE_DATA.waiting.length;
+        }
+
+        function updateStats() {
+            document.getElementById('statWaiting').textContent = SAMPLE_DATA.waiting.length;
+            document.getElementById('statAttending').textContent = SAMPLE_DATA.rooms.filter(r => r.status !== 'empty').length;
+            document.getElementById('statRooms').textContent = SAMPLE_DATA.rooms.filter(r => r.status !== 'empty').length;
+        }
+
+        function checkCalling() {
+            const hasCalling = SAMPLE_DATA.rooms.some(r => r.status === 'calling');
+            document.getElementById('callingOverlay').classList.toggle('active', hasCalling);
+        }
+
+        function init() {
+            updateClock();
+            renderRooms();
+            renderWaiting();
+            updateStats();
+            checkCalling();
+            setInterval(updateClock, 1000);
+            setInterval(renderRooms, 5000);
+            setInterval(checkCalling, 5000);
+        }
+
+        init();
+    </script>
+</body>
+</html>

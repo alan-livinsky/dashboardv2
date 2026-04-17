@@ -189,18 +189,14 @@
             color: var(--text-heading);
         }
 
-        .btn-row {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
         .btn-submit {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            padding: 12px 28px;
+            padding: 12px 36px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
             font-weight: 700;
             font-size: 0.85rem;
             letter-spacing: 0.5px;
@@ -209,37 +205,22 @@
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s ease;
-            flex: 1;
-            min-width: 180px;
-        }
-
-        .btn-submit--admin {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
             box-shadow: 0 2px 8px rgba(0, 146, 204, 0.2);
         }
 
-        .btn-submit--admin:hover {
+        .btn-submit:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 146, 204, 0.3);
         }
 
-        .btn-submit--sala {
-            background: #ffffff;
-            color: var(--primary-dark);
-            border: 2px solid var(--primary);
-            box-shadow: 0 2px 8px rgba(0, 146, 204, 0.1);
+        .btn-submit:active {
+            transform: translateY(0);
         }
 
-        .btn-submit--sala:hover {
-            transform: translateY(-2px);
-            background: #e3f2fd;
-            box-shadow: 0 4px 12px rgba(0, 146, 204, 0.2);
+        .btn-submit::before {
+            content: '→';
+            font-size: 1.1rem;
         }
-
-        .btn-submit:active { transform: translateY(0); }
-
-        .btn-label-icon { font-size: 1.1rem; }
 
         .footer {
             flex-shrink: 0;
@@ -273,7 +254,7 @@
                 <p class="card-select__subtitle">Elija los consultorios que desea visualizar para el día de hoy</p>
             </div>
 
-            <form id="consulting_room-form">
+            <form id="consulting_room-form" onsubmit="return redirectToTurnos()">
                 <div class="room-grid">
                     {% if consulting_rooms %}
                         {% for cr in consulting_rooms %}
@@ -290,14 +271,7 @@
                         </div>
                     {% endif %}
                 </div>
-                <div class="btn-row">
-                    <button type="button" class="btn-submit btn-submit--sala" onclick="redirectTo('sala_espera')">
-                        <span class="btn-label-icon">&#x1F4FA;</span> Pantalla Sala de Espera
-                    </button>
-                    <button type="button" class="btn-submit btn-submit--admin" onclick="redirectTo('turnos')">
-                        <span class="btn-label-icon">&#x1F4CB;</span> Vista Administrativa
-                    </button>
-                </div>
+                <button type="submit" class="btn-submit">Ver turnos</button>
             </form>
         </div>
     </div>
@@ -321,12 +295,13 @@
     setInterval(tick, 1000);
 })();
 
-function redirectTo(destination) {
+function redirectToTurnos() {
     const form = document.getElementById('consulting_room-form');
     const checkboxes = form.querySelectorAll('input[name="cr"]:checked');
     const params = new URLSearchParams();
     checkboxes.forEach(cb => params.append('consulting_rooms', cb.value));
-    window.location.href = `/${destination}?${params.toString()}`;
+    window.location.href = `/turnos?${params.toString()}`;
+    return false;
 }
 </script>
 {% endblock %}

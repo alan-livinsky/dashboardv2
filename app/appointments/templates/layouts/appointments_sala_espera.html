@@ -1,0 +1,591 @@
+{% extends 'layouts/base.html' %}
+
+{% block head %}
+    <title>Sala de Espera — {{ institution }}</title>
+    <link rel="icon" href="/static/images/favicon.ico">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-store">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:             #0a0a0a;
+            --panel:          #111111;
+            --border:         #222222;
+            --text:           #f0f0f0;
+            --muted:          #666666;
+            --calling:        #ffcc00;
+            --calling-dim:    #1a1500;
+            --calling-flash:  #e6b800;
+            --attending:      #00e676;
+            --attending-dim:  #001a0d;
+            --idle-text:      #333333;
+        }
+
+        /* ── Override base template interference ── */
+        body, html {
+            background: var(--bg) !important;
+            color: var(--text) !important;
+            height: 100%;
+            overflow: hidden;
+        }
+        body > footer { display: none !important; }
+        .container-table100 {
+            background: var(--bg) !important;
+            align-items: stretch !important;
+            justify-content: flex-start !important;
+            flex-wrap: nowrap !important;
+            min-height: unset !important;
+        }
+
+        body {
+            font-family: 'Courier New', 'Roboto Mono', 'Consolas', monospace;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* ── TOP BAR ── */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 32px;
+            background: #050505;
+            border-bottom: 2px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .top-bar__brand {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .top-bar__right { text-align: right; }
+
+        .top-bar__clock {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            font-variant-numeric: tabular-nums;
+            color: var(--calling);
+            line-height: 1;
+        }
+
+        .top-bar__date {
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 1px;
+            margin-top: 4px;
+            text-transform: capitalize;
+        }
+
+        /* ── CALLING BANNER — full-width, impossible to miss ── */
+        .calling-banner {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            padding: 0 32px;
+            background: var(--calling);
+            color: #000;
+            min-height: 130px;
+            flex-shrink: 0;
+            animation: banner-flash 0.9s step-end infinite;
+        }
+
+        .calling-banner.active { display: flex; }
+
+        @keyframes banner-flash {
+            0%,  49% { background: var(--calling); }
+            50%, 100% { background: var(--calling-flash); }
+        }
+
+        .calling-banner__tag {
+            font-size: 1rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            opacity: 0.75;
+            white-space: nowrap;
+        }
+
+        .calling-banner__room {
+            font-size: 4.5rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .calling-banner__divider {
+            width: 4px;
+            height: 70px;
+            background: rgba(0,0,0,0.25);
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .calling-banner__patient {
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1.1;
+            max-width: 560px;
+        }
+
+        .calling-banner__doctor {
+            font-size: 1rem;
+            opacity: 0.6;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        /* multiple calling: stack vertically inside banner */
+        .calling-banner__multi {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            max-width: 900px;
+            padding: 16px 0;
+        }
+
+        .multi-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(0,0,0,0.15);
+            border-radius: 6px;
+            padding: 10px 20px;
+        }
+
+        .multi-item__room  { font-size: 1.6rem; font-weight: 900; white-space: nowrap; }
+        .multi-item__name  { font-size: 1.4rem; font-weight: 700; flex: 1; }
+        .multi-item__doctor { font-size: 0.85rem; opacity: 0.65; }
+
+        /* ── BOARD ── */
+        .board {
+            flex: 1;
+            overflow-y: auto;
+            background: var(--bg);
+        }
+
+        .board::-webkit-scrollbar { width: 4px; }
+        .board::-webkit-scrollbar-track { background: transparent; }
+        .board::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+        .board-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .board-table thead th {
+            padding: 10px 28px;
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            background: #060606;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .board-table thead th:last-child { text-align: center; }
+
+        /* row states */
+        .board-row { border-bottom: 1px solid var(--border); }
+
+        .board-row--calling  { background: var(--calling-dim); animation: row-pulse 1s ease-in-out infinite; }
+        .board-row--attending { background: var(--attending-dim); }
+
+        @keyframes row-pulse {
+            0%, 100% { background: var(--calling-dim); }
+            50%       { background: #261f00; }
+        }
+
+        .board-row td { padding: 20px 28px; vertical-align: middle; }
+
+        /* cells */
+        .cell-room {
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            white-space: nowrap;
+        }
+        .cell-room--calling  { color: var(--calling); }
+        .cell-room--attending { color: var(--attending); }
+
+        .cell-patient { font-size: 1.5rem; font-weight: 700; }
+        .cell-patient--calling  { color: var(--calling); }
+        .cell-patient--attending { color: var(--text); }
+
+        .cell-doctor { font-size: 0.9rem; color: var(--muted); letter-spacing: 0.3px; }
+
+        .cell-status { text-align: center; }
+
+        .status-pill {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .status-pill--calling {
+            background: var(--calling);
+            color: #000;
+            animation: pill-blink 0.9s step-end infinite;
+        }
+
+        @keyframes pill-blink {
+            0%,  49% { opacity: 1; }
+            50%, 100% { opacity: 0.25; }
+        }
+
+        .status-pill--attending {
+            background: transparent;
+            color: var(--attending);
+            border: 1px solid var(--attending);
+        }
+
+        /* empty state */
+        .empty-board {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            color: var(--muted);
+            gap: 16px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .empty-board__icon { font-size: 3rem; opacity: 0.2; }
+
+        /* ── FOOTER STATS ── */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 32px;
+            background: #050505;
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .footer__brand {
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 1px;
+        }
+
+        .footer__stats { display: flex; gap: 32px; }
+
+        .footer-stat { display: flex; align-items: center; gap: 10px; }
+
+        .footer-stat__dot {
+            width: 9px; height: 9px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .footer-stat__dot--calling  { background: var(--calling); }
+        .footer-stat__dot--attending { background: var(--attending); }
+        .footer-stat__dot--waiting   { background: var(--muted); }
+
+        .footer-stat__label { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; }
+        .footer-stat__count { font-size: 0.75rem; font-weight: 700; color: var(--text); }
+
+        /* ── HIDDEN source tables (AJAX parsing target) ── */
+        #tabla_espera,
+        #tabla_atencion { display: none; }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div style="display:flex; flex-direction:column; height:100vh;">
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="top-bar__brand">{{ institution }} &mdash; Sala de Espera</div>
+        <div class="top-bar__right">
+            <div class="top-bar__clock" id="reloj">00:00:00</div>
+            <div class="top-bar__date"  id="fecha"></div>
+        </div>
+    </div>
+
+    <!-- CALLING BANNER (visible only when appointment.calling) -->
+    <div class="calling-banner" id="callingBanner">
+        <!-- populated by JS -->
+    </div>
+
+    <!-- BOARD (calling + attending rows) -->
+    <div class="board" id="board">
+        <table class="board-table" id="boardTable">
+            <thead>
+                <tr>
+                    <th>Consultorio</th>
+                    <th>Paciente</th>
+                    <th>Profesional</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody id="boardBody">
+                <!-- populated by JS from hidden tables below -->
+            </tbody>
+        </table>
+        <div class="empty-board" id="emptyBoard" style="display:none;">
+            <div class="empty-board__icon">&#x23F3;</div>
+            <div>Sin llamados activos</div>
+        </div>
+    </div>
+
+    <!-- FOOTER STATS -->
+    <div class="footer">
+        <div class="footer__brand">© {{ institution }} — Sistema de Gestión de Turnos</div>
+        <div class="footer__stats">
+            <div class="footer-stat">
+                <div class="footer-stat__dot footer-stat__dot--calling"></div>
+                <span class="footer-stat__label">Llamando:</span>
+                <span class="footer-stat__count" id="statCalling">0</span>
+            </div>
+            <div class="footer-stat">
+                <div class="footer-stat__dot footer-stat__dot--attending"></div>
+                <span class="footer-stat__label">En atención:</span>
+                <span class="footer-stat__count" id="statAttending">0</span>
+            </div>
+            <div class="footer-stat">
+                <div class="footer-stat__dot footer-stat__dot--waiting"></div>
+                <span class="footer-stat__label">En espera:</span>
+                <span class="footer-stat__count" id="statWaiting">0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── HIDDEN SOURCE TABLES — backend renders these; JS reads them ── -->
+    <!-- Audio fires automatically when a calling row is present -->
+    {% for appointment in appointments %}
+        {% if appointment.calling %}
+        <audio id="myAudio" autoplay>
+            <source src="../static/multimedia/timbre.ogg" type="audio/ogg">
+        </audio>
+        {% endif %}
+    {% endfor %}
+
+    <table id="tabla_atencion">
+        <thead><tr><th>Paciente</th><th>Profesional</th><th>Consultorio</th><th>Estado</th></tr></thead>
+        <tbody>
+        {% for appointment in appointments %}
+            {% if appointment.calling %}
+            <tr class="calling">
+                <td>{{ appointment.patient.rec_name }}</td>
+                <td>{{ appointment.healthprof.rec_name }}</td>
+                <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
+                <td>Llamando</td>
+            </tr>
+            {% elif appointment.attending %}
+            <tr class="registered">
+                <td>{{ appointment.patient.rec_name }}</td>
+                <td>{{ appointment.healthprof.rec_name }}</td>
+                <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
+                <td>En atención</td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <table id="tabla_espera">
+        <thead><tr><th>Paciente</th><th>Profesional</th><th>Consultorio</th><th>Estado</th></tr></thead>
+        <tbody>
+        {% for appointment in appointments %}
+            {% if appointment.state == 'confirmed' and
+                  not appointment.calling and
+                  not appointment.attending %}
+            <tr class="not_calling">
+                <td>{{ appointment.patient.rec_name }}</td>
+                <td>{{ appointment.healthprof.rec_name }}</td>
+                <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
+                <td>Esperando</td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+(function () {
+    /* ── Clock ── */
+    function tick() {
+        const el = document.getElementById('reloj');
+        if (!el) return;
+        el.textContent = new Date().toLocaleTimeString('es-AR', {
+            hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+        });
+    }
+    function updateDate() {
+        const el = document.getElementById('fecha');
+        if (!el) return;
+        el.textContent = new Date().toLocaleDateString('es-AR', {
+            weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+        });
+    }
+    tick(); updateDate();
+    setInterval(tick, 1000);
+    setInterval(updateDate, 60000);
+
+    /* ── Read hidden tables → build board ── */
+    function readRows(tableId, className) {
+        return Array.from(
+            document.querySelectorAll(`#${tableId} tbody tr.${className}`)
+        ).map(tr => {
+            const cells = tr.querySelectorAll('td');
+            return {
+                patient:  cells[0] ? cells[0].textContent.trim() : '',
+                doctor:   cells[1] ? cells[1].textContent.trim() : '',
+                room:     cells[2] ? cells[2].textContent.trim() : '',
+                status:   cells[3] ? cells[3].textContent.trim() : '',
+            };
+        });
+    }
+
+    function renderBoard() {
+        const calling   = readRows('tabla_atencion', 'calling');
+        const attending = readRows('tabla_atencion', 'registered');
+        const waiting   = readRows('tabla_espera',   'not_calling');
+
+        /* ── Calling banner ── */
+        const banner = document.getElementById('callingBanner');
+        if (calling.length === 0) {
+            banner.classList.remove('active');
+            banner.innerHTML = '';
+        } else if (calling.length === 1) {
+            const r = calling[0];
+            banner.classList.add('active');
+            banner.innerHTML = `
+                <div class="calling-banner__tag">&#9654; Llamando</div>
+                <div class="calling-banner__room">${escHtml(r.room)}</div>
+                <div class="calling-banner__divider"></div>
+                <div>
+                    <div class="calling-banner__patient">${escHtml(r.patient)}</div>
+                    <div class="calling-banner__doctor">${escHtml(r.doctor)}</div>
+                </div>
+            `;
+        } else {
+            banner.classList.add('active');
+            banner.innerHTML = `
+                <div class="calling-banner__tag">&#9654; Llamando</div>
+                <div class="calling-banner__multi">
+                    ${calling.map(r => `
+                        <div class="multi-item">
+                            <div class="multi-item__room">${escHtml(r.room)}</div>
+                            <div>
+                                <div class="multi-item__name">${escHtml(r.patient)}</div>
+                                <div class="multi-item__doctor">${escHtml(r.doctor)}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        /* ── Board rows: calling first, then attending ── */
+        const bodyEl   = document.getElementById('boardBody');
+        const emptyEl  = document.getElementById('emptyBoard');
+        const tableEl  = document.getElementById('boardTable');
+        const allActive = [...calling, ...attending];
+
+        if (allActive.length === 0) {
+            tableEl.style.display = 'none';
+            emptyEl.style.display = 'flex';
+        } else {
+            tableEl.style.display = '';
+            emptyEl.style.display = 'none';
+            bodyEl.innerHTML = [
+                ...calling.map(r => boardRow(r, 'calling')),
+                ...attending.map(r => boardRow(r, 'attending')),
+            ].join('');
+        }
+
+        /* ── Footer counts ── */
+        document.getElementById('statCalling').textContent  = calling.length;
+        document.getElementById('statAttending').textContent = attending.length;
+        document.getElementById('statWaiting').textContent   = waiting.length;
+    }
+
+    function boardRow(r, state) {
+        const pillLabel = state === 'calling' ? '&#9654; Llamando' : '&#9679; En atención';
+        return `
+            <tr class="board-row board-row--${state}">
+                <td class="cell-room cell-room--${state}">${escHtml(r.room)}</td>
+                <td class="cell-patient cell-patient--${state}">${escHtml(r.patient)}</td>
+                <td class="cell-doctor">${escHtml(r.doctor)}</td>
+                <td class="cell-status">
+                    <span class="status-pill status-pill--${state}">${pillLabel}</span>
+                </td>
+            </tr>
+        `;
+    }
+
+    function escHtml(str) {
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    /* ── AJAX polling (same mechanism as original) ── */
+    function actualizarTabla() {
+        const params  = new URLSearchParams(window.location.search);
+        const baseUrl = "{{ url_for('appointments_blueprint.tabla_turnos') }}";
+        const url     = `${baseUrl}?${params.toString()}`;
+
+        fetch(url)
+            .then(r => r.text())
+            .then(html => {
+                const tmp = document.createElement('div');
+                tmp.innerHTML = html;
+
+                const srcAtencion = tmp.querySelector('#tabla_atencion');
+                const srcEspera   = tmp.querySelector('#tabla_espera');
+
+                if (srcAtencion) document.getElementById('tabla_atencion').innerHTML = srcAtencion.innerHTML;
+                if (srcEspera)   document.getElementById('tabla_espera').innerHTML   = srcEspera.innerHTML;
+
+                /* replay audio if a calling row appeared */
+                if (tmp.querySelector('#tabla_atencion tbody tr.calling')) {
+                    const audio = document.getElementById('myAudio');
+                    if (audio) { audio.load(); audio.play().catch(() => {}); }
+                }
+
+                renderBoard();
+            })
+            .catch(err => console.error('Error actualizando tabla:', err));
+    }
+
+    /* ── Init ── */
+    document.addEventListener('DOMContentLoaded', function () {
+        renderBoard();
+        setInterval(actualizarTabla, 5000);
+        actualizarTabla();
+    });
+})();
+</script>
+{% endblock %}

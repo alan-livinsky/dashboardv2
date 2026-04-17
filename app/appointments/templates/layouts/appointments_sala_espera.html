@@ -191,17 +191,19 @@
         }
 
         .board-table thead th {
-            padding: 10px 28px;
-            font-size: 0.65rem;
-            letter-spacing: 3px;
+            padding: 14px 28px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.75);
+            color: #ffffff;
             text-align: left;
-            border-bottom: 2px solid var(--navy-light);
+            border-bottom: 3px solid var(--navy-light);
             background: var(--navy);
             position: sticky;
             top: 0;
             z-index: 1;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
         .board-table thead th:last-child { text-align: center; }
@@ -217,11 +219,11 @@
             50%       { background: #fde68a; }
         }
 
-        .board-row td { padding: 20px 28px; vertical-align: middle; }
+        .board-row td { padding: 22px 28px; vertical-align: middle; }
 
         /* cells */
         .cell-room {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: 900;
             letter-spacing: 2px;
             white-space: nowrap;
@@ -229,19 +231,19 @@
         .cell-room--calling   { color: var(--calling-flash); }
         .cell-room--attending { color: var(--navy); }
 
-        .cell-patient { font-size: 1.5rem; font-weight: 700; }
+        .cell-patient { font-size: 1.7rem; font-weight: 700; }
         .cell-patient--calling   { color: var(--navy-dark); }
         .cell-patient--attending { color: var(--text); }
 
-        .cell-doctor { font-size: 0.9rem; color: var(--muted); letter-spacing: 0.3px; }
+        .cell-doctor { font-size: 1.05rem; color: var(--muted); letter-spacing: 0.3px; }
 
         .cell-status { text-align: center; }
 
         .status-pill {
             display: inline-block;
-            padding: 6px 16px;
+            padding: 8px 18px;
             border-radius: 4px;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             font-weight: 900;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -289,6 +291,7 @@
             background: var(--navy-dark);
             border-top: 2px solid var(--navy-light);
             flex-shrink: 0;
+            width: 100%;
         }
 
         .footer__brand {

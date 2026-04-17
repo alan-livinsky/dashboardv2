@@ -487,8 +487,10 @@
             const r = calling[0];
             banner.classList.add('active');
             banner.innerHTML = `
-                <div class="calling-banner__tag">Dirijase al consultorio</div>
-                <div class="calling-banner__room">${escHtml(r.room)}</div>
+                <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+                    <div class="calling-banner__tag">Dirijase al consultorio</div>
+                    <div class="calling-banner__room">${escHtml(r.room)}</div>
+                </div
                 <div class="calling-banner__divider"></div>
                 <div>
                     <div class="calling-banner__patient">${escHtml(r.patient)}</div>

@@ -11,17 +11,21 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --bg:             #0a0a0a;
-            --panel:          #111111;
-            --border:         #222222;
-            --text:           #f0f0f0;
-            --muted:          #666666;
-            --calling:        #ffcc00;
-            --calling-dim:    #1a1500;
-            --calling-flash:  #e6b800;
-            --attending:      #00e676;
-            --attending-dim:  #001a0d;
-            --idle-text:      #333333;
+            --navy:           #1e3d7a;
+            --navy-dark:      #152d5c;
+            --navy-light:     #2a52a0;
+            --bg:             #eef2f8;
+            --surface:        #ffffff;
+            --border:         #c2cedf;
+            --text:           #0f1e3a;
+            --muted:          #5a6f90;
+            --calling:        #f59e0b;
+            --calling-dim:    #fef3c7;
+            --calling-flash:  #d97706;
+            --calling-text:   #1a0f00;
+            --attending:      #1e3d7a;
+            --attending-dim:  #dce6f5;
+            --attending-text: #ffffff;
         }
 
         /* ── Override base template interference ── */
@@ -41,7 +45,7 @@
         }
 
         body {
-            font-family: 'Courier New', 'Roboto Mono', 'Consolas', monospace;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: var(--bg);
             display: flex;
             flex-direction: column;
@@ -54,17 +58,17 @@
             justify-content: space-between;
             align-items: center;
             padding: 14px 32px;
-            background: #050505;
-            border-bottom: 2px solid var(--border);
+            background: var(--navy-dark);
+            border-bottom: 3px solid var(--navy-light);
             flex-shrink: 0;
         }
 
         .top-bar__brand {
             font-size: 1rem;
             font-weight: 700;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--muted);
+            color: rgba(255,255,255,0.75);
         }
 
         .top-bar__right { text-align: right; }
@@ -74,13 +78,13 @@
             font-weight: 700;
             letter-spacing: 4px;
             font-variant-numeric: tabular-nums;
-            color: var(--calling);
+            color: #ffffff;
             line-height: 1;
         }
 
         .top-bar__date {
             font-size: 0.75rem;
-            color: var(--muted);
+            color: rgba(255,255,255,0.6);
             letter-spacing: 1px;
             margin-top: 4px;
             text-transform: capitalize;
@@ -94,10 +98,11 @@
             gap: 28px;
             padding: 0 32px;
             background: var(--calling);
-            color: #000;
+            color: var(--calling-text);
             min-height: 130px;
             flex-shrink: 0;
             animation: banner-flash 0.9s step-end infinite;
+            border-bottom: 4px solid var(--calling-flash);
         }
 
         .calling-banner.active { display: flex; }
@@ -112,7 +117,7 @@
             font-weight: 900;
             letter-spacing: 5px;
             text-transform: uppercase;
-            opacity: 0.75;
+            opacity: 0.7;
             white-space: nowrap;
         }
 
@@ -127,7 +132,7 @@
         .calling-banner__divider {
             width: 4px;
             height: 70px;
-            background: rgba(0,0,0,0.25);
+            background: rgba(0,0,0,0.2);
             border-radius: 2px;
             flex-shrink: 0;
         }
@@ -141,7 +146,7 @@
 
         .calling-banner__doctor {
             font-size: 1rem;
-            opacity: 0.6;
+            opacity: 0.55;
             margin-top: 4px;
             letter-spacing: 0.5px;
         }
@@ -160,14 +165,14 @@
             display: flex;
             align-items: center;
             gap: 20px;
-            background: rgba(0,0,0,0.15);
+            background: rgba(0,0,0,0.12);
             border-radius: 6px;
             padding: 10px 20px;
         }
 
         .multi-item__room  { font-size: 1.6rem; font-weight: 900; white-space: nowrap; }
         .multi-item__name  { font-size: 1.4rem; font-weight: 700; flex: 1; }
-        .multi-item__doctor { font-size: 0.85rem; opacity: 0.65; }
+        .multi-item__doctor { font-size: 0.85rem; opacity: 0.6; }
 
         /* ── BOARD ── */
         .board {
@@ -190,10 +195,10 @@
             font-size: 0.65rem;
             letter-spacing: 3px;
             text-transform: uppercase;
-            color: var(--muted);
+            color: rgba(255,255,255,0.75);
             text-align: left;
-            border-bottom: 1px solid var(--border);
-            background: #060606;
+            border-bottom: 2px solid var(--navy-light);
+            background: var(--navy);
             position: sticky;
             top: 0;
             z-index: 1;
@@ -209,7 +214,7 @@
 
         @keyframes row-pulse {
             0%, 100% { background: var(--calling-dim); }
-            50%       { background: #261f00; }
+            50%       { background: #fde68a; }
         }
 
         .board-row td { padding: 20px 28px; vertical-align: middle; }
@@ -221,11 +226,11 @@
             letter-spacing: 2px;
             white-space: nowrap;
         }
-        .cell-room--calling  { color: var(--calling); }
-        .cell-room--attending { color: var(--attending); }
+        .cell-room--calling   { color: var(--calling-flash); }
+        .cell-room--attending { color: var(--navy); }
 
         .cell-patient { font-size: 1.5rem; font-weight: 700; }
-        .cell-patient--calling  { color: var(--calling); }
+        .cell-patient--calling   { color: var(--navy-dark); }
         .cell-patient--attending { color: var(--text); }
 
         .cell-doctor { font-size: 0.9rem; color: var(--muted); letter-spacing: 0.3px; }
@@ -245,19 +250,19 @@
 
         .status-pill--calling {
             background: var(--calling);
-            color: #000;
+            color: var(--calling-text);
             animation: pill-blink 0.9s step-end infinite;
         }
 
         @keyframes pill-blink {
             0%,  49% { opacity: 1; }
-            50%, 100% { opacity: 0.25; }
+            50%, 100% { opacity: 0.3; }
         }
 
         .status-pill--attending {
-            background: transparent;
-            color: var(--attending);
-            border: 1px solid var(--attending);
+            background: var(--navy);
+            color: #ffffff;
+            border: none;
         }
 
         /* empty state */
@@ -273,7 +278,7 @@
             letter-spacing: 1px;
         }
 
-        .empty-board__icon { font-size: 3rem; opacity: 0.2; }
+        .empty-board__icon { font-size: 3rem; opacity: 0.25; }
 
         /* ── FOOTER STATS ── */
         .footer {
@@ -281,14 +286,14 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px 32px;
-            background: #050505;
-            border-top: 1px solid var(--border);
+            background: var(--navy-dark);
+            border-top: 2px solid var(--navy-light);
             flex-shrink: 0;
         }
 
         .footer__brand {
             font-size: 0.7rem;
-            color: var(--muted);
+            color: rgba(255,255,255,0.5);
             letter-spacing: 1px;
         }
 
@@ -301,12 +306,12 @@
             border-radius: 50%;
             flex-shrink: 0;
         }
-        .footer-stat__dot--calling  { background: var(--calling); }
-        .footer-stat__dot--attending { background: var(--attending); }
-        .footer-stat__dot--waiting   { background: var(--muted); }
+        .footer-stat__dot--calling   { background: var(--calling); }
+        .footer-stat__dot--attending { background: #60a5fa; }
+        .footer-stat__dot--waiting   { background: rgba(255,255,255,0.35); }
 
-        .footer-stat__label { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; }
-        .footer-stat__count { font-size: 0.75rem; font-weight: 700; color: var(--text); }
+        .footer-stat__label { font-size: 0.75rem; color: rgba(255,255,255,0.55); letter-spacing: 1px; }
+        .footer-stat__count { font-size: 0.75rem; font-weight: 700; color: #ffffff; }
 
         /* ── HIDDEN source tables (AJAX parsing target) ── */
         #tabla_espera,

@@ -1,159 +1,698 @@
 {% extends 'layouts/base.html' %}
 
 {% block head %}
-<title>Seleccionar consultorios</title>
+<title>Seleccionar Consultorios — {{ institution }}</title>
 <meta http-equiv="Expires" content="0" />
 <meta http-equiv="Last-Modified" content="0" />
 <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate" />
 <meta http-equiv="Pragma" content="no-store" />
 <style>
-  .page-wrapper {
-    min-height: 100vh;
-  }
-
-  .room-panel {
-    max-width: 760px;
-    margin: 24px auto 0;
-  }
-
-  .room-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 14px;
-    margin: 24px 0 28px;
-  }
-
-  .room-item {
+  html, body {
     margin: 0;
+    padding: 0;
+    background: #f1f5f9 !important;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+    font-size: 16px !important;
+    color: #1e293b !important;
+    line-height: 1.5 !important;
+    font-weight: 400 !important;
   }
 
-  .room-label {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── Page wrapper ── */
+  .sc-page {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background-color: #f1f5f9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #1e293b;
+    line-height: 1.5;
+  }
+
+  /* ── Header ── */
+  .sc-header {
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+    padding: 2.5rem 2rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sc-header::before {
+    content: "";
+    position: absolute;
+    top: -50%; right: -10%;
+    width: 400px; height: 400px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+  }
+
+  .sc-header::after {
+    content: "";
+    position: absolute;
+    bottom: -30%; left: 20%;
+    width: 300px; height: 300px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 50%;
+  }
+
+  .sc-header__content {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sc-header__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+
+  .sc-header__left { flex: 1; }
+
+  .sc-header__label {
     display: flex;
     align-items: center;
-    gap: 12px;
-    min-height: 60px;
-    padding: 14px 16px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.72);
-    border: 1px solid var(--color-border);
-    box-shadow: var(--shadow-soft);
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+  }
+
+  .sc-header__label::before {
+    content: "";
+    width: 24px; height: 2px;
+    background: rgba(255,255,255,0.7);
+  }
+
+  .sc-header__title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+
+  .sc-header__description {
+    font-size: 0.9375rem;
+    opacity: 0.85;
+    max-width: 650px;
+    line-height: 1.6;
+  }
+
+  .sc-header__nav {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .sc-nav-btn {
+    padding: 0.625rem 1.25rem;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: none;
     cursor: pointer;
-    transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
   }
 
-  .room-label:hover {
-    transform: translateY(-2px);
-    border-color: rgba(21, 101, 192, 0.24);
-    background: rgba(255, 255, 255, 0.92);
+  .sc-nav-btn--ghost {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
   }
 
-  .room-label input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--color-primary-600);
+  .sc-nav-btn--ghost:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.5);
+    color: white;
+  }
+
+  .sc-nav-btn--solid {
+    background: white;
+    border: 1px solid white;
+    color: #1e40af;
+  }
+
+  .sc-nav-btn--solid:hover {
+    background: #f8fafc;
+    color: #1e40af;
+  }
+
+  .sc-info-pill {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    padding: 0.625rem 1.25rem;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.03em;
+    color: white;
+  }
+
+  /* ── Main ── */
+  .sc-main {
+    flex: 1;
+    padding: 3rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .sc-section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .sc-section-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+  }
+
+  .sc-section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+
+  .sc-section-description {
+    font-size: 0.9375rem;
+    color: #64748b;
+    max-width: 500px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.6;
+  }
+
+  .sc-jornada-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .sc-jornada-badge::before {
+    content: "";
+    width: 8px; height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: sc-pulse 2s infinite;
+  }
+
+  @keyframes sc-pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.5; }
+  }
+
+  /* ── Consultorios card ── */
+  .sc-consultorios-card {
+    background: white;
+    border-radius: 1rem;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    overflow: hidden;
+  }
+
+  .sc-consultorios-header {
+    padding: 1rem 1.5rem;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .sc-consultorios-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #334155;
+  }
+
+  .sc-consultorios-count {
+    font-size: 0.75rem;
+    color: #64748b;
+    background: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .sc-consultorios-list {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .sc-consultorio-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.15s ease;
+    cursor: pointer;
+  }
+
+  .sc-consultorio-item:last-child { border-bottom: none; }
+  .sc-consultorio-item:hover      { background: #f8fafc; }
+  .sc-consultorio-item.selected   { background: #eff6ff; }
+
+  .sc-checkbox {
+    width: 20px; height: 20px;
+    border: 2px solid #cbd5e1;
+    border-radius: 0.375rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
     flex-shrink: 0;
   }
 
-  .room-name {
-    color: var(--color-ink-900);
-    font-size: 0.95rem;
-    font-weight: 700;
+  .sc-consultorio-item.selected .sc-checkbox {
+    background: #2563eb;
+    border-color: #2563eb;
   }
 
-  .panel-actions {
+  .sc-checkbox svg {
+    width: 12px; height: 12px;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  .sc-consultorio-item.selected .sc-checkbox svg { opacity: 1; }
+
+  /* Hide the actual checkboxes — managed by JS */
+  .sc-consultorio-item input[type="checkbox"] { display: none; }
+
+  .sc-consultorio-info { flex: 1; }
+
+  .sc-consultorio-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 0.125rem;
+  }
+
+  .sc-consultorio-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .sc-consultorio-status::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+  }
+
+  /* Empty state */
+  .sc-empty {
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.9375rem;
+  }
+
+  /* ── Actions ── */
+  .sc-actions {
     display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
   }
 
-  .empty-state {
-    padding: 20px 0 4px;
-    color: var(--color-ink-700);
-    font-size: 0.95rem;
+  .sc-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+
+  .sc-action-btn svg { width: 18px; height: 18px; }
+
+  .sc-action-btn--primary {
+    background: #2563eb;
+    color: white;
+  }
+
+  .sc-action-btn--primary:hover {
+    background: #1d4ed8;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+  }
+
+  .sc-action-btn--primary:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .sc-action-btn--secondary {
+    background: white;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+  }
+
+  .sc-action-btn--secondary:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #334155;
+  }
+
+  /* ── Footer ── */
+  .sc-footer {
+    background: white;
+    border-top: 1px solid #e2e8f0;
+    padding: 1.5rem 2rem;
+  }
+
+  .sc-footer__content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .sc-footer__left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .sc-footer__title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #334155;
+  }
+
+  .sc-footer__version {
+    font-size: 0.75rem;
+    color: #94a3b8;
+  }
+
+  .sc-footer__links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .sc-footer__link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: #475569;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .sc-footer__link:hover { color: #1e40af; }
+
+  .sc-qr-code {
+    width: 40px; height: 40px;
+    background: white;
+    border-radius: 0.375rem;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .sc-header__top { flex-direction: column; gap: 1.5rem; }
+    .sc-header__nav { width: 100%; justify-content: flex-start; }
+    .sc-header__title { font-size: 1.75rem; }
+    .sc-section-title { font-size: 1.5rem; }
+    .sc-actions { flex-direction: column; }
+    .sc-action-btn { width: 100%; justify-content: center; }
+    .sc-footer__content { flex-direction: column; text-align: center; }
+    .sc-footer__links { flex-wrap: wrap; justify-content: center; gap: 1.5rem; }
   }
 </style>
 {% endblock %}
 
 {% block body %}
-<div class="page-wrapper">
-  <div class="app-shell">
-    <header class="app-hero">
-      <div class="app-hero__row">
-        <div>
-          <div class="app-hero__eyebrow">Gestión de turnos</div>
-          <h1 class="app-hero__title">{{ institution }}</h1>
-          <p class="app-hero__subtitle">
-            Seleccione los consultorios que desea visualizar para la jornada actual y continúe al tablero operativo.
+<div class="sc-page">
+
+  <!-- Header -->
+  <header class="sc-header">
+    <div class="sc-header__content">
+      <div class="sc-header__top">
+        <div class="sc-header__left">
+          <div class="sc-header__label">Gestión de Turnos</div>
+          <h1 class="sc-header__title">{{ institution }}</h1>
+          <p class="sc-header__description">
+            Seleccione los consultorios que desea visualizar para la jornada
+            actual y continúe al tablero operativo.
           </p>
         </div>
-        <div class="shell-actions">
-          <a href="{{ url_for('base_blueprint.index') }}" class="shell-link">Inicio</a>
-          <a href="{{ url_for('dashboard_blueprint.dashboard_indicators') }}" class="shell-link">Dashboard</a>
-          <div class="hero-badge">{{ today }}</div>
-          <div class="hero-badge" id="reloj"></div>
-        </div>
+        <nav class="sc-header__nav">
+          <a href="{{ url_for('base_blueprint.index') }}" class="sc-nav-btn sc-nav-btn--ghost">Inicio</a>
+          <a href="{{ url_for('dashboard_blueprint.dashboard_indicators') }}" class="sc-nav-btn sc-nav-btn--solid">Dashboard</a>
+          <div class="sc-info-pill" id="sc-date">{{ today }}</div>
+          <div class="sc-info-pill" id="sc-clock">00:00:00 A. M.</div>
+        </nav>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <main class="room-panel">
-      {% set page_title = 'Seleccionar consultorios' %}
-      {% set page_subtitle = 'Elija los consultorios con turnos del día para abrir la vista de atención correspondiente.' %}
-      {% set page_period = 'Jornada actual' %}
-      {% include 'partials/dashboard_page_header.html' %}
+  <!-- Main -->
+  <main class="sc-main">
+    <div class="sc-section-header">
+      <div class="sc-section-label">Sala de Situación</div>
+      <h2 class="sc-section-title">Seleccionar Consultorios</h2>
+      <p class="sc-section-description">
+        Elija los consultorios con turnos del día para abrir la vista de
+        atención correspondiente.
+      </p>
+      <span class="sc-jornada-badge">Jornada Actual</span>
+    </div>
 
-      <form id="consulting_room-form" onsubmit="return redirectToTurnos();" class="panel">
-        <div class="room-grid">
+    <!-- Consultorios list -->
+    <form id="consulting_room-form" onsubmit="return false;">
+      <div class="sc-consultorios-card">
+        <div class="sc-consultorios-header">
+          <span class="sc-consultorios-title">Consultorios Disponibles</span>
+          <span class="sc-consultorios-count" id="sc-selected-count">
+            {% if consulting_rooms %}{{ consulting_rooms|length }} seleccionado{% if consulting_rooms|length != 1 %}s{% endif %}{% else %}0 seleccionados{% endif %}
+          </span>
+        </div>
+
+        <div class="sc-consultorios-list" id="sc-consultorios-list">
           {% if consulting_rooms %}
             {% for cr in consulting_rooms %}
-            <div class="room-item">
-              <label class="room-label">
-                <input type="checkbox" name="cr" value="{{ cr['id'] }}" checked />
-                <span class="room-name">{{ cr['name'] }}</span>
-              </label>
+            <div class="sc-consultorio-item selected" data-id="{{ cr['id'] }}">
+              <div class="sc-checkbox">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </div>
+              <input type="checkbox" name="cr" value="{{ cr['id'] }}" checked />
+              <div class="sc-consultorio-info">
+                <div class="sc-consultorio-name">{{ cr['name'] }}</div>
+              </div>
+              <span class="sc-consultorio-status">Activo</span>
             </div>
             {% endfor %}
           {% else %}
-            <div class="empty-state">No hay consultorios con turnos para hoy.</div>
+            <div class="sc-empty">No hay consultorios con turnos para hoy.</div>
           {% endif %}
         </div>
-        <div class="panel-actions">
-          <button type="submit" class="button">Ver turnos</button>
-          <a href="{{ url_for('appointments_blueprint.sala_espera') }}" class="shell-link shell-link--muted">Sala de espera</a>
-        </div>
-      </form>
-    </main>
+      </div>
 
-    <footer class="footer">{% include 'layouts/partials/footer.html' %}</footer>
-  </div>
+      <!-- Actions -->
+      <div class="sc-actions">
+        <button type="button" class="sc-action-btn sc-action-btn--primary" id="sc-btn-turnos"
+          {% if not consulting_rooms %}disabled{% endif %}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Ver Turnos
+        </button>
+        <a href="{{ url_for('appointments_blueprint.sala_espera') }}" class="sc-action-btn sc-action-btn--secondary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          Sala de Espera
+        </a>
+      </div>
+    </form>
+  </main>
+
+  <!-- Footer -->
+  <footer class="sc-footer">
+    <div class="sc-footer__content">
+      <div class="sc-footer__left">
+        <div class="sc-footer__title">Gestión Salud — Dashboard</div>
+        <div class="sc-footer__version">v2.1.0 — Sistema de Gestión Hospitalaria</div>
+      </div>
+      <div class="sc-footer__links">
+        <a href="http://ingenieria.uner.edu.ar/grupos/salud_publica/" target="_blank" class="sc-footer__link">
+          ¿Quiénes Somos?
+          <div class="sc-qr-code" id="qr-qs"></div>
+        </a>
+        <a href="https://gitlab.com/gnuhealth_fiuner" target="_blank" class="sc-footer__link">
+          Repositorio
+          <div class="sc-qr-code" id="qr-repo"></div>
+        </a>
+        <a href="mailto:saludpublica@ingenieria.uner.edu.ar" target="_blank" class="sc-footer__link">
+          Contacto
+          <div class="sc-qr-code" id="qr-contact"></div>
+        </a>
+      </div>
+    </div>
+  </footer>
+
 </div>
 {% endblock %}
 
 {% block footer %}{% endblock %}
 
 {% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>
-  (function () {
-    function tick() {
-      const el = document.getElementById("reloj");
-      if (!el) return;
-      const now = new Date();
-      el.textContent = now.toLocaleTimeString("es-AR", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
+(function () {
+  /* ── Clock ── */
+  function tick() {
+    const cl = document.getElementById('sc-clock');
+    if (!cl) return;
+    const now = new Date();
+    let h = now.getHours();
+    const m = now.getMinutes().toString().padStart(2, '0');
+    const s = now.getSeconds().toString().padStart(2, '0');
+    const ampm = h >= 12 ? 'P. M.' : 'A. M.';
+    h = h % 12 || 12;
+    cl.textContent = `${h.toString().padStart(2,'0')}:${m}:${s} ${ampm}`;
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  /* ── Checkbox interaction ── */
+  const list     = document.getElementById('sc-consultorios-list');
+  const countEl  = document.getElementById('sc-selected-count');
+  const btnVer   = document.getElementById('sc-btn-turnos');
+
+  function updateCount() {
+    const n = list ? list.querySelectorAll('.sc-consultorio-item.selected').length : 0;
+    if (countEl) countEl.textContent = n === 1 ? '1 seleccionado' : `${n} seleccionados`;
+    if (btnVer)  btnVer.disabled = n === 0;
+    /* sync hidden checkboxes */
+    if (list) {
+      list.querySelectorAll('.sc-consultorio-item').forEach(item => {
+        const cb = item.querySelector('input[type="checkbox"]');
+        if (cb) cb.checked = item.classList.contains('selected');
       });
     }
-    tick();
-    setInterval(tick, 1000);
-  })();
-
-  function redirectToTurnos() {
-    const form = document.getElementById("consulting_room-form");
-    const checkboxes = form.querySelectorAll('input[name="cr"]:checked');
-    const params = new URLSearchParams();
-    checkboxes.forEach((cb) => params.append("consulting_rooms", cb.value));
-    window.location.href = `{{ url_for('appointments_blueprint.appointments') }}?${params.toString()}`;
-    return false;
   }
+
+  if (list) {
+    list.addEventListener('click', function (e) {
+      const item = e.target.closest('.sc-consultorio-item');
+      if (item) {
+        item.classList.toggle('selected');
+        updateCount();
+      }
+    });
+  }
+
+  /* ── Ver Turnos redirect ── */
+  if (btnVer) {
+    btnVer.addEventListener('click', function () {
+      if (!list) return;
+      const params = new URLSearchParams();
+      list.querySelectorAll('.sc-consultorio-item.selected').forEach(item => {
+        params.append('consulting_rooms', item.dataset.id);
+      });
+      window.location.href = `{{ url_for('appointments_blueprint.appointments') }}?${params.toString()}`;
+    });
+  }
+
+  /* ── QR codes ── */
+  function generateQR(id, url) {
+    const container = document.getElementById(id);
+    if (!container) return;
+    try {
+      const qr = qrcode(0, 'L');
+      qr.addData(url);
+      qr.make();
+      const size = 32;
+      const canvas = document.createElement('canvas');
+      canvas.width = canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      const mc = qr.getModuleCount();
+      const tile = size / mc;
+      for (let r = 0; r < mc; r++) {
+        for (let c = 0; c < mc; c++) {
+          ctx.fillStyle = qr.isDark(r, c) ? '#1e40af' : '#ffffff';
+          ctx.fillRect(c * tile, r * tile, tile, tile);
+        }
+      }
+      canvas.style.cssText = 'cursor:pointer;border-radius:3px;';
+      canvas.addEventListener('click', () => window.open(url, '_blank'));
+      container.innerHTML = '';
+      container.appendChild(canvas);
+    } catch (e) { console.error('QR error:', e); }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    generateQR('qr-qs',      'http://ingenieria.uner.edu.ar/grupos/salud_publica/');
+    generateQR('qr-repo',    'https://gitlab.com/gnuhealth_fiuner');
+    generateQR('qr-contact', 'mailto:saludpublica@ingenieria.uner.edu.ar');
+  });
+})();
 </script>
 {% endblock %}

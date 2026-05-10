@@ -1,263 +1,287 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block head %}
 
-    {% block head %}
+<title>Turnos del día</title>
+<link rel="icon" href="/static/images/favicon.ico" />
+<meta http-equiv="Expires" content="0" />
+<meta http-equiv="Last-Modified" content="0" />
+<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate" />
+<meta http-equiv="Pragma" content="no-store" />
+<link rel="stylesheet" href="static/css/main.css" />
+<style>
+  :root {
+    --primary: #0092cc;
+    --primary-dark: #0092cc;
+    --bg-page: #f5f7fa;
+    --bg-card: #ffffff;
+    --text-heading: #1a1f36;
+    --text-body: #52576f;
+    --text-muted: #7b8699;
+    --border: #d4d8df;
+    --border-light: #e8eaee;
+    --status-calling-bg: #fff9f0;
+    --status-calling: #ff9800;
+    --status-attending-bg: #f0f7ff;
+    --status-attending: #2196f3;
+  }
 
-        <title>Turnos del día</title>
-        <link rel="icon" href="/static/images/favicon.ico">
-        <meta http-equiv="Expires" content="0">
-        <meta http-equiv="Last-Modified" content="0">
-        <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
-        <meta http-equiv="Pragma" content="no-store">
-        <link rel="stylesheet" href="static/css/main.css">
-        <style>
-            :root {
-                --primary: #0092cc;
-                --primary-dark: #0070b0;
-                --bg-page: #f5f7fa;
-                --bg-card: #ffffff;
-                --text-heading: #1a1f36;
-                --text-body: #52576f;
-                --text-muted: #7b8699;
-                --border: #d4d8df;
-                --border-light: #e8eaee;
-                --status-calling-bg: #fff9f0;
-                --status-calling: #ff9800;
-                --status-attending-bg: #f0f7ff;
-                --status-attending: #2196f3;
-            }
+  * {
+    box-sizing: border-box;
+  }
 
-            * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg-page);
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+      sans-serif;
+    color: var(--text-body);
+    min-height: 100vh;
+  }
 
-            body {
-                margin: 0;
-                padding: 0;
-                background: var(--bg-page);
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-                color: var(--text-body);
-                min-height: 100vh;
-            }
+  .container-table100 {
+    padding: 28px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
 
-            .container-table100 {
-                padding: 28px;
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-            }
+  .page-header {
+    text-align: center;
+    margin-bottom: 28px;
+    padding: 24px;
+    background: linear-gradient(
+      135deg,
+      var(--primary) 0%,
+      var(--primary-dark) 100%
+    );
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    color: white;
+  }
 
-            .page-header {
-                text-align: center;
-                margin-bottom: 28px;
-                padding: 24px;
-                background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-                border-radius: 8px;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-                color: white;
-            }
+  .page-header h2 {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 8px;
+    letter-spacing: 0.5px;
+  }
 
-            .page-header h2 {
-                font-size: 1.3em;
-                font-weight: 700;
-                color: white;
-                margin: 0 0 8px;
-                letter-spacing: 0.5px;
-            }
+  .page-header .subtitle {
+    font-size: 0.95em;
+    opacity: 0.9;
+    margin: 0;
+  }
 
-            .page-header .subtitle {
-                font-size: 0.95em;
-                opacity: 0.9;
-                margin: 0;
-            }
+  .main-content {
+    display: flex;
+    gap: 24px;
+    flex: 1;
+  }
 
-            .main-content {
-                display: flex;
-                gap: 24px;
-                flex: 1;
-            }
+  .izquierda {
+    flex: 2;
+    background: var(--bg-card);
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  }
 
-            .izquierda {
-                flex: 2;
-                background: var(--bg-card);
-                border-radius: 8px;
-                border: 1px solid var(--border-light);
-                overflow: hidden;
-                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-            }
+  .izquierda h4 {
+    margin: 0;
+    padding: 16px 20px;
+    background: linear-gradient(
+      135deg,
+      var(--primary) 0%,
+      var(--primary-dark) 100%
+    );
+    color: white;
+    font-size: 0.8em;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
 
-            .izquierda h4 {
-                margin: 0;
-                padding: 16px 20px;
-                background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-                color: white;
-                font-size: 0.8em;
-                letter-spacing: 1.2px;
-                text-transform: uppercase;
-                font-weight: 700;
-            }
+  #tabla_turnos {
+    width: 100%;
+    border-collapse: collapse;
+  }
 
-            #tabla_turnos {
-                width: 100%;
-                border-collapse: collapse;
-            }
+  #tabla_turnos th {
+    padding: 12px 20px;
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--bg-page);
+    border-bottom: 1px solid var(--border-light);
+  }
 
-            #tabla_turnos th {
-                padding: 12px 20px;
-                text-align: left;
-                font-size: 0.7rem;
-                font-weight: 700;
-                letter-spacing: 1px;
-                text-transform: uppercase;
-                color: var(--text-muted);
-                background: var(--bg-page);
-                border-bottom: 1px solid var(--border-light);
-            }
+  #tabla_turnos td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.95rem;
+  }
 
-            #tabla_turnos td {
-                padding: 14px 20px;
-                border-bottom: 1px solid var(--border-light);
-                font-size: 0.95rem;
-            }
+  .calling {
+    background: var(--status-calling-bg) !important;
+  }
 
-            .calling {
-                background: var(--status-calling-bg) !important;
-            }
+  .calling td {
+    color: var(--status-calling) !important;
+    font-weight: 700 !important;
+  }
 
-            .calling td {
-                color: var(--status-calling) !important;
-                font-weight: 700 !important;
-            }
+  .in_atention {
+    background: var(--status-attending-bg) !important;
+  }
 
-            .in_atention {
-                background: var(--status-attending-bg) !important;
-            }
+  .in_atention td {
+    color: var(--status-attending) !important;
+    font-weight: 700 !important;
+  }
 
-            .in_atention td {
-                color: var(--status-attending) !important;
-                font-weight: 700 !important;
-            }
+  .images {
+    flex: 1;
+    background: var(--bg-card);
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  }
 
-            .images {
-                flex: 1;
-                background: var(--bg-card);
-                border-radius: 8px;
-                border: 1px solid var(--border-light);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                min-height: 300px;
-                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-            }
+  #myimage {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
 
-            #myimage {
-                max-width: 100%;
-                max-height: 100%;
-                object-fit: contain;
-            }
+  .footer {
+    margin-top: 28px;
+    padding: 20px;
+    background: linear-gradient(
+      135deg,
+      var(--primary) 0%,
+      var(--primary-dark) 100%
+    );
+    border-radius: 8px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
 
-            .footer {
-                margin-top: 28px;
-                padding: 20px;
-                background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-                border-radius: 8px;
-                text-align: center;
-                color: white;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            }
+  .footer p {
+    margin: 0 0 12px;
+    font-size: 0.85em;
+    letter-spacing: 0.3px;
+  }
 
-            .footer p {
-                margin: 0 0 12px;
-                font-size: 0.85em;
-                letter-spacing: 0.3px;
-            }
+  .footer .a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    margin: 0 12px;
+    font-size: 0.85em;
+    font-weight: 600;
+    transition: color 0.2s ease;
+  }
 
-            .footer .a {
-                color: rgba(255, 255, 255, 0.9);
-                text-decoration: none;
-                margin: 0 12px;
-                font-size: 0.85em;
-                font-weight: 600;
-                transition: color 0.2s ease;
-            }
+  .footer .a:hover {
+    color: white;
+  }
 
-            .footer .a:hover {
-                color: white;
-            }
+  @media (max-width: 900px) {
+    .main-content {
+      flex-direction: column;
+    }
+    .images {
+      min-height: 200px;
+    }
+  }
+</style>
+{% endblock %} {% block body %}
 
-            @media (max-width: 900px) {
-                .main-content {
-                    flex-direction: column;
-                }
-                .images {
-                    min-height: 200px;
-                }
-            }
-        </style>
-    {% endblock %}
+<section class="container-table100">
+  <div class="page-header">
+    <h2>LISTA DE ATENCIÓN — {{ organization }}</h2>
+    <p class="subtitle">Hoy {{ today }} otorgamos {{ total }} turnos</p>
+  </div>
 
-    {% block body %}
+  <div class="main-content">
+    <div class="izquierda">
+      <h4>Pacientes en atención</h4>
+      <table id="tabla_turnos">
+        <tr>
+          <th>Paciente</th>
+          <th>Profesional</th>
+          <th>Especialidad</th>
+          <th>Estado</th>
+        </tr>
+        {% for appointment in turnos_webhook %} {% if appointment.get('state')
+        == 'calling'%}
+        <audio id="myAudio" autoplay>
+          <source src="../static/multimedia/timbre.ogg" type="audio/ogg" />
+        </audio>
+        <tr class="calling">
+          <td>{{ appointment.get('patient') }}</td>
+          <td>{{ appointment.get('professional') }}</td>
+          <td>{{ appointment.get('specialty') }}</td>
+          <td>Llamando</td>
+          {% elif appointment.get('state') == 'in_atention'%}
+        </tr>
 
-        <section class="container-table100">
-            <div class="page-header">
-                <h2>LISTA DE ATENCIÓN — {{ organization }}</h2>
-                <p class="subtitle">Hoy {{ today }} otorgamos {{ total }} turnos</p>
-            </div>
+        <tr class="in_atention">
+          <td>{{ appointment.get('patient') }}</td>
+          <td>{{ appointment.get('professional') }}</td>
+          <td>{{ appointment.get('specialty') }}</td>
+          <td>En atención</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <div class="images">
+      <img src="" id="myimage" alt="Imagen informativa" />
+    </div>
+  </div>
 
-            <div class="main-content">
-                <div class="izquierda">
-                    <h4>Pacientes en atención</h4>
-                    <table id="tabla_turnos">
-                        <tr>
-                            <th>Paciente</th>
-                            <th>Profesional</th> 
-                            <th>Especialidad</th>  
-                            <th>Estado</th>  
-                        </tr>
-                        {% for appointment in turnos_webhook %}
-                            {% if appointment.get('state') == 'calling'%}
-                            <audio id="myAudio" autoplay>
-                                <source src="../static/multimedia/timbre.ogg" type="audio/ogg">
-                            </audio>
-                            <tr class='calling'>
-                            <td>{{ appointment.get('patient') }}</td>
-                            <td>{{ appointment.get('professional') }}</td>
-                            <td>{{ appointment.get('specialty') }}</td>
-                            <td>Llamando</td>
-                            {% elif appointment.get('state') == 'in_atention'%}
-                            <tr class='in_atention'>
-                            <td>{{ appointment.get('patient') }}</td>
-                            <td>{{ appointment.get('professional') }}</td>
-                            <td>{{ appointment.get('specialty') }}</td>
-                            <td>En atención</td>
-                            {% endif %}
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-                <div class="images">
-                    <img src="" id="myimage" alt="Imagen informativa">
-                </div>
-            </div>
+  <footer class="footer">
+    <p>Desarrollado por el GESPyTA de la FI-UNER para uso en GNUHealth</p>
+    <a
+      href="http://ingenieria.uner.edu.ar/grupos/salud_publica/"
+      target="_blank"
+      class="a"
+      >¿Quienes somos?</a
+    >
+    <a href="https://gitlab.com/gnuhealth_fiuner" target="_blank" class="a"
+      >Repositorio</a
+    >
+    <a
+      href="mailto:saludpublica@ingenieria.uner.edu.ar"
+      target="_blank"
+      class="a"
+      >Contacto</a
+    >
+  </footer>
+</section>
 
-            <footer class="footer"> 
-                <p>Desarrollado por el GESPyTA de la FI-UNER para uso en GNUHealth</p>
-                <a href="http://ingenieria.uner.edu.ar/grupos/salud_publica/" target="_blank" class="a">¿Quienes somos?</a>
-                <a href="https://gitlab.com/gnuhealth_fiuner" target="_blank" class="a">Repositorio</a>
-                <a href="mailto:saludpublica@ingenieria.uner.edu.ar" target="_blank" class="a">Contacto</a>
-            </footer>
-        </section>
-
-    {% endblock %}
-
-    {% block javascripts %}
-        <script type="text/javascript">
-            function cargarimagen(){
-                var x = (Math.floor(Math.random()*17));
-                console.log(x);
-                var xhttp = new XMLHttpRequest();
-                function actualizar(){
-                    location.reload(true);
-                }
-                setTimeout("cargarimagen()", 200);
-                setTimeout("actualizar()",10000);
-            }
-        </script>
-    {%endblock}
+{% endblock %} {% block javascripts %}
+<script type="text/javascript">
+  function cargarimagen() {
+    var x = Math.floor(Math.random() * 17);
+    console.log(x);
+    var xhttp = new XMLHttpRequest();
+    function actualizar() {
+      location.reload(true);
+    }
+    setTimeout("cargarimagen()", 200);
+    setTimeout("actualizar()", 10000);
+  }
+</script>
+{%endblock}

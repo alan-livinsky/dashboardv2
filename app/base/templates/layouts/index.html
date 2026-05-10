@@ -1,113 +1,198 @@
 {% extends 'layouts/base.html'%} {% block head %}
-<title>Inicio</title>
+<title>Panel de Salud — Sistema de Gestión Hospitalaria</title>
 <meta http-equiv="Expires" content="0" />
 <meta http-equiv="Last-Modified" content="0" />
 <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate" />
 <meta http-equiv="Pragma" content="no-store" />
 <style>
-  .page-wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  .content {
-    flex: 1;
-    padding: 0 0 28px;
-    margin-top: 24px;
+  /* Reset body interference from main.css and Bootstrap for this page */
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #f1f5f9 !important;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+    font-size: 16px !important;
+    color: #1e293b !important;
+    line-height: 1.5 !important;
+    font-weight: 400 !important;
   }
 </style>
 {% endblock %} {% block body %}
-<div class="page-wrapper">
-  <div class="app-shell">
-    <header class="app-hero">
-      <div class="app-hero__row">
-        <div>
-          <div class="app-hero__eyebrow">Gestión clínica</div>
-          <h1 class="app-hero__title">Panel de salud</h1>
-          <p class="app-hero__subtitle">
-            Ingrese a la operación diaria de turnos o a la sala de situación
-            desde una experiencia unificada, clara y lista para uso operativo.
-          </p>
-        </div>
-        <div class="shell-actions">
-          <a
-            href="{{ url_for('appointments_blueprint.seleccionar_consultorio') }}"
-            class="shell-link"
-            >Turnos</a
-          >
-          <a
-            href="{{ url_for('dashboard_blueprint.dashboard_indicators') }}"
-            class="shell-link shell-link--primary"
-            >Dashboard</a
-          >
-          <div class="hero-badge" id="reloj"></div>
-        </div>
+
+<div class="nv-page">
+
+  <!-- Header -->
+  <header class="nv-header">
+    <div class="nv-header__content">
+      <div class="nv-header__left">
+        <div class="nv-header__label">Gestión Clínica</div>
+        <h1 class="nv-header__title">Panel de Salud</h1>
+        <p class="nv-header__description">
+          Ingrese a la operación diaria de turnos o a la sala de situación
+          desde una experiencia unificada, clara y lista para uso operativo.
+        </p>
       </div>
-    </header>
+      <nav class="nv-header__nav">
+        <a href="{{ url_for('appointments_blueprint.seleccionar_consultorio') }}" class="nv-nav-btn nv-nav-btn--ghost">Turnos</a>
+        <a href="{{ url_for('dashboard_blueprint.dashboard_indicators') }}" class="nv-nav-btn nv-nav-btn--solid">Dashboard</a>
+        <div class="nv-time-display" id="clock">00:00:00 A. M.</div>
+      </nav>
+    </div>
+  </header>
 
-    <div class="content">
-      <div class="nav-grid">
-        <a
-          href="{{ url_for('appointments_blueprint.seleccionar_consultorio') }}"
-          class="nav-card"
-        >
-          <img
-            src="{{ url_for('base_blueprint.static', filename='images/appointment.svg') }}"
-            class="nav-card__img"
-            alt="Turnos"
-          />
-          <div class="nav-card__body">
-            <div class="nav-card__label">Gestión de turnos</div>
-            <div class="nav-card__title">Turnos / Citas</div>
-            <div class="nav-card__text">
-              Selección de consultorios, turnos del día y vista de sala de
-              espera con seguimiento operativo.
-            </div>
-            <span class="nav-card__btn">Ingresar</span>
+  <!-- Main Content -->
+  <main class="nv-main">
+    <div class="nv-cards-grid">
+
+      <!-- Turnos Card -->
+      <a href="{{ url_for('appointments_blueprint.seleccionar_consultorio') }}" class="nv-card">
+        <div class="nv-card__image nv-card__image--turnos">
+          <div class="nv-card__icon nv-card__icon--turnos">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
           </div>
+        </div>
+        <div class="nv-card__content">
+          <div class="nv-card__label nv-card__label--turnos">Gestión de Turnos</div>
+          <h2 class="nv-card__title">Turnos / Citas</h2>
+          <p class="nv-card__description">
+            Selección de consultorios, turnos del día y vista de sala de
+            espera con seguimiento operativo en tiempo real.
+          </p>
+          <span class="nv-card__btn nv-card__btn--turnos">
+            Ingresar
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/>
+              <path d="m12 5 7 7-7 7"/>
+            </svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- Estadísticas Card -->
+      <a href="{{ url_for('dashboard_blueprint.dashboard_indicators') }}" class="nv-card">
+        <div class="nv-card__image nv-card__image--estadisticas">
+          <div class="nv-charts-container">
+            <div class="nv-chart-placeholder">
+              <div class="nv-bar-chart">
+                <div class="nv-bar" style="height:30px"></div>
+                <div class="nv-bar" style="height:45px"></div>
+                <div class="nv-bar" style="height:35px"></div>
+                <div class="nv-bar" style="height:55px"></div>
+                <div class="nv-bar" style="height:40px"></div>
+              </div>
+            </div>
+            <div class="nv-pie-chart"></div>
+            <div class="nv-line-chart">
+              <svg viewBox="0 0 100 50" fill="none">
+                <polyline points="0,40 20,35 40,25 60,30 80,15 100,20" stroke="#ef4444" stroke-width="2" fill="none"/>
+                <circle cx="0"   cy="40" r="3" fill="#ef4444"/>
+                <circle cx="20"  cy="35" r="3" fill="#ef4444"/>
+                <circle cx="40"  cy="25" r="3" fill="#ef4444"/>
+                <circle cx="60"  cy="30" r="3" fill="#ef4444"/>
+                <circle cx="80"  cy="15" r="3" fill="#ef4444"/>
+                <circle cx="100" cy="20" r="3" fill="#ef4444"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="nv-card__content">
+          <div class="nv-card__label nv-card__label--estadisticas">Estadísticas</div>
+          <h2 class="nv-card__title">Sala de Situación</h2>
+          <p class="nv-card__description">
+            Indicadores diarios y tableros analíticos activos para turnos,
+            farmacia, enfermería, población y ECNT.
+          </p>
+          <span class="nv-card__btn nv-card__btn--estadisticas">
+            Ingresar
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/>
+              <path d="m12 5 7 7-7 7"/>
+            </svg>
+          </span>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="nv-footer">
+    <div class="nv-footer__content">
+      <div class="nv-footer__left">
+        <div class="nv-footer__title">Gestión Salud — Dashboard</div>
+        <div class="nv-footer__version">v2.1.0 — Sistema de Gestión Hospitalaria</div>
+      </div>
+      <div class="nv-footer__links">
+        <a href="http://ingenieria.uner.edu.ar/grupos/salud_publica/" target="_blank" class="nv-footer__link">
+          ¿Quiénes Somos?
+          <div class="nv-qr-code" id="qr-quienes-somos-idx"></div>
         </a>
-
-        <a
-          href="{{ url_for('dashboard_blueprint.dashboard_indicators') }}"
-          class="nav-card"
-        >
-          <img
-            src="{{ url_for('base_blueprint.static', filename='images/sala_de_situacion.png') }}"
-            class="nav-card__img"
-            alt="Sala de Situación"
-          />
-          <div class="nav-card__body">
-            <div class="nav-card__label">Estadísticas</div>
-            <div class="nav-card__title">Sala de Situación</div>
-            <div class="nav-card__text">
-              Indicadores diarios y tableros analíticos activos para turnos,
-              farmacia, enfermería, población y ECNT.
-            </div>
-            <span class="nav-card__btn">Ingresar</span>
-          </div>
+        <a href="https://gitlab.com/gnuhealth_fiuner" target="_blank" class="nv-footer__link">
+          Repositorio
+          <div class="nv-qr-code" id="qr-repositorio-idx"></div>
+        </a>
+        <a href="mailto:saludpublica@ingenieria.uner.edu.ar" target="_blank" class="nv-footer__link">
+          Contacto
+          <div class="nv-qr-code" id="qr-contacto-idx"></div>
         </a>
       </div>
     </div>
+  </footer>
 
-    <footer class="footer">{% include 'layouts/partials/footer.html' %}</footer>
-  </div>
 </div>
+
 {% endblock body %} {% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>
   (function () {
     function tick() {
-      const el = document.getElementById("reloj");
+      const el = document.getElementById("clock");
       if (!el) return;
       const now = new Date();
-      el.textContent = now.toLocaleTimeString("es-AR", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      });
+      let h = now.getHours();
+      const m = now.getMinutes().toString().padStart(2, "0");
+      const s = now.getSeconds().toString().padStart(2, "0");
+      const ampm = h >= 12 ? "P. M." : "A. M.";
+      h = h % 12 || 12;
+      el.textContent = `${h.toString().padStart(2, "0")}:${m}:${s} ${ampm}`;
     }
     tick();
     setInterval(tick, 1000);
   })();
+
+  function generateQR(elementId, url) {
+    const container = document.getElementById(elementId);
+    if (!container) return;
+    try {
+      container.innerHTML = '';
+      const qr = qrcode(0, 'L');
+      qr.addData(url);
+      qr.make();
+      const size = 32;
+      const canvas = document.createElement('canvas');
+      canvas.width = canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      const moduleCount = qr.getModuleCount();
+      const tile = size / moduleCount;
+      for (let r = 0; r < moduleCount; r++) {
+        for (let c = 0; c < moduleCount; c++) {
+          ctx.fillStyle = qr.isDark(r, c) ? '#1e40af' : '#ffffff';
+          ctx.fillRect(c * tile, r * tile, tile, tile);
+        }
+      }
+      canvas.style.cssText = 'cursor:pointer;border-radius:3px;';
+      canvas.addEventListener('click', () => window.open(url, '_blank'));
+      container.appendChild(canvas);
+    } catch (e) { console.error('QR error:', e); }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    generateQR('qr-quienes-somos-idx', 'http://ingenieria.uner.edu.ar/grupos/salud_publica/');
+    generateQR('qr-repositorio-idx',   'https://gitlab.com/gnuhealth_fiuner');
+    generateQR('qr-contacto-idx',      'mailto:saludpublica@ingenieria.uner.edu.ar');
+  });
 </script>
 {% endblock javascripts %}

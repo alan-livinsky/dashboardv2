@@ -235,6 +235,7 @@
 
         .board-row--calling  { background: var(--calling-dim); animation: row-pulse 1s ease-in-out infinite; }
         .board-row--attending { background: var(--attending-dim); }
+        .board-row--waiting { background: #ffffff; }
 
         @keyframes row-pulse {
             0%, 100% { background: var(--calling-dim); }
@@ -252,10 +253,12 @@
         }
         .cell-room--calling   { color: var(--calling-flash); }
         .cell-room--attending { color: var(--navy); }
+        .cell-room--waiting   { color: var(--muted); }
 
         .cell-patient { font-size: 1.7rem; font-weight: 700; }
         .cell-patient--calling   { color: var(--navy-dark); }
         .cell-patient--attending { color: var(--text); }
+        .cell-patient--waiting   { color: var(--text); }
 
         .cell-doctor { font-size: 1.7rem; color: var(--muted); letter-spacing: 0.3px; }
 
@@ -287,6 +290,12 @@
             background: var(--navy);
             color: #ffffff;
             border: none;
+        }
+
+        .status-pill--waiting {
+            background: rgba(90, 111, 144, 0.14);
+            color: var(--muted);
+            border: 1px solid rgba(90, 111, 144, 0.18);
         }
 
         /* empty state */

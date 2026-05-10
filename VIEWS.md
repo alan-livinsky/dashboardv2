@@ -39,7 +39,7 @@
 | `/turnos` | `layouts/appointments.html` | Main appointments view |
 | `/sala_espera` | `layouts/appointments_sala_espera.html` | Waiting room view |
 | `/tabla_turnos` | `layouts/partials/appointments_table.html` | Appointments table partial |
-| `/select_consulting_rooms` | `layouts/select_consulting_rooms.html` | Consulting room selector |
+| `/seleccionar_consultorio` | `layouts/select_consulting_rooms.html` | Consulting room selector |
 | `/carousel_images` | `layouts/partials/carousel.html` | Carousel partial |
 | `/get_image/<image_id>` | - | Serve image attachment |
 

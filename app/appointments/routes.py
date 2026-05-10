@@ -81,9 +81,9 @@ def obtener_turnos(consulting_rooms=[]):
     return today, appointments, institution, total
 
 
-@blueprint.route('/select_consulting_rooms')
+@blueprint.route('/seleccionar_consultorio')
 @tryton.transaction()
-def select_consulting_rooms():
+def seleccionar_consultorio():
     consulting_rooms = []
     today, appointments, institution, _ = obtener_turnos()
     print(today, appointments, institution)

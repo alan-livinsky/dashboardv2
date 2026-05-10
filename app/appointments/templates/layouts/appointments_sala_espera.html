@@ -10,20 +10,20 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --navy:           #1e3d7a;
-            --navy-dark:      #152d5c;
-            --navy-light:     #2a52a0;
-            --bg:             #eef2f8;
-            --surface:        #ffffff;
-            --border:         #c2cedf;
-            --text:           #0f1e3a;
-            --muted:          #5a6f90;
-            --calling:        #3b82f6;
-            --calling-dim:    #dbeafe;
-            --calling-flash:  #1d4ed8;
+            --navy:           var(--color-primary-700);
+            --navy-dark:      #0d3a6e;
+            --navy-light:     var(--color-primary-600);
+            --bg:             var(--color-page);
+            --surface:        var(--color-surface);
+            --border:         var(--color-ink-300);
+            --text:           var(--color-ink-900);
+            --muted:          var(--color-ink-700);
+            --calling:        var(--color-primary-500);
+            --calling-dim:    var(--color-primary-050);
+            --calling-flash:  var(--color-primary-700);
             --calling-text:   #ffffff;
-            --attending:      #1e3d7a;
-            --attending-dim:  #dce6f5;
+            --attending:      var(--color-primary-700);
+            --attending-dim:  var(--color-primary-100);
             --attending-text: #ffffff;
         }
 
@@ -578,20 +578,6 @@
         document.getElementById('statWaiting').textContent   = waiting.length;
     }
 
-    function boardRow(r, state) {
-        const pillLabel = state === 'calling' ? '&#9654; Llamando' : '&#9679; En atención';
-        return `
-            <tr class="board-row board-row--${state}">
-                <td class="cell-room cell-room--${state}">${escHtml(r.room)}</td>
-                <td class="cell-patient cell-patient--${state}">${escHtml(r.patient)}</td>
-                <td class="cell-doctor">${escHtml(r.doctor)}</td>
-                <td class="cell-status">
-                    <span class="status-pill status-pill--${state}">${pillLabel}</span>
-                </td>
-            </tr>
-        `;
-    }
-
     function escHtml(str) {
         return String(str)
             .replace(/&/g, '&amp;')
@@ -605,7 +591,7 @@
             state === 'calling'
                 ? '&#9654; Llamando'
                 : state === 'attending'
-                    ? '&#9679; En atenciÃ³n'
+                    ? '&#9679; En atención'
                     : 'En espera';
         return `
             <tr class="board-row board-row--${state}">

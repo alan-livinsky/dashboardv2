@@ -14,20 +14,20 @@
         *, *::before, *::after { box-sizing: border-box; }
 
         :root {
-            --primary:        #1a6eb5;
-            --primary-dark:   #145a9e;
-            --primary-light:  #2b7fcb;
-            --bg-page:        #f0f4f8;
-            --bg-card:        #ffffff;
-            --text-heading:   #1a1f36;
-            --text-body:      #52576f;
-            --text-muted:     #8896a5;
-            --border-light:   #e8ecf2;
-            --status-waiting-dot: #f59e0b;
-            --status-calling:     #f59e0b;
+            --primary:        var(--color-primary-600);
+            --primary-dark:   var(--color-primary-700);
+            --primary-light:  var(--color-primary-500);
+            --bg-page:        var(--color-page);
+            --bg-card:        var(--color-surface);
+            --text-heading:   var(--color-ink-900);
+            --text-body:      var(--color-ink-800);
+            --text-muted:     var(--color-ink-500);
+            --border-light:   var(--color-ink-200);
+            --status-waiting-dot: var(--color-accent-amber);
+            --status-calling:     var(--color-accent-amber);
             --status-calling-bg:  #fff8ec;
-            --status-attending:   #1a6eb5;
-            --status-attending-bg: #e8f0fb;
+            --status-attending:   var(--color-primary-600);
+            --status-attending-bg: var(--color-primary-050);
         }
 
         body, html {
@@ -428,30 +428,17 @@
         .empty-state p { margin: 0; font-size: 0.82rem; font-weight: 500; }
         .empty-state.hidden { display: none; }
 
-        /* ── Override main.css gradient/layout interference ── */
-        body, html {
-            background: var(--bg-page) !important;
-        }
+        /* Isolate kiosk layout from base template */
+        body, html { background: var(--bg-page); }
+        body > footer { display: none; }
         .container-table100 {
-            background: var(--bg-page) !important;
-            align-items: stretch !important;
-            justify-content: flex-start !important;
-            flex-wrap: nowrap !important;
-            min-height: unset !important;
+            background: var(--bg-page);
+            align-items: stretch;
+            justify-content: flex-start;
+            flex-wrap: nowrap;
+            min-height: unset;
         }
-        /* Hide base template's empty footer element */
-        body > footer { display: none !important; }
-        /* Fix footer width (main.css sets 90%) */
-        .footer { width: 100% !important; min-height: unset !important; height: auto !important; }
-        /* Fix stats bar */
-        .stats-bar { width: 100% !important; }
-        /* Fix tr/td overrides from main.css */
-        tr.fila-par   { background-color: var(--bg-card) !important; }
-        tr.fila-impar { background-color: #fafbfc !important; }
-        #tabla_espera td, #tabla_atencion td { text-align: left; }
-        #tabla_espera th, #tabla_atencion th { text-align: left; font-family: inherit; }
-        /* Fix Bootstrap border-radius on td from main.css */
-        td, th { border-radius: 0 !important; }
+        td, th { border-radius: 0; }
     </style>
 {% endblock %}
 

@@ -1,15 +1,59 @@
-<div class="text-center py-3">
-  <small class="text-muted" style="font-size: 13px"
-    >Gestión salud - Dashboard</small
-  >
+<div class="footer-container">
+  <div class="footer-content">
+    <span class="footer-copyright">Gestión salud — Dashboard</span>
+
+    <div class="footer-links-with-qr">
+      <div class="link-with-qr">
+        <a href="http://ingenieria.uner.edu.ar/grupos/salud_publica/" target="_blank" class="footer-link">¿Quienes somos?</a>
+        <div class="qr-container" id="qr-quienes-somos"><div class="qr-placeholder">QR</div></div>
+      </div>
+      <div class="link-with-qr">
+        <a href="https://gitlab.com/gnuhealth_fiuner" target="_blank" class="footer-link">Repositorio</a>
+        <div class="qr-container" id="qr-repositorio"><div class="qr-placeholder">QR</div></div>
+      </div>
+      <div class="link-with-qr">
+        <a href="mailto:saludpublica@ingenieria.uner.edu.ar" target="_blank" class="footer-link">Contacto</a>
+        <div class="qr-container" id="qr-contacto"><div class="qr-placeholder">QR</div></div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<style>
-  .footer {
-    width: 100%;
-    padding: 12px 20px;
-    font-family:
-      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-      sans-serif;
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+(function () {
+  function generateQR(elementId, url) {
+    const container = document.getElementById(elementId);
+    if (!container) return;
+    try {
+      container.innerHTML = '';
+      const qr = qrcode(0, 'L');
+      qr.addData(url);
+      qr.make();
+      const size = 42;
+      const canvas = document.createElement('canvas');
+      canvas.width = canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      const moduleCount = qr.getModuleCount();
+      const tile = size / moduleCount;
+      for (let r = 0; r < moduleCount; r++) {
+        for (let c = 0; c < moduleCount; c++) {
+          ctx.fillStyle = qr.isDark(r, c) ? '#0f4f88' : '#ffffff';
+          ctx.fillRect(c * tile, r * tile, tile, tile);
+        }
+      }
+      canvas.style.cursor = 'pointer';
+      canvas.addEventListener('click', () => window.open(url, '_blank'));
+      container.appendChild(canvas);
+    } catch (e) {
+      console.error('QR error:', e);
+    }
   }
-</style>
+
+  document.addEventListener('DOMContentLoaded', function () {
+    generateQR('qr-quienes-somos', 'http://ingenieria.uner.edu.ar/grupos/salud_publica/');
+    generateQR('qr-repositorio', 'https://gitlab.com/gnuhealth_fiuner');
+    generateQR('qr-contacto', 'mailto:saludpublica@ingenieria.uner.edu.ar');
+  });
+})();
+</script>

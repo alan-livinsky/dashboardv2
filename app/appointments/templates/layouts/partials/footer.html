@@ -1,74 +1,91 @@
 <!-- layouts/partials/footer.html -->
 <div class="footer-container">
-    <div class="footer-content">
-        <span class="footer-copyright">Gestión salud - Dashboard</span>
+  <div class="footer-content">
+    <span class="footer-copyright">Gestión salud - Dashboard</span>
 
-        <div class="footer-links-with-qr">
-            <div class="link-with-qr">
-                <a href="http://ingenieria.uner.edu.ar/grupos/salud_publica/" target="_blank" class="footer-link">¿Quienes somos?</a>
-                <div class="qr-container" id="qr-quienes-somos">
-                    <div class="qr-placeholder">QR</div>
-                </div>
-            </div>
-
-            <div class="link-with-qr">
-                <a href="https://gitlab.com/gnuhealth_fiuner" target="_blank" class="footer-link">Repositorio</a>
-                <div class="qr-container" id="qr-repositorio">
-                    <div class="qr-placeholder">QR</div>
-                </div>
-            </div>
-
-            <div class="link-with-qr">
-                <a href="mailto:saludpublica@ingenieria.uner.edu.ar" target="_blank" class="footer-link">Contacto</a>
-                <div class="qr-container" id="qr-contacto">
-                    <div class="qr-placeholder">QR</div>
-                </div>
-            </div>
+    <div class="footer-links-with-qr">
+      <div class="link-with-qr">
+        <a
+          href="http://ingenieria.uner.edu.ar/grupos/salud_publica/"
+          target="_blank"
+          class="footer-link"
+          >¿Quienes somos?</a
+        >
+        <div class="qr-container" id="qr-quienes-somos">
+          <div class="qr-placeholder">QR</div>
         </div>
+      </div>
+
+      <div class="link-with-qr">
+        <a
+          href="https://gitlab.com/gnuhealth_fiuner"
+          target="_blank"
+          class="footer-link"
+          >Repositorio</a
+        >
+        <div class="qr-container" id="qr-repositorio">
+          <div class="qr-placeholder">QR</div>
+        </div>
+      </div>
+
+      <div class="link-with-qr">
+        <a
+          href="mailto:saludpublica@ingenieria.uner.edu.ar"
+          target="_blank"
+          class="footer-link"
+          >Contacto</a
+        >
+        <div class="qr-container" id="qr-contacto">
+          <div class="qr-placeholder">QR</div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 
 <style>
-.footer-container {
+  .footer-container {
     width: 100%;
     padding: 12px 20px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-}
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+      sans-serif;
+  }
 
-.footer-content {
+  .footer-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 20px;
     flex-wrap: nowrap;
-}
+  }
 
-.footer-copyright {
+  .footer-copyright {
     color: #7b8699;
     font-size: 13px;
     line-height: 1.4;
     white-space: nowrap;
     flex-shrink: 0;
     letter-spacing: 0.3px;
-}
+  }
 
-.footer-links-with-qr {
+  .footer-links-with-qr {
     display: flex;
     align-items: center;
     gap: 20px;
     flex-wrap: nowrap;
     flex-shrink: 0;
-}
+  }
 
-.link-with-qr {
+  .link-with-qr {
     display: flex;
     align-items: center;
     gap: 8px;
-}
+  }
 
-.qr-container {
+  .qr-container {
     width: 44px;
     height: 44px;
     background: #ffffff;
@@ -82,130 +99,134 @@
     flex-shrink: 0;
     border: 1px solid #d4d8df;
     transition: all 0.15s ease;
-}
+  }
 
-.qr-container:hover {
+  .qr-container:hover {
     border-color: #0092cc;
     box-shadow: 0 2px 6px rgba(0, 146, 204, 0.15);
-}
+  }
 
-.qr-placeholder {
+  .qr-placeholder {
     color: #a8adb8;
     font-size: 9px;
     font-weight: 600;
-}
+  }
 
-.footer-link {
+  .footer-link {
     color: #0092cc;
     text-decoration: none;
     font-weight: 600;
     font-size: 11px;
     white-space: nowrap;
     transition: color 0.15s ease;
-}
+  }
 
-.footer-link:hover {
+  .footer-link:hover {
     color: #0070b0;
-}
+  }
 
-@media (max-width: 1024px) {
+  @media (max-width: 1024px) {
     .footer-content {
-        gap: 15px;
+      gap: 15px;
     }
     .footer-links-with-qr {
-        gap: 16px;
+      gap: 16px;
     }
     .footer-copyright {
-        font-size: 12px;
+      font-size: 12px;
     }
     .footer-link {
-        font-size: 11px;
+      font-size: 11px;
     }
-}
+  }
 
-@media (max-width: 768px) {
+  @media (max-width: 768px) {
     .footer-container {
-        padding: 8px 12px;
+      padding: 8px 12px;
     }
     .footer-content {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
     }
     .footer-copyright {
-        font-size: 10px;
-        text-align: center;
-        width: 100%;
+      font-size: 10px;
+      text-align: center;
+      width: 100%;
     }
     .footer-links-with-qr {
-        gap: 12px;
+      gap: 12px;
     }
     .footer-link {
-        font-size: 10px;
+      font-size: 10px;
     }
-}
+  }
+</style>
 
 <script>
-function generateQRCode(elementId, text) {
+  function generateQRCode(elementId, text) {
     const container = document.getElementById(elementId);
     if (!container) return;
 
     try {
-        container.innerHTML = '';
-        const typeNumber = 0;
-        const errorCorrectionLevel = 'L';
-        const qr = qrcode(typeNumber, errorCorrectionLevel);
-        qr.addData(text);
-        qr.make();
+      container.innerHTML = "";
+      const typeNumber = 0;
+      const errorCorrectionLevel = "L";
+      const qr = qrcode(typeNumber, errorCorrectionLevel);
+      qr.addData(text);
+      qr.make();
 
-        const canvas = document.createElement('canvas');
-        const size = 42;
-        canvas.width = size;
-        canvas.height = size;
-        const ctx = canvas.getContext('2d');
+      const canvas = document.createElement("canvas");
+      const size = 42;
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext("2d");
 
-        const moduleCount = qr.getModuleCount();
-        const tileSize = size / moduleCount;
+      const moduleCount = qr.getModuleCount();
+      const tileSize = size / moduleCount;
 
-        for (let row = 0; row < moduleCount; row++) {
-            for (let col = 0; col < moduleCount; col++) {
-                ctx.fillStyle = qr.isDark(row, col) ? '#1a1f36' : '#ffffff';
-                ctx.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
-            }
+      for (let row = 0; row < moduleCount; row++) {
+        for (let col = 0; col < moduleCount; col++) {
+          ctx.fillStyle = qr.isDark(row, col) ? "#1a1f36" : "#ffffff";
+          ctx.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
         }
+      }
 
-        container.appendChild(canvas);
-        canvas.style.cursor = 'pointer';
-        canvas.addEventListener('click', function() {
-            window.open(text, '_blank');
-        });
+      container.appendChild(canvas);
+      canvas.style.cursor = "pointer";
+      canvas.addEventListener("click", function () {
+        window.open(text, "_blank");
+      });
     } catch (error) {
-        console.error('Error generando QR:', error);
+      console.error("Error generando QR:", error);
     }
-}
+  }
 
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener("DOMContentLoaded", function () {
     const qrConfig = [
-        { id: 'qr-quienes-somos', url: 'http://ingenieria.uner.edu.ar/grupos/salud_publica/' },
-        { id: 'qr-repositorio', url: 'https://gitlab.com/gnuhealth_fiuner' },
-        { id: 'qr-contacto', url: 'mailto:saludpublica@ingenieria.uner.edu.ar' }
+      {
+        id: "qr-quienes-somos",
+        url: "http://ingenieria.uner.edu.ar/grupos/salud_publica/",
+      },
+      { id: "qr-repositorio", url: "https://gitlab.com/gnuhealth_fiuner" },
+      { id: "qr-contacto", url: "mailto:saludpublica@ingenieria.uner.edu.ar" },
     ];
 
-    qrConfig.forEach(config => {
-        generateQRCode(config.id, config.url);
+    qrConfig.forEach((config) => {
+      generateQRCode(config.id, config.url);
     });
-});
+  });
 
-function checkLibraryLoaded() {
+  function checkLibraryLoaded() {
     setTimeout(() => {
-        if (typeof qrcode === 'undefined') {
-            const containers = document.querySelectorAll('.qr-container');
-            containers.forEach(container => {
-                container.innerHTML = '<div class="qr-placeholder">QR</div>';
-            });
-        }
+      if (typeof qrcode === "undefined") {
+        const containers = document.querySelectorAll(".qr-container");
+        containers.forEach((container) => {
+          container.innerHTML = '<div class="qr-placeholder">QR</div>';
+        });
+      }
     }, 2000);
-}
+  }
 
-checkLibraryLoaded();
+  checkLibraryLoaded();
 </script>

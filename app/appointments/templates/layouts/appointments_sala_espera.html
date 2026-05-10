@@ -528,7 +528,7 @@
                 <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
                     <div class="calling-banner__tag">Dirijase al consultorio</div>
                     <div class="calling-banner__room">${escHtml(r.room)}</div>
-                </div
+                </div>
                 <div class="calling-banner__divider"></div>
                 <div>
                     <div class="calling-banner__patient">${escHtml(r.patient)}</div>
@@ -557,9 +557,9 @@
         const bodyEl   = document.getElementById('boardBody');
         const emptyEl  = document.getElementById('emptyBoard');
         const tableEl  = document.getElementById('boardTable');
-        const allActive = [...calling, ...attending];
+        const allVisible = [...calling, ...attending, ...waiting];
 
-        if (allActive.length === 0) {
+        if (allVisible.length === 0) {
             tableEl.style.display = 'none';
             emptyEl.style.display = 'flex';
         } else {
@@ -568,6 +568,7 @@
             bodyEl.innerHTML = [
                 ...calling.map(r => boardRow(r, 'calling')),
                 ...attending.map(r => boardRow(r, 'attending')),
+                ...waiting.map(r => boardRow(r, 'waiting')),
             ].join('');
         }
 
@@ -597,6 +598,25 @@
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;');
+    }
+
+    function boardRow(r, state) {
+        const pillLabel =
+            state === 'calling'
+                ? '&#9654; Llamando'
+                : state === 'attending'
+                    ? '&#9679; En atenciÃ³n'
+                    : 'En espera';
+        return `
+            <tr class="board-row board-row--${state}">
+                <td class="cell-room cell-room--${state}">${escHtml(r.room)}</td>
+                <td class="cell-patient cell-patient--${state}">${escHtml(r.patient)}</td>
+                <td class="cell-doctor">${escHtml(r.doctor)}</td>
+                <td class="cell-status">
+                    <span class="status-pill status-pill--${state}">${pillLabel}</span>
+                </td>
+            </tr>
+        `;
     }
 
     /* ── AJAX polling (same mechanism as original) ── */

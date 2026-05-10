@@ -1,41 +1,54 @@
-{% extends 'layouts/base.html' %}
-
-{% block head %}
+{% extends 'layouts/base.html' %} {% block head %}
 <title>Sala de Espera — {{ institution }}</title>
-<meta http-equiv="Expires" content="0">
-<meta http-equiv="Last-Modified" content="0">
-<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
-<meta http-equiv="Pragma" content="no-store">
+<meta http-equiv="Expires" content="0" />
+<meta http-equiv="Last-Modified" content="0" />
+<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate" />
+<meta http-equiv="Pragma" content="no-store" />
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
   :root {
-    --color-primary:       #1e40af;
-    --color-primary-dark:  #1e3a8a;
+    --color-primary: #1e40af;
+    --color-primary-dark: #1e3a8a;
     --color-primary-light: #3b82f6;
-    --color-background:    #f1f5f9;
-    --color-surface:       #ffffff;
-    --color-text:          #1e293b;
-    --color-text-muted:    #64748b;
-    --color-border:        #e2e8f0;
-    --color-success:       #10b981;
-    --color-warning:       #f59e0b;
-    --radius-sm:   6px;
+    --color-background: #f1f5f9;
+    --color-surface: #ffffff;
+    --color-text: #1e293b;
+    --color-text-muted: #64748b;
+    --color-border: #e2e8f0;
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --radius-sm: 6px;
     --radius-full: 9999px;
   }
 
   /* Override base template */
-  html, body {
+  html,
+  body {
     background: var(--color-background) !important;
     color: var(--color-text) !important;
     height: 100%;
     overflow: hidden;
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      sans-serif !important;
     font-size: 16px !important;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
-  body > footer { display: none !important; }
+  body > footer {
+    display: none !important;
+  }
 
   .se-page {
     display: flex;
@@ -45,7 +58,12 @@
 
   /* ── Header ── */
   .se-header {
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 50%, #0f2557 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-primary) 0%,
+      var(--color-primary-dark) 50%,
+      #0f2557 100%
+    );
     color: white;
     padding: 1.5rem 2rem;
     position: relative;
@@ -56,18 +74,30 @@
   .se-header::before {
     content: "";
     position: absolute;
-    top: -50%; right: -10%;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.08) 0%,
+      transparent 70%
+    );
     border-radius: 50%;
   }
 
   .se-header::after {
     content: "";
     position: absolute;
-    bottom: -60%; left: 20%;
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    bottom: -60%;
+    left: 20%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 70%
+    );
     border-radius: 50%;
   }
 
@@ -81,10 +111,14 @@
     z-index: 1;
   }
 
-  .se-header__left { display: flex; flex-direction: column; gap: 0.25rem; }
+  .se-header__left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
 
   .se-header__title {
-    font-size: 1.25rem;
+    font-size: 2rem;
     font-weight: 600;
     letter-spacing: 0.5px;
     display: flex;
@@ -92,12 +126,15 @@
     gap: 0.75rem;
   }
 
-  .se-header__title span { opacity: 0.6; }
+  .se-header__title span {
+    opacity: 0.6;
+  }
 
   .se-header__subtitle {
     font-size: 0.875rem;
     opacity: 0.8;
     font-weight: 400;
+    margin: 0;
   }
 
   .se-header__right {
@@ -106,7 +143,9 @@
     gap: 2rem;
   }
 
-  .se-clock { text-align: right; }
+  .se-clock {
+    text-align: right;
+  }
 
   .se-clock__time {
     font-size: 2.5rem;
@@ -123,7 +162,10 @@
     text-transform: capitalize;
   }
 
-  .se-header__nav { display: flex; gap: 0.5rem; }
+  .se-header__nav {
+    display: flex;
+    gap: 0.5rem;
+  }
 
   .se-nav-pill {
     padding: 0.5rem 1rem;
@@ -134,15 +176,15 @@
     letter-spacing: 0.5px;
     text-decoration: none;
     color: white;
-    border: 1.5px solid rgba(255,255,255,0.4);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
     background: transparent;
     cursor: pointer;
     transition: all 0.2s ease;
   }
 
   .se-nav-pill:hover {
-    background: rgba(255,255,255,0.15);
-    border-color: rgba(255,255,255,0.6);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.6);
     color: white;
   }
 
@@ -152,11 +194,17 @@
     border-color: white;
   }
 
-  .se-nav-pill--active:hover { color: var(--color-primary); }
+  .se-nav-pill--active:hover {
+    color: var(--color-primary);
+  }
 
   /* ── Table header ── */
   .se-table-header {
-    background: linear-gradient(135deg, var(--color-primary-dark) 0%, #0f2557 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-primary-dark) 0%,
+      #0f2557 100%
+    );
     display: grid;
     grid-template-columns: 1fr 1.5fr 1.5fr 200px;
     flex-shrink: 0;
@@ -171,7 +219,9 @@
     letter-spacing: 1px;
   }
 
-  .se-table-header__cell:last-child { text-align: center; }
+  .se-table-header__cell:last-child {
+    text-align: center;
+  }
 
   /* ── Table body ── */
   .se-table-body {
@@ -180,9 +230,16 @@
     background: var(--color-background);
   }
 
-  .se-table-body::-webkit-scrollbar { width: 4px; }
-  .se-table-body::-webkit-scrollbar-track { background: transparent; }
-  .se-table-body::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+  .se-table-body::-webkit-scrollbar {
+    width: 4px;
+  }
+  .se-table-body::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .se-table-body::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 2px;
+  }
 
   .se-row {
     display: grid;
@@ -192,21 +249,44 @@
     transition: all 0.2s ease;
   }
 
-  .se-row:hover { background: #f8fafc; }
+  .se-row:hover {
+    background: #f8fafc;
+  }
 
   .se-row--calling {
-    background: linear-gradient(90deg, rgba(16,185,129,0.1) 0%, rgba(16,185,129,0.05) 100%);
+    background: linear-gradient(
+      90deg,
+      rgba(16, 185, 129, 0.1) 0%,
+      rgba(16, 185, 129, 0.05) 100%
+    );
     border-left: 4px solid var(--color-success);
     animation: se-row-pulse 1.4s ease-in-out infinite;
   }
 
   @keyframes se-row-pulse {
-    0%, 100% { background: linear-gradient(90deg, rgba(16,185,129,0.10) 0%, rgba(16,185,129,0.05) 100%); }
-    50%       { background: linear-gradient(90deg, rgba(16,185,129,0.20) 0%, rgba(16,185,129,0.10) 100%); }
+    0%,
+    100% {
+      background: linear-gradient(
+        90deg,
+        rgba(16, 185, 129, 0.1) 0%,
+        rgba(16, 185, 129, 0.05) 100%
+      );
+    }
+    50% {
+      background: linear-gradient(
+        90deg,
+        rgba(16, 185, 129, 0.2) 0%,
+        rgba(16, 185, 129, 0.1) 100%
+      );
+    }
   }
 
   .se-row--attending {
-    background: linear-gradient(90deg, rgba(59,130,246,0.1) 0%, rgba(59,130,246,0.05) 100%);
+    background: linear-gradient(
+      90deg,
+      rgba(59, 130, 246, 0.1) 0%,
+      rgba(59, 130, 246, 0.05) 100%
+    );
     border-left: 4px solid var(--color-primary-light);
   }
 
@@ -235,7 +315,9 @@
     font-size: 1.125rem;
   }
 
-  .se-cell--estado { justify-content: center; }
+  .se-cell--estado {
+    justify-content: center;
+  }
 
   .se-badge {
     padding: 0.625rem 1.5rem;
@@ -262,8 +344,13 @@
   }
 
   @keyframes se-badge-pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
-    50%       { box-shadow: 0 0 0 10px rgba(16,185,129,0); }
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+    }
   }
 
   .se-badge--attending {
@@ -272,16 +359,24 @@
   }
 
   .se-badge__dot {
-    width: 8px; height: 8px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: currentColor;
   }
 
-  .se-badge--calling .se-badge__dot { animation: se-blink 1s infinite; }
+  .se-badge--calling .se-badge__dot {
+    animation: se-blink 1s infinite;
+  }
 
   @keyframes se-blink {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.3; }
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.3;
+    }
   }
 
   /* ── Empty state ── */
@@ -294,14 +389,27 @@
     color: var(--color-text-muted);
   }
 
-  .se-empty svg { opacity: 0.3; margin-bottom: 1.5rem; }
+  .se-empty svg {
+    opacity: 0.3;
+    margin-bottom: 1.5rem;
+  }
 
-  .se-empty__text { font-size: 1.125rem; font-weight: 500; }
-  .se-empty__sub  { font-size: 0.875rem; margin-top: 0.5rem; }
+  .se-empty__text {
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+  .se-empty__sub {
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+  }
 
   /* ── Footer ── */
   .se-footer {
-    background: linear-gradient(135deg, var(--color-primary-dark) 0%, #0f2557 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-primary-dark) 0%,
+      #0f2557 100%
+    );
     color: white;
     padding: 1rem 2rem;
     flex-shrink: 0;
@@ -315,9 +423,15 @@
     align-items: center;
   }
 
-  .se-footer__brand { font-size: 0.8125rem; opacity: 0.8; }
+  .se-footer__brand {
+    font-size: 0.8125rem;
+    opacity: 0.8;
+  }
 
-  .se-footer__stats { display: flex; gap: 2rem; }
+  .se-footer__stats {
+    display: flex;
+    gap: 2rem;
+  }
 
   .se-stat {
     display: flex;
@@ -327,67 +441,105 @@
   }
 
   .se-stat__dot {
-    width: 10px; height: 10px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
   }
 
-  .se-stat__dot--calling   { background: var(--color-success);       box-shadow: 0 0 8px var(--color-success); }
-  .se-stat__dot--attending { background: var(--color-primary-light);  box-shadow: 0 0 8px var(--color-primary-light); }
-  .se-stat__dot--waiting   { background: var(--color-text-muted); }
+  .se-stat__dot--calling {
+    background: var(--color-success);
+    box-shadow: 0 0 8px var(--color-success);
+  }
+  .se-stat__dot--attending {
+    background: var(--color-primary-light);
+    box-shadow: 0 0 8px var(--color-primary-light);
+  }
+  .se-stat__dot--waiting {
+    background: var(--color-text-muted);
+  }
 
-  .se-stat__label { opacity: 0.8; }
-  .se-stat__value { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .se-stat__label {
+    opacity: 0.8;
+  }
+  .se-stat__value {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
 
   /* ── Hidden source tables (AJAX parsing target) ── */
-  #tabla_espera, #tabla_atencion { display: none; }
+  #tabla_espera,
+  #tabla_atencion {
+    display: none;
+  }
 
   /* ── Responsive ── */
   @media (max-width: 1024px) {
-    .se-header__content { flex-direction: column; gap: 1rem; text-align: center; }
-    .se-header__right   { flex-direction: column; gap: 1rem; }
-    .se-clock           { text-align: center; }
-    .se-table-header, .se-row { grid-template-columns: 1fr 1fr; }
+    .se-header__content {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+    .se-header__right {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .se-clock {
+      text-align: center;
+    }
+    .se-table-header,
+    .se-row {
+      grid-template-columns: 1fr 1fr;
+    }
     .se-table-header__cell:nth-child(3),
     .se-table-header__cell:nth-child(4),
     .se-cell:nth-child(3),
-    .se-cell:nth-child(4) { display: none; }
-    .se-footer__content { flex-direction: column; gap: 1rem; text-align: center; }
-    .se-footer__stats   { flex-wrap: wrap; justify-content: center; }
+    .se-cell:nth-child(4) {
+      display: none;
+    }
+    .se-footer__content {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+    .se-footer__stats {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   }
 
   @media (max-width: 640px) {
-    .se-header { padding: 1rem; }
-    .se-clock__time { font-size: 1.75rem; }
-    .se-cell { padding: 1rem; font-size: 0.875rem; }
-    .se-cell--consultorio, .se-cell--paciente { font-size: 1rem; }
+    .se-header {
+      padding: 1rem;
+    }
+    .se-clock__time {
+      font-size: 1.75rem;
+    }
+    .se-cell {
+      padding: 1rem;
+      font-size: 0.875rem;
+    }
+    .se-cell--consultorio,
+    .se-cell--paciente {
+      font-size: 1rem;
+    }
   }
 </style>
-{% endblock %}
-
-{% block body %}
+{% endblock %} {% block body %}
 <div class="se-page">
-
   <!-- Header -->
   <header class="se-header">
     <div class="se-header__content">
       <div class="se-header__left">
-        <h1 class="se-header__title">
-          {{ institution | upper }}
-          <span>—</span>
-          SALA DE ESPERA
-        </h1>
-        <p class="se-header__subtitle">Sistema de gestión de turnos en tiempo real</p>
+        <h1 class="se-header__title">SALA DE ESPERA</h1>
+        <p class="se-header__subtitle">
+          Sistema de gestión de turnos en tiempo real
+        </p>
       </div>
       <div class="se-header__right">
         <div class="se-clock">
           <div class="se-clock__time" id="se-clock">00:00:00</div>
           <div class="se-clock__date" id="se-date">Cargando...</div>
         </div>
-        <nav class="se-header__nav">
-          <a href="{{ url_for('base_blueprint.index') }}" class="se-nav-pill">Inicio</a>
-          <a href="{{ url_for('appointments_blueprint.seleccionar_consultorio') }}" class="se-nav-pill">Consultorios</a>
-          <a href="{{ url_for('dashboard_blueprint.dashboard_indicators') }}" class="se-nav-pill se-nav-pill--active">Dashboard</a>
-        </nav>
       </div>
     </div>
   </header>
@@ -403,22 +555,36 @@
   <!-- Table body (populated by JS) -->
   <div class="se-table-body" id="se-board">
     <!-- JS renders rows here from hidden source tables -->
-    <div class="se-empty" id="se-empty" style="display:none;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    <div class="se-empty" id="se-empty" style="display: none">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="80"
+        height="80"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
       </svg>
       <div class="se-empty__text">Sin pacientes para mostrar</div>
-      <div class="se-empty__sub">Los turnos aparecerán aquí cuando sean registrados</div>
+      <div class="se-empty__sub">
+        Los turnos aparecerán aquí cuando sean registrados
+      </div>
     </div>
   </div>
 
   <!-- Footer -->
   <footer class="se-footer">
     <div class="se-footer__content">
-      <div class="se-footer__brand">&copy; {{ institution }} — Sistema de Gestión de Turnos</div>
+      <div class="se-footer__brand">
+        &copy; {{ institution }} — Sistema de Gestión de Turnos
+      </div>
       <div class="se-footer__stats">
         <div class="se-stat">
           <span class="se-stat__dot se-stat__dot--calling"></span>
@@ -440,112 +606,150 @@
   </footer>
 
   <!-- Hidden source tables — backend renders; JS reads them -->
-  {% for appointment in appointments %}
-    {% if appointment.calling %}
-    <audio id="myAudio" autoplay>
-      <source src="{{ url_for('base_blueprint.static', filename='multimedia/timbre.ogg') }}" type="audio/ogg">
-    </audio>
-    {% endif %}
-  {% endfor %}
+  {% for appointment in appointments %} {% if appointment.calling %}
+  <audio id="myAudio" autoplay>
+    <source
+      src="{{ url_for('base_blueprint.static', filename='multimedia/timbre.ogg') }}"
+      type="audio/ogg"
+    />
+  </audio>
+  {% endif %} {% endfor %}
 
   <table id="tabla_atencion">
-    <thead><tr><th>Paciente</th><th>Profesional</th><th>Consultorio</th><th>Estado</th></tr></thead>
+    <thead>
+      <tr>
+        <th>Paciente</th>
+        <th>Profesional</th>
+        <th>Consultorio</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
     <tbody>
-    {% for appointment in appointments %}
-      {% if appointment.calling %}
+      {% for appointment in appointments %} {% if appointment.calling %}
       <tr class="calling">
         <td>{{ appointment.patient.rec_name }}</td>
         <td>{{ appointment.healthprof.rec_name }}</td>
-        <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
+        <td>
+          {{ appointment.consulting_room and appointment.consulting_room.name }}
+        </td>
         <td>Llamando</td>
       </tr>
       {% elif appointment.attending %}
       <tr class="registered">
         <td>{{ appointment.patient.rec_name }}</td>
         <td>{{ appointment.healthprof.rec_name }}</td>
-        <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
+        <td>
+          {{ appointment.consulting_room and appointment.consulting_room.name }}
+        </td>
         <td>En atención</td>
       </tr>
-      {% endif %}
-    {% endfor %}
+      {% endif %} {% endfor %}
     </tbody>
   </table>
 
   <table id="tabla_espera">
-    <thead><tr><th>Paciente</th><th>Profesional</th><th>Consultorio</th><th>Estado</th></tr></thead>
+    <thead>
+      <tr>
+        <th>Paciente</th>
+        <th>Profesional</th>
+        <th>Consultorio</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
     <tbody>
-    {% for appointment in appointments %}
-      {% if appointment.state == 'confirmed' and
-            not appointment.calling and
-            not appointment.attending %}
+      {% for appointment in appointments %} {% if appointment.state ==
+      'confirmed' and not appointment.calling and not appointment.attending %}
       <tr class="not_calling">
         <td>{{ appointment.patient.rec_name }}</td>
         <td>{{ appointment.healthprof.rec_name }}</td>
-        <td>{{ appointment.consulting_room and appointment.consulting_room.name }}</td>
+        <td>
+          {{ appointment.consulting_room and appointment.consulting_room.name }}
+        </td>
         <td>Esperando</td>
       </tr>
-      {% endif %}
-    {% endfor %}
+      {% endif %} {% endfor %}
     </tbody>
   </table>
-
 </div>
-{% endblock %}
-
-{% block footer %}{% endblock %}
-
-{% block javascripts %}
+{% endblock %} {% block footer %}{% endblock %} {% block javascripts %}
 <script>
-(function () {
-  /* ── Clock ── */
-  function tick() {
-    const el = document.getElementById('se-clock');
-    if (!el) return;
-    const now = new Date();
-    el.textContent = now.toLocaleTimeString('es-AR', {
-      hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-    });
-  }
+  (function () {
+    /* ── Clock ── */
+    function tick() {
+      const el = document.getElementById("se-clock");
+      if (!el) return;
+      const now = new Date();
+      el.textContent = now.toLocaleTimeString("es-AR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      });
+    }
 
-  function updateDate() {
-    const el = document.getElementById('se-date');
-    if (!el) return;
-    const str = new Date().toLocaleDateString('es-AR', {
-      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-    });
-    el.textContent = str.charAt(0).toUpperCase() + str.slice(1);
-  }
+    function updateDate() {
+      const el = document.getElementById("se-date");
+      if (!el) return;
+      const str = new Date().toLocaleDateString("es-AR", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+      el.textContent = str.charAt(0).toUpperCase() + str.slice(1);
+    }
 
-  tick(); updateDate();
-  setInterval(tick, 1000);
-  setInterval(updateDate, 60000);
+    tick();
+    updateDate();
+    setInterval(tick, 1000);
+    setInterval(updateDate, 60000);
 
-  /* ── Read hidden tables ── */
-  function readRows(tableId, className) {
-    return Array.from(document.querySelectorAll(`#${tableId} tbody tr.${className}`))
-      .map(tr => {
-        const cells = tr.querySelectorAll('td');
+    /* ── Read hidden tables ── */
+    function readRows(tableId, className) {
+      return Array.from(
+        document.querySelectorAll(`#${tableId} tbody tr.${className}`),
+      ).map((tr) => {
+        const cells = tr.querySelectorAll("td");
         return {
-          patient: cells[0] ? cells[0].textContent.trim() : '',
-          doctor:  cells[1] ? cells[1].textContent.trim() : '',
-          room:    cells[2] ? cells[2].textContent.trim() : '',
+          patient: cells[0] ? cells[0].textContent.trim() : "",
+          doctor: cells[1] ? cells[1].textContent.trim() : "",
+          room: cells[2] ? cells[2].textContent.trim() : "",
         };
       });
-  }
+    }
 
-  function esc(str) {
-    return String(str)
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
+    function esc(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
 
-  function makeRow(r, state) {
-    const rowClass  = state === 'calling' ? 'se-row--calling' : state === 'attending' ? 'se-row--attending' : '';
-    const badgeClass = state === 'calling' ? 'se-badge--calling' : state === 'attending' ? 'se-badge--attending' : 'se-badge--waiting';
-    const label = state === 'calling' ? 'Llamando' : state === 'attending' ? 'En Atención' : 'En Espera';
-    const dot = (state === 'calling' || state === 'attending')
-      ? '<span class="se-badge__dot"></span>' : '';
-    return `
+    function makeRow(r, state) {
+      const rowClass =
+        state === "calling"
+          ? "se-row--calling"
+          : state === "attending"
+            ? "se-row--attending"
+            : "";
+      const badgeClass =
+        state === "calling"
+          ? "se-badge--calling"
+          : state === "attending"
+            ? "se-badge--attending"
+            : "se-badge--waiting";
+      const label =
+        state === "calling"
+          ? "Llamando"
+          : state === "attending"
+            ? "En Atención"
+            : "En Espera";
+      const dot =
+        state === "calling" || state === "attending"
+          ? '<span class="se-badge__dot"></span>'
+          : "";
+      return `
       <div class="se-row ${rowClass}">
         <div class="se-cell se-cell--consultorio">${esc(r.room)}</div>
         <div class="se-cell se-cell--paciente">${esc(r.patient)}</div>
@@ -554,75 +758,82 @@
           <span class="se-badge ${badgeClass}">${dot}${label}</span>
         </div>
       </div>`;
-  }
-
-  /* ── Render board ── */
-  function renderBoard() {
-    const calling   = readRows('tabla_atencion', 'calling');
-    const attending = readRows('tabla_atencion', 'registered');
-    const waiting   = readRows('tabla_espera',   'not_calling');
-
-    const board   = document.getElementById('se-board');
-    const emptyEl = document.getElementById('se-empty');
-    const all     = [...calling, ...attending, ...waiting];
-
-    /* remove old rows (keep empty state element) */
-    Array.from(board.children).forEach(child => {
-      if (child.id !== 'se-empty') child.remove();
-    });
-
-    if (all.length === 0) {
-      emptyEl.style.display = 'flex';
-    } else {
-      emptyEl.style.display = 'none';
-      const html = [
-        ...calling.map(r  => makeRow(r, 'calling')),
-        ...attending.map(r => makeRow(r, 'attending')),
-        ...waiting.map(r   => makeRow(r, 'waiting')),
-      ].join('');
-      board.insertAdjacentHTML('afterbegin', html);
     }
 
-    document.getElementById('statCalling').textContent  = calling.length;
-    document.getElementById('statAttending').textContent = attending.length;
-    document.getElementById('statWaiting').textContent   = waiting.length;
+    /* ── Render board ── */
+    function renderBoard() {
+      const calling = readRows("tabla_atencion", "calling");
+      const attending = readRows("tabla_atencion", "registered");
+      const waiting = readRows("tabla_espera", "not_calling");
 
-    /* update stats badge in footer */
-    const total = calling.length + attending.length + waiting.length;
-    if (document.getElementById('statTotal'))
-      document.getElementById('statTotal').textContent = total;
-  }
+      const board = document.getElementById("se-board");
+      const emptyEl = document.getElementById("se-empty");
+      const all = [...calling, ...attending, ...waiting];
 
-  /* ── AJAX polling ── */
-  function actualizarTabla() {
-    const params  = new URLSearchParams(window.location.search);
-    const baseUrl = "{{ url_for('appointments_blueprint.tabla_turnos') }}";
-    fetch(`${baseUrl}?${params.toString()}`)
-      .then(r => r.text())
-      .then(html => {
-        const tmp = document.createElement('div');
-        tmp.innerHTML = html;
+      /* remove old rows (keep empty state element) */
+      Array.from(board.children).forEach((child) => {
+        if (child.id !== "se-empty") child.remove();
+      });
 
-        const srcAtencion = tmp.querySelector('#tabla_atencion');
-        const srcEspera   = tmp.querySelector('#tabla_espera');
-        if (srcAtencion) document.getElementById('tabla_atencion').innerHTML = srcAtencion.innerHTML;
-        if (srcEspera)   document.getElementById('tabla_espera').innerHTML   = srcEspera.innerHTML;
+      if (all.length === 0) {
+        emptyEl.style.display = "flex";
+      } else {
+        emptyEl.style.display = "none";
+        const html = [
+          ...calling.map((r) => makeRow(r, "calling")),
+          ...attending.map((r) => makeRow(r, "attending")),
+          ...waiting.map((r) => makeRow(r, "waiting")),
+        ].join("");
+        board.insertAdjacentHTML("afterbegin", html);
+      }
 
-        if (tmp.querySelector('#tabla_atencion tbody tr.calling')) {
-          const audio = document.getElementById('myAudio');
-          if (audio) { audio.load(); audio.play().catch(() => {}); }
-        }
+      document.getElementById("statCalling").textContent = calling.length;
+      document.getElementById("statAttending").textContent = attending.length;
+      document.getElementById("statWaiting").textContent = waiting.length;
 
-        renderBoard();
-      })
-      .catch(err => console.error('Error actualizando tabla:', err));
-  }
+      /* update stats badge in footer */
+      const total = calling.length + attending.length + waiting.length;
+      if (document.getElementById("statTotal"))
+        document.getElementById("statTotal").textContent = total;
+    }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    renderBoard();
-    setInterval(actualizarTabla, 5000);
-    actualizarTabla();
-  });
-})();
+    /* ── AJAX polling ── */
+    function actualizarTabla() {
+      const params = new URLSearchParams(window.location.search);
+      const baseUrl = "{{ url_for('appointments_blueprint.tabla_turnos') }}";
+      fetch(`${baseUrl}?${params.toString()}`)
+        .then((r) => r.text())
+        .then((html) => {
+          const tmp = document.createElement("div");
+          tmp.innerHTML = html;
+
+          const srcAtencion = tmp.querySelector("#tabla_atencion");
+          const srcEspera = tmp.querySelector("#tabla_espera");
+          if (srcAtencion)
+            document.getElementById("tabla_atencion").innerHTML =
+              srcAtencion.innerHTML;
+          if (srcEspera)
+            document.getElementById("tabla_espera").innerHTML =
+              srcEspera.innerHTML;
+
+          if (tmp.querySelector("#tabla_atencion tbody tr.calling")) {
+            const audio = document.getElementById("myAudio");
+            if (audio) {
+              audio.load();
+              audio.play().catch(() => {});
+            }
+          }
+
+          renderBoard();
+        })
+        .catch((err) => console.error("Error actualizando tabla:", err));
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      renderBoard();
+      setInterval(actualizarTabla, 5000);
+      actualizarTabla();
+    });
+  })();
 </script>
 {% endblock %}

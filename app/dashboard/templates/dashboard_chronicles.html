@@ -5,11 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Pacientes con ECNT</title>
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300" rel="stylesheet" />
-    <link rel="stylesheet" href="static/css/style_2.css">
-    <script src="/static/js/dashboard_chronicles.js"></script>
+    <link rel="stylesheet" href="{{ url_for('base_blueprint.static', filename='css/style_2.css') }}">
+    <script src="{{ url_for('base_blueprint.static', filename='js/dashboard_chronicles.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.min.js"></script>
-    <title>>Panel de Pacientes con ECNT</title>
 </head>
 
 <body>
@@ -18,8 +16,10 @@
         <div class="loading-message">Procesando los Datos.....</div>
 
 
-        <h1>CAPS Humberto D'Angelo - PACIENTES CON ECNT</h1>
-        <p>Visualización de estadísticas globales</p>
+        {% set page_title = 'Pacientes con ECNT' %}
+        {% set page_subtitle = 'Tablero de enfermedades crónicas con foco en sexo, edad, patologías y seguimiento de última visita.' %}
+        {% set page_period = 'Población activa' %}
+        {% include 'partials/dashboard_page_header.html' %}
         
         <!--<hr>
         <div class="filter">
@@ -111,8 +111,8 @@
 
     </main>
     
-    <footer class="footer"> 
-        {% include '/layouts/partials/footer.html' %}
+    <footer class="footer">
+        {% include 'layouts/partials/footer.html' %}
     </footer>
 
    

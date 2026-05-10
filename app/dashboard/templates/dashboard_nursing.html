@@ -5,11 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Enfermería</title>
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300" rel="stylesheet" />
-    <link rel="stylesheet" href="static/css/style_2.css">
-    <script src="/static/js/dashboard_nursing.js"></script>
+    <link rel="stylesheet" href="{{ url_for('base_blueprint.static', filename='css/style_2.css') }}">
+    <script src="{{ url_for('base_blueprint.static', filename='js/dashboard_nursing.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.min.js"></script>
-    <title>Panel de Enfermería</title>
 </head>
 
 <body>
@@ -18,8 +16,10 @@
         <div class="loading-message">Procesando los Datos.....</div>
 
 
-        <h1>CAPS Humberto D'Angelo - ENFERMERIA</h1>
-        <p>Visualización de estadísticas globales</p>
+        {% set page_title = 'Enfermería' %}
+        {% set page_subtitle = 'Indicadores globales de atenciones de enfermería con filtros por fecha y profesional.' %}
+        {% set page_period = 'Últimos 15 días' %}
+        {% include 'partials/dashboard_page_header.html' %}
         
         <hr>
         <div class="filter">
@@ -31,7 +31,7 @@
         <select id="ProfessionalSelect">
             <option value=""> Lista completa </option>
         </select>
-        <button onclick="Update()" type="submit">Aplicar filtro</button>
+        <button class="button" onclick="Update()" type="submit">Aplicar filtro</button>
         </div>
         <hr>
         <section class="cols-1">
@@ -110,8 +110,8 @@
 
     </main>
     
-    <footer class="footer"> 
-        {% include '/layouts/partials/footer.html' %}
+    <footer class="footer">
+        {% include 'layouts/partials/footer.html' %}
     </footer>
 
    

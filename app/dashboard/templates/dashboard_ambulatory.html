@@ -4,22 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de At. Ambulatorias</title>
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300" rel="stylesheet" />
-    <link rel="stylesheet" href="static/css/style_2.css">
-    <script src="/static/js/dashboard_ambulatory.js"></script>
+    <title>Panel de Atenciones Ambulatorias</title>
+    <link rel="stylesheet" href="{{ url_for('base_blueprint.static', filename='css/style_2.css') }}">
+    <script src="{{ url_for('base_blueprint.static', filename='js/dashboard_ambulatory.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.min.js"></script>
-    <title>Panel de At. Ambulatorias</title>
 </head>
 
 <body>
     <main>
     
         <div class="loading-message">Procesando los Datos.....</div>
-
-
-        <h1>CAPS Humberto D'Angelo - AT. AMBULATORIAS</h1>
-        <p>Visualización de estadísticas globales</p>
+        {% set page_title = 'Atenciones ambulatorias' %}
+        {% set page_subtitle = 'Visualización de estadísticas globales del CAPS con filtros por fecha y especialidad.' %}
+        {% set page_period = 'Últimos 15 días' %}
+        {% include 'partials/dashboard_page_header.html' %}
         
         <hr>
         <div class="filter">
@@ -31,7 +29,7 @@
         <select id="SpecialtySelect">
             <option value=""> Todas </option>
         </select>
-        <button onclick="Update()" type="submit">Aplicar filtro</button>
+        <button class="button" onclick="Update()" type="submit">Aplicar filtro</button>
         </div>
         <hr>
         <section class="cols-1">
@@ -136,8 +134,8 @@
 
     </main>
     
-    <footer class="footer"> 
-        {% include '/layouts/partials/footer.html' %}
+    <footer class="footer">
+        {% include 'layouts/partials/footer.html' %}
     </footer>
 
    

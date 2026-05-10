@@ -36,7 +36,7 @@
     <tbody>
         {% if appointment.calling %}
         <audio id="myAudio" autoplay>
-            <source src="../static/multimedia/timbre.ogg" type="audio/ogg">
+            <source src="{{ url_for('base_blueprint.static', filename='multimedia/timbre.ogg') }}" type="audio/ogg">
         </audio>
         <tr class='calling'>
             <td><span class="patient-name">{{ appointment.patient.rec_name }}</span></td>

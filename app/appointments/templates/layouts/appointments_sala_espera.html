@@ -2,7 +2,6 @@
 
 {% block head %}
     <title>Sala de Espera — {{ institution }}</title>
-    <link rel="icon" href="/static/images/favicon.ico">
     <meta http-equiv="Expires" content="0">
     <meta http-equiv="Last-Modified" content="0">
     <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
@@ -72,6 +71,29 @@
         }
 
         .top-bar__right { text-align: right; }
+
+        .top-bar__nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .top-bar__nav a {
+            display: inline-flex;
+            align-items: center;
+            min-height: 30px;
+            padding: 6px 11px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.14);
+            color: #ffffff;
+            font-size: 0.66rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
 
         .top-bar__clock {
             font-size: 2rem;
@@ -331,6 +353,11 @@
         <div class="top-bar__right">
             <div class="top-bar__clock" id="reloj">00:00:00</div>
             <div class="top-bar__date"  id="fecha"></div>
+            <div class="top-bar__nav">
+                <a href="{{ url_for('base_blueprint.index') }}">Inicio</a>
+                <a href="{{ url_for('appointments_blueprint.seleccionar_consultorio') }}">Consultorios</a>
+                <a href="{{ url_for('dashboard_blueprint.dashboard_indicators') }}">Dashboard</a>
+            </div>
         </div>
     </div>
 
@@ -387,7 +414,7 @@
     {% for appointment in appointments %}
         {% if appointment.calling %}
         <audio id="myAudio" autoplay>
-            <source src="../static/multimedia/timbre.ogg" type="audio/ogg">
+            <source src="{{ url_for('base_blueprint.static', filename='multimedia/timbre.ogg') }}" type="audio/ogg">
         </audio>
         {% endif %}
     {% endfor %}
@@ -435,6 +462,8 @@
 
 </div>
 {% endblock %}
+
+{% block footer %}{% endblock %}
 
 {% block javascripts %}
 <script>

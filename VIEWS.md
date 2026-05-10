@@ -29,8 +29,6 @@
 | `/dashboard_ginecology` | `dashboard_ginecology.html` | Gynecology/obstetrics panel |
 | `/dashboard_odontology` | `dashboard_odontology.html` | Odontology panel |
 | `/dashboard_chronicles` | `dashboard_chronicles.html` | Chronic patients panel |
-| `/dashboard_laboratory` | `dashboard_laboratory.html` | Laboratory panel |
-| `/dashboard_images` | `dashboard_images.html` | Imaging panel |
 
 ## Appointments Module (`app/appointments`)
 

@@ -2,7 +2,6 @@
 
 {% block head %}
     <title>Turnos del día</title>
-    <link rel="icon" href="/static/images/favicon.ico">
     <meta http-equiv="Expires" content="0">
     <meta http-equiv="Last-Modified" content="0">
     <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
@@ -73,6 +72,28 @@
         }
 
         .main-header__text { display: flex; flex-direction: column; }
+
+        .main-header__nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .main-header__nav a {
+            display: inline-flex;
+            align-items: center;
+            min-height: 32px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            color: #ffffff;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
 
         .main-header__title {
             font-size: 1.1rem;
@@ -448,6 +469,12 @@
             <div class="main-header__text">
                 <div class="main-header__title">Sistema de Turnos</div>
                 <div class="main-header__sub">{{ institution }} — Turnos del día</div>
+                <div class="main-header__nav">
+                    <a href="{{ url_for('base_blueprint.index') }}">Inicio</a>
+                    <a href="{{ url_for('appointments_blueprint.seleccionar_consultorio') }}">Consultorios</a>
+                    <a href="{{ url_for('dashboard_blueprint.dashboard_indicators') }}">Dashboard</a>
+                    <a href="{{ url_for('appointments_blueprint.sala_espera', consulting_rooms=request.args.getlist('consulting_rooms')) }}">Sala de espera</a>
+                </div>
             </div>
         </div>
         <div class="main-header__clock-wrap">
@@ -558,7 +585,7 @@
                     {% for appointment in appointments %}
                         {% if appointment.calling %}
                             <audio id="myAudio" autoplay>
-                                <source src="../static/multimedia/timbre.ogg" type="audio/ogg">
+                                <source src="{{ url_for('base_blueprint.static', filename='multimedia/timbre.ogg') }}" type="audio/ogg">
                             </audio>
                             <tr class='calling'>
                                 <td><span class="patient-name">{{ appointment.patient.rec_name }}</span></td>
@@ -614,6 +641,8 @@
 
 </section>
 {% endblock %}
+
+{% block footer %}{% endblock %}
 
 {% block javascripts %}
 <script>

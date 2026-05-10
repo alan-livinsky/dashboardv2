@@ -1,6 +1,4 @@
-{% extends 'layouts/base.html'%}
-
-{% block head %}
+{% extends 'layouts/base.html'%} {% block head %}
 <title>Inicio</title>
 <meta http-equiv="Expires" content="0" />
 <meta http-equiv="Last-Modified" content="0" />
@@ -19,9 +17,7 @@
     margin-top: 24px;
   }
 </style>
-{% endblock %}
-
-{% block body %}
+{% endblock %} {% block body %}
 <div class="page-wrapper">
   <div class="app-shell">
     <header class="app-hero">
@@ -30,12 +26,21 @@
           <div class="app-hero__eyebrow">Gestión clínica</div>
           <h1 class="app-hero__title">Panel de salud</h1>
           <p class="app-hero__subtitle">
-            Ingrese a la operación diaria de turnos o a la sala de situación desde una experiencia unificada, clara y lista para uso operativo.
+            Ingrese a la operación diaria de turnos o a la sala de situación
+            desde una experiencia unificada, clara y lista para uso operativo.
           </p>
         </div>
         <div class="shell-actions">
-          <a href="{{ url_for('appointments_blueprint.seleccionar_consultorio') }}" class="shell-link">Turnos</a>
-          <a href="{{ url_for('dashboard_blueprint.dashboard_indicators') }}" class="shell-link shell-link--primary">Dashboard</a>
+          <a
+            href="{{ url_for('appointments_blueprint.seleccionar_consultorio') }}"
+            class="shell-link"
+            >Turnos</a
+          >
+          <a
+            href="{{ url_for('dashboard_blueprint.dashboard_indicators') }}"
+            class="shell-link shell-link--primary"
+            >Dashboard</a
+          >
           <div class="hero-badge" id="reloj"></div>
         </div>
       </div>
@@ -43,25 +48,41 @@
 
     <div class="content">
       <div class="nav-grid">
-        <a href="{{ url_for('appointments_blueprint.seleccionar_consultorio') }}" class="nav-card">
-          <img src="{{ url_for('base_blueprint.static', filename='images/appointment.svg') }}" class="nav-card__img" alt="Turnos" />
+        <a
+          href="{{ url_for('appointments_blueprint.seleccionar_consultorio') }}"
+          class="nav-card"
+        >
+          <img
+            src="{{ url_for('base_blueprint.static', filename='images/appointment.svg') }}"
+            class="nav-card__img"
+            alt="Turnos"
+          />
           <div class="nav-card__body">
             <div class="nav-card__label">Gestión de turnos</div>
             <div class="nav-card__title">Turnos / Citas</div>
             <div class="nav-card__text">
-              Selección de consultorios, turnos del día y vista de sala de espera con seguimiento operativo.
+              Selección de consultorios, turnos del día y vista de sala de
+              espera con seguimiento operativo.
             </div>
             <span class="nav-card__btn">Ingresar</span>
           </div>
         </a>
 
-        <a href="{{ url_for('dashboard_blueprint.dashboard_indicators') }}" class="nav-card">
-          <img src="{{ url_for('base_blueprint.static', filename='images/sala_de_situacion.png') }}" class="nav-card__img" alt="Sala de Situación" />
+        <a
+          href="{{ url_for('dashboard_blueprint.dashboard_indicators') }}"
+          class="nav-card"
+        >
+          <img
+            src="{{ url_for('base_blueprint.static', filename='images/sala_de_situacion.png') }}"
+            class="nav-card__img"
+            alt="Sala de Situación"
+          />
           <div class="nav-card__body">
             <div class="nav-card__label">Estadísticas</div>
             <div class="nav-card__title">Sala de Situación</div>
             <div class="nav-card__text">
-              Indicadores diarios y tableros analíticos activos para turnos, farmacia, enfermería, población y ECNT.
+              Indicadores diarios y tableros analíticos activos para turnos,
+              farmacia, enfermería, población y ECNT.
             </div>
             <span class="nav-card__btn">Ingresar</span>
           </div>
@@ -69,14 +90,10 @@
       </div>
     </div>
 
-    <footer class="footer">{% include 'layouts/partials/footer.html' %}</footer>
+    <!-- <footer class="footer">{% include 'layouts/partials/footer.html' %}</footer> -->
   </div>
 </div>
-{% endblock body %}
-
-{% block footer %}{% endblock %}
-
-{% block javascripts %}
+{% endblock body %} {% block footer %}{% endblock %} {% block javascripts %}
 <script>
   (function () {
     function tick() {
